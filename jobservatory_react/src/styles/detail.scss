@@ -1,0 +1,26 @@
+$applyBackground: false;
+
+.detail-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  @if $applyBackground == true {
+    background: cornflowerblue;
+  }
+  margin-left: 20%;
+  margin-right: 20%;
+}
+.stats {
+  display: flex;
+  flex: 1;
+  text-align: center;
+}
+.detail-table {
+  margin-top: 150px;
+}
+.chart-container {
+  display: flex;
+
+  height: 600px;
+  justify-content: space-between;
+}
