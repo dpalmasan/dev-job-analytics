@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "scrapper"
+version = "0.1.0"
+description = "Scrapper to import data to the database"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+black = "^21.7b0"
+flake8 = "^3.9.2"
+pytest-cov = "^2.12.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
