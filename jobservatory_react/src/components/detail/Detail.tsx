@@ -58,14 +58,6 @@ export const Detail = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
-      <StatGroup borderWidth="1px" borderRadius="lg">
-        <div className="stats">
-          <Card title={"Last 24 Hours"} value={13239} percentage={23.36} />
-          <Card title={"Last Week Hours"} value={52129} percentage={53.96} />
-          <Card title={"Last Month Hours"} value={123283} percentage={-2.9} />
-          <Card title={"1 Year"} value={348327} percentage={45.13} />
-        </div>
-      </StatGroup>
       <div style={{ minHeight: "40%", marginTop: 100 }}>
         <DetailChart chartData={chartData} />
       </div>
