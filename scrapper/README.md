@@ -16,5 +16,5 @@ The `LinkedinScrapper` implements the interface to get data from linkedin.
 
 ```python
 scrapper = LinkedinScrapper()
-print(scrapper.get_worldwide_data("React.js"))
+print(scrapper.get_worldwide_job_count("React.js"))
 ```
