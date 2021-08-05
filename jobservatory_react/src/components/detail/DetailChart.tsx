@@ -1,4 +1,28 @@
-import { Box, Select, theme } from "@chakra-ui/react";
+import {
+  AddIcon,
+  CheckIcon,
+  CloseIcon,
+  DeleteIcon,
+  EmailIcon,
+} from "@chakra-ui/icons";
+import {
+  extendTheme,
+  Box,
+  Select,
+  theme,
+  useColorMode,
+  HStack,
+  Tag,
+  TagLabel,
+  TagRightIcon,
+  Input,
+  Button,
+  InputRightElement,
+  IconButton,
+  InputGroup,
+  InputLeftElement,
+  TagCloseButton,
+} from "@chakra-ui/react";
 
 import { ResponsiveLine } from "@nivo/line";
 import React from "react";
@@ -23,6 +47,7 @@ interface DetailChartProps {
 
 export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
   const [formattedChartData, setFormattedChartData] = useState<any>([]);
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     console.log("chartData :>> ", chartData);
@@ -47,6 +72,7 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
     setFormattedChartData(finalChartData);
   }, [chartData]);
 
+  const addIconColor = "facebook";
   return (
     <div className="chart-container">
       <div
@@ -57,23 +83,23 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
         <div
           style={{
             display: "flex",
-            // background: "brown",
             justifyContent: "space-between",
+            marginBottom: 20,
           }}
         >
-          <Box
-            fontSize={"large"}
-            fontWeight={"bold"}
-            textStyle="h1"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              // background: "red",
-            }}
-          >
-            2021 - Jobs open
-          </Box>
+          <InputGroup style={{ width: 400 }}>
+            <Input placeholder="Add technology or occupation" />
+            <InputRightElement
+              children={
+                <AddIcon
+                  color={
+                    addIconColor
+                    //colorMode === "light" ? "telegram" : theme.colors.whiteAlpha
+                  }
+                />
+              }
+            />
+          </InputGroup>
           <Select
             borderColor="grey"
             color={theme.colors.teal}
@@ -82,11 +108,29 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
             placeholder={"August 2021"}
           />
         </div>
+        <HStack spacing={4}>
+          {formattedChartData.map((charData: any) => {
+            return (
+              <Tag
+                size={"lg"}
+                key={"lg"}
+                borderRadius="full"
+                variant="solid"
+                colorScheme={"telegram"}
+              >
+                <TagLabel>{charData.id}</TagLabel>
+                <TagCloseButton />
+              </Tag>
+            );
+          })}
+        </HStack>
+
         <ResponsiveLine
           lineWidth={3}
           data={formattedChartData}
           margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
           xScale={{ type: "point" }}
+          theme={{ textColor: colorMode === "light" ? "black" : "white" }}
           yScale={{
             type: "linear",
             min: "auto",
