@@ -2,12 +2,19 @@
 import re
 from abc import ABC
 from abc import abstractmethod
+from enum import Enum
 
 import requests
 from bs4 import BeautifulSoup
 
 
 JOB_REGEX = re.compile(r"[^0-9]")
+
+
+class Location(Enum):
+    """Location enum to query for different locations."""
+
+    WORLDWIDE = "Todo el Mundo"
 
 
 class JobserverScrapper(ABC):
@@ -31,6 +38,16 @@ class LinkedinScrapper:
 
     _url = "https://www.linkedin.com/jobs/search/"
 
+    def _get_job_count(self, tech: str, location: Location) -> int:
+        page = requests.get(
+            self.url, params={"keywords": tech, "location": location.value}
+        )
+        soup = BeautifulSoup(page.content, "html.parser")
+        job_elements = soup.find_all(
+            "span", attrs={"class": "results-context-header__job-count"}
+        )
+        return int(JOB_REGEX.sub("", job_elements[0].text))
+
     def get_worldwide_job_count(self, tech: str) -> int:
         """Get job count for a specific tech.
 
@@ -51,14 +68,7 @@ class LinkedinScrapper:
         :return: Job count for the technology
         :rtype: int
         """
-        page = requests.get(
-            self.url, params={"keywords": tech, "location": "Todo el mundo"}
-        )
-        soup = BeautifulSoup(page.content, "html.parser")
-        job_elements = soup.find_all(
-            "span", attrs={"class": "results-context-header__job-count"}
-        )
-        return int(JOB_REGEX.sub("", job_elements[0].text))
+        return self._get_job_count(tech, Location.WORLDWIDE)
 
     @property
     def url(self) -> str:
