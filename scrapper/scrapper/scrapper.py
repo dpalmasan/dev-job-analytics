@@ -3,6 +3,7 @@ import re
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
+from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup
@@ -15,6 +16,17 @@ class Location(Enum):
     """Location enum to query for different locations."""
 
     WORLDWIDE = "Todo el Mundo"
+    USA = "Estados Unidos"
+    UK = "Reino Unido"
+    CA = "Canadá"
+    PL = "Polonia"
+    BR = "Brasil"
+    IN = "India"
+    CH = "China"
+    CL = "Chile"
+    GR = "Alemania"
+    HL = "Países Bajos"
+    AU = "Australia"
 
 
 class JobserverScrapper(ABC):
@@ -27,6 +39,17 @@ class JobserverScrapper(ABC):
         :param tech: Technology to be analyzed.
         :type tech: str
         :return: Job count.
+        :rtype: int
+        """
+        pass
+
+    @abstractmethod
+    def get_job_count_distribution(self, tech: str) -> Dict[str, int]:
+        """Get distribution of job ads.
+
+        :param tech: Technology to be queried
+        :type tech: str
+        :return:
         :rtype: int
         """
         pass
@@ -69,6 +92,19 @@ class LinkedinScrapper:
         :rtype: int
         """
         return self._get_job_count(tech, Location.WORLDWIDE)
+
+    def get_job_count_distribution(self, tech: str) -> Dict[str, int]:
+        """Get job count distribution from Linkedin.
+
+        :param tech: Technology to be queried
+        :type tech: str
+        :return: A dictionary with ``(location, count)`` pairs
+        :rtype: Dict[str, int]
+        """
+        return {
+            location.name: self._get_job_count(tech, location)
+            for location in Location
+        }
 
     @property
     def url(self) -> str:
