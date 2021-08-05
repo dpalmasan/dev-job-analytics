@@ -1,4 +1,10 @@
-import { Box, Select, theme } from "@chakra-ui/react";
+import {
+  extendTheme,
+  Box,
+  Select,
+  theme,
+  useColorMode,
+} from "@chakra-ui/react";
 
 import { ResponsiveLine } from "@nivo/line";
 import React from "react";
@@ -23,6 +29,7 @@ interface DetailChartProps {
 
 export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
   const [formattedChartData, setFormattedChartData] = useState<any>([]);
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     console.log("chartData :>> ", chartData);
@@ -57,7 +64,6 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
         <div
           style={{
             display: "flex",
-            // background: "brown",
             justifyContent: "space-between",
           }}
         >
@@ -69,7 +75,6 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // background: "red",
             }}
           >
             2021 - Jobs open
@@ -87,6 +92,7 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
           data={formattedChartData}
           margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
           xScale={{ type: "point" }}
+          theme={{ textColor: colorMode === "light" ? "black" : "white" }}
           yScale={{
             type: "linear",
             min: "auto",
