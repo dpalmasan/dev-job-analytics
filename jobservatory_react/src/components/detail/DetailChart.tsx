@@ -1,33 +1,18 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
-  AddIcon,
-  CheckIcon,
-  CloseIcon,
-  DeleteIcon,
-  EmailIcon,
-} from "@chakra-ui/icons";
-import {
-  extendTheme,
-  Box,
+  HStack,
+  Input,
+  InputGroup,
+  InputRightElement,
   Select,
+  Tag,
+  TagCloseButton,
+  TagLabel,
   theme,
   useColorMode,
-  HStack,
-  Tag,
-  TagLabel,
-  TagRightIcon,
-  Input,
-  Button,
-  InputRightElement,
-  IconButton,
-  InputGroup,
-  InputLeftElement,
-  TagCloseButton,
 } from "@chakra-ui/react";
-
 import { ResponsiveLine } from "@nivo/line";
-import { findIndex } from "lodash";
-import React from "react";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 interface Point {
   x: string;
