@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 
 import { ResponsiveLine } from "@nivo/line";
+import { findIndex } from "lodash";
 import React from "react";
 import { FC, useEffect, useState } from "react";
 
@@ -72,6 +73,15 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
     setFormattedChartData(finalChartData);
   }, [chartData]);
 
+  const removeElementOnChart = (chartID: string) => {
+    let currentFormattedData = [...formattedChartData];
+    const indexOfElementToRemove = currentFormattedData.findIndex(
+      (value: any) => value.id === chartID
+    );
+    currentFormattedData.splice(indexOfElementToRemove, 1);
+    setFormattedChartData([...currentFormattedData]);
+  };
+
   const addIconColor = "facebook";
   return (
     <div className="chart-container">
@@ -89,16 +99,7 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
         >
           <InputGroup style={{ width: 400 }}>
             <Input placeholder="Add technology or occupation" />
-            <InputRightElement
-              children={
-                <AddIcon
-                  color={
-                    addIconColor
-                    //colorMode === "light" ? "telegram" : theme.colors.whiteAlpha
-                  }
-                />
-              }
-            />
+            <InputRightElement children={<AddIcon color={addIconColor} />} />
           </InputGroup>
           <Select
             borderColor="grey"
@@ -119,7 +120,9 @@ export const DetailChart: FC<DetailChartProps> = ({ chartData }) => {
                 colorScheme={"telegram"}
               >
                 <TagLabel>{charData.id}</TagLabel>
-                <TagCloseButton />
+                <TagCloseButton
+                  onClick={() => removeElementOnChart(charData.id)}
+                />
               </Tag>
             );
           })}
