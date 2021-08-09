@@ -4,12 +4,14 @@ from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from typing import Dict
+from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
 
 
 JOB_REGEX = re.compile(r"[^0-9]")
+SECONDS_PER_DAY = 86400
 
 
 class Location(Enum):
@@ -32,8 +34,10 @@ class Location(Enum):
 class JobserverScrapper(ABC):
     """Abstract class for scrappers."""
 
+    _url = ""
+
     @abstractmethod
-    def get_worldwide_job_count(self, tech: str) -> int:
+    def get_worldwide_job_count(self, tech: str, days: Optional[int]) -> int:
         """Get job count for a specific tech.
 
         :param tech: Technology to be analyzed.
@@ -44,7 +48,9 @@ class JobserverScrapper(ABC):
         pass
 
     @abstractmethod
-    def get_job_count_distribution(self, tech: str) -> Dict[str, int]:
+    def get_job_count_distribution(
+        self, tech: str, days: Optional[int]
+    ) -> Dict[str, int]:
         """Get distribution of job ads.
 
         :param tech: Technology to be queried
@@ -54,24 +60,37 @@ class JobserverScrapper(ABC):
         """
         pass
 
+    @property
+    def url(self) -> str:
+        """Get url property.
 
-@JobserverScrapper.register
-class LinkedinScrapper:
+        :return: Url property for the scrapper.
+        :rtype: str
+        """
+        return self._url
+
+
+class LinkedinScrapper(JobserverScrapper):
     """Implement Linkedin Scrapper."""
 
     _url = "https://www.linkedin.com/jobs/search/"
 
-    def _get_job_count(self, tech: str, location: Location) -> int:
-        page = requests.get(
-            self.url, params={"keywords": tech, "location": location.value}
-        )
+    def _get_job_count(
+        self, tech: str, location: Location, days: Optional[int] = None
+    ) -> int:
+        params = {"keywords": tech, "location": location.value}
+        if days is not None:
+            params["f_TPR"] = f"r{(days + 1)*SECONDS_PER_DAY}"
+        page = requests.get(self.url, params=params)
         soup = BeautifulSoup(page.content, "html.parser")
         job_elements = soup.find_all(
             "span", attrs={"class": "results-context-header__job-count"}
         )
         return int(JOB_REGEX.sub("", job_elements[0].text))
 
-    def get_worldwide_job_count(self, tech: str) -> int:
+    def get_worldwide_job_count(
+        self, tech: str, days: Optional[int] = None
+    ) -> int:
         """Get job count for a specific tech.
 
         For example:
@@ -93,7 +112,9 @@ class LinkedinScrapper:
         """
         return self._get_job_count(tech, Location.WORLDWIDE)
 
-    def get_job_count_distribution(self, tech: str) -> Dict[str, int]:
+    def get_job_count_distribution(
+        self, tech: str, days: Optional[int] = None
+    ) -> Dict[str, int]:
         """Get job count distribution from Linkedin.
 
         :param tech: Technology to be queried
@@ -102,15 +123,7 @@ class LinkedinScrapper:
         :rtype: Dict[str, int]
         """
         return {
-            location.name: self._get_job_count(tech, location)
+            location.value: self._get_job_count(tech, location)
             for location in Location
+            if location != Location.WORLDWIDE
         }
-
-    @property
-    def url(self) -> str:
-        """Get url property.
-
-        :return: Url property for the scrapper.
-        :rtype: str
-        """
-        return self._url
