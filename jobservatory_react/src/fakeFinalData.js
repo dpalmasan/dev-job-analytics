@@ -159,7 +159,7 @@ const fakeDataTemplate = {
           country: [
             {
               name: "Estados Unidos",
-              jobs: Math.floor(Math.random() * 1000),
+              jobs: Math.floor(Math.random() * 100213),
             },
             {
               name: "China",

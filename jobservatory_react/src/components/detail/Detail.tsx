@@ -22,20 +22,20 @@ export const Detail = () => {
           return { name: value.name, jobsOpenArray: value.jobs_open };
         });
         console.log("techWithJobsOpen :>> ", techWithJobsOpen);
-        // console.log("dataArray :>> ", dataArray[0]);
-        // const jobsOpenArray = dataArray[0]["jobs_open"];
-        // console.log("jobsOpenArray :>> ", jobsOpenArray[0]);
-        // const jobsOpenByCountry = jobsOpenArray.map((val: any) => val.country);
-        // const technologiesFormatted = jobsOpenByCountry[0].map(
-        //   (value: any) => ({
-        //     name: value.name,
-        //     jobs: value.jobs,
-        //   })
-        // );
+        console.log("dataArray :>> ", dataArray[0]);
+        const jobsOpenArray = dataArray[0]["jobs_open"];
+        console.log("jobsOpenArray :>> ", jobsOpenArray[0]);
+        const jobsOpenByCountry = jobsOpenArray.map((val: any) => val.country);
+        const technologiesFormatted = jobsOpenByCountry[0].map(
+          (value: any) => ({
+            name: value.name,
+            jobs: value.jobs,
+          })
+        );
 
         // console.log("technologiesFormatted :>> ", technologiesFormatted);
         setChartData(techWithJobsOpen);
-        // setTechnologies(technologiesFormatted);
+        setTechnologies(technologiesFormatted);
       } catch (error) {
         console.log("Error in fetch data");
       }
@@ -58,11 +58,11 @@ export const Detail = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
-      <div style={{ minHeight: "40%", marginTop: 100 }}>
+      <div style={{ flex: 1, marginTop: 50 }}>
         <DetailChart chartData={chartData} />
       </div>
       <div className="detail-table">
-        {/* <DetailTable technologies={technologies} /> */}
+        <DetailTable technologies={technologies} />
       </div>
     </div>
   );

@@ -7,11 +7,14 @@ import {
   Tbody,
   Td,
   Tfoot,
+  Box,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import React, { FC, useEffect } from "react";
 import { useState } from "react";
 import { getTechonolgies } from "../../fakeFinalData";
-
+import reactImage from "./../../images/reactImage.png";
+import angularImage from "./../../images/angularImage.png";
 interface DetailTableProps {
   technologies: any[];
 }
@@ -23,9 +26,12 @@ export const DetailTable: FC<DetailTableProps> = ({ technologies }) => {
       <TableCaption>Number of open jobs by country</TableCaption>
       <Thead>
         <Tr>
-          {technologies.map(({ name, jobs }) => {
-            return <Th>{name}</Th>;
-          })}
+          {/* {technologies.map(({ name, index, jobs }) => {
+            return <Th key={index}>{name}</Th>;
+          })} */}
+          <Th></Th>
+          <Th style={{ fontSize: 24, fontWeight: "bold" }}> React</Th>
+          <Th style={{ fontSize: 24, fontWeight: "bold" }}> Angular</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -33,14 +39,6 @@ export const DetailTable: FC<DetailTableProps> = ({ technologies }) => {
           return (
             <Tr>
               <Td>{name}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
-              <Td> {jobs}</Td>
               <Td> {jobs}</Td>
               <Td> {jobs}</Td>
             </Tr>
