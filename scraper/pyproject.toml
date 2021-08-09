@@ -16,9 +16,9 @@ exclude = '''
 '''
 
 [tool.poetry]
-name = "scrapper"
+name = "scraper"
 version = "0.1.0"
-description = "Scrapper to import data to the database"
+description = "Scraper to import data to the database"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]

@@ -4,20 +4,20 @@ from datetime import timedelta
 from typing import List
 from typing import Optional
 
-from scrapper import scrapper
-from scrapper.jobserver_record import CountryJobCount
-from scrapper.jobserver_record import JobserverRecord
+from scraper import scraper
+from scraper.jobserver_record import CountryJobCount
+from scraper.jobserver_record import JobserverRecord
 
 
 def import_data(
-    sc: scrapper.JobserverScrapper,
+    sc: scraper.JobserverScraper,
     technologies: List[str],
     max_days: Optional[int] = None,
 ):
-    """Import data collected by a scrapper, to a database.
+    """Import data collected by a scraper, to a database.
 
-    :param sc: Scrapper to be used to collect data
-    :type sc: scrapper.JobserverScrapper
+    :param sc: Scraper to be used to collect data
+    :type sc: scraper.JobserverScraper
     :param technologies: List of technologies to get data from
     :type technologies: List[str]
     :param max_days: Amount of periods of data, defaults to None

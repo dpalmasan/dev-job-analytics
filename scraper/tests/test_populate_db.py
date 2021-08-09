@@ -6,9 +6,9 @@ from freezegun import freeze_time
 from mock import MagicMock
 from mongoengine import connect
 
-from scrapper import populate_db as pdb
-from scrapper import scrapper
-from scrapper.jobserver_record import JobserverRecord
+from scraper import populate_db as pdb
+from scraper import scraper
+from scraper.jobserver_record import JobserverRecord
 
 
 @pytest.fixture(scope="module")
@@ -18,8 +18,8 @@ def mongodb_connection():
 
 
 @pytest.fixture
-def linkescrapper_mock(monkeypatch):
-    """Fixture to control data from linkedin scrapper."""
+def linkescraper_mock(monkeypatch):
+    """Fixture to control data from linkedin scraper."""
     _linkemock = MagicMock()
     _linkemock().get_worldwide_job_count.side_effect = [
         3245,
@@ -53,14 +53,14 @@ def linkescrapper_mock(monkeypatch):
             "Reino Unido": 180,
         },
     ]
-    monkeypatch.setattr(scrapper, "LinkedinScrapper", _linkemock)
+    monkeypatch.setattr(scraper, "LinkedinScraper", _linkemock)
     yield _linkemock
 
 
 @freeze_time("2021-6-6")
-def test_import_data(mongodb_connection, linkescrapper_mock):
+def test_import_data(mongodb_connection, linkescraper_mock):
     """Test import data to DB."""
-    sc = scrapper.LinkedinScrapper()
+    sc = scraper.LinkedinScraper()
     pdb.import_data(sc, ["React.js"], 2)
     records = JobserverRecord.objects()
     record = records[0]

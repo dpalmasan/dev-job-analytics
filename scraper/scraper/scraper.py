@@ -1,4 +1,4 @@
-"""Scrapper interface and basic implementations."""
+"""Scraper interface and basic implementations."""
 import re
 from abc import ABC
 from abc import abstractmethod
@@ -31,8 +31,8 @@ class Location(Enum):
     AU = "Australia"
 
 
-class JobserverScrapper(ABC):
-    """Abstract class for scrappers."""
+class JobserverScraper(ABC):
+    """Abstract class for scrapers."""
 
     _url = ""
 
@@ -64,14 +64,14 @@ class JobserverScrapper(ABC):
     def url(self) -> str:
         """Get url property.
 
-        :return: Url property for the scrapper.
+        :return: Url property for the scraper.
         :rtype: str
         """
         return self._url
 
 
-class LinkedinScrapper(JobserverScrapper):
-    """Implement Linkedin Scrapper."""
+class LinkedinScraper(JobserverScraper):
+    """Implement Linkedin Scraper."""
 
     _url = "https://www.linkedin.com/jobs/search/"
 
