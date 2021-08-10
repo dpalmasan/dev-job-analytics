@@ -27,7 +27,12 @@ except (ImportError, ModuleNotFoundError):
 class LoggedLinkedinScrapper(LinkedinScraper):
     """Implement a LinkedinScraper using identity."""
 
-    def __init__(self, email: str, password: str):
+    def __init__(
+        self,
+        email: str,
+        password: str,
+        driver: Optional[webdriver.chrome.webdriver.WebDriver] = None,
+    ):
         """Start ``selenium`` driver to scrap from the web.
 
         :param email: Email to login into Linkedin
@@ -35,7 +40,9 @@ class LoggedLinkedinScrapper(LinkedinScraper):
         :param password: Password
         :type password: str
         """
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        self.driver = driver
+        if self.driver is None:
+            self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.email = email
         self.password = password
         self.logged = False
