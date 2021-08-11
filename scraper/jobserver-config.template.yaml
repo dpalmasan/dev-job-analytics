@@ -1,2 +1,7 @@
 email: "YOURUSERNAME" # e.g. emailo
 password: "PASSWORD"
+db:
+  name: "DB_NAME"
+  user: "DB_USER"
+  pass: "DB_PASS"
+  uri: "CONNECTION_URI"
