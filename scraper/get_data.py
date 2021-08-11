@@ -8,12 +8,23 @@ from scraper.selenium_scrapper import LoggedLinkedinScrapper
 
 def main():
     """Entry point."""
-    connect("jobservatory")
+    connect("jobservatory-manual")
     with open("jobserver-config.yaml", "r") as fp:
         creds = yaml.safe_load(fp)
 
     sc = LoggedLinkedinScrapper(creds["email"], creds["password"])
-    import_data(sc, ["React.js", "Angular.js", "Ruby on Rails"], 15)
+    import_data(
+        sc,
+        [
+            "React.js",
+            "Angular.js",
+            "Ruby on Rails",
+            "Java",
+            "Python",
+            "Data Engineer",
+        ],
+        0,
+    )
 
 
 if __name__ == "__main__":
