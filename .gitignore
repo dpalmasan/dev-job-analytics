@@ -141,3 +141,5 @@ cython_debug/
 jobserver-config.yaml
 
 dump/
+
+config.env
