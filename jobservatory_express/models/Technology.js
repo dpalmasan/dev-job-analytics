@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TechnologySchema = new mongoose.Schema({
+const JobserverRecord = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
@@ -16,4 +16,4 @@ const TechnologySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Technology", TechnologySchema);
+module.exports = mongoose.model("jobserver_record", JobserverRecord);
