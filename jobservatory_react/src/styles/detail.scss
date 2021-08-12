@@ -13,17 +13,28 @@ $applyBackground: false;
 .stats {
   display: flex;
   flex: 1;
-  text-align: center;
 }
-.detail-table {
-  display: flex;
+.detail-chart-country {
+  height: 200px;
   justify-content: center;
   align-items: center;
   margin-top: 180px;
+  background-color: aqua;
 }
-.chart-container {
+.detail-chart-container {
+  height: 500px;
+  flex-direction: row;
   display: flex;
-
-  height: 600px;
+  background: green;
+}
+.technologies-input-container {
+  display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
+  background: red;
+}
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  background: olive;
 }
