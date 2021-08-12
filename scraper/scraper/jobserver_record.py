@@ -22,4 +22,7 @@ class JobserverRecord(Document):
     date = DateTimeField()
     jobs_total = IntField()
     countries = ListField(EmbeddedDocumentField(CountryJobCount))
-    meta = {"indexes": [("name", "date")]}
+
+    # To be consistent with mongoose, we use the collection name
+    # "jobserver_records"
+    meta = {"indexes": [("name", "date")], "collection": "jobserver_records"}
