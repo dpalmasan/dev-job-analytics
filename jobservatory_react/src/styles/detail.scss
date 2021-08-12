@@ -16,7 +16,10 @@ $applyBackground: false;
   text-align: center;
 }
 .detail-table {
-  margin-top: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 180px;
 }
 .chart-container {
   display: flex;
