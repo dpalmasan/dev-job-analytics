@@ -8,11 +8,17 @@ from scraper.selenium_scrapper import LoggedLinkedinScrapper
 
 def main():
     """Entry point."""
-    connect("jobservatory-manual")
     with open("jobserver-config.yaml", "r") as fp:
-        creds = yaml.safe_load(fp)
+        config = yaml.safe_load(fp)
 
-    sc = LoggedLinkedinScrapper(creds["email"], creds["password"])
+    connect(
+        db=config["db"]["name"],
+        username=config["db"]["user"],
+        password=config["db"]["pass"],
+        host=config["db"]["uri"],
+    )
+
+    sc = LoggedLinkedinScrapper(config["email"], config["password"])
     import_data(
         sc,
         [
