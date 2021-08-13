@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { ColorModeSwitcher } from "../../ColorModeSwitcher";
-import { getTechonolgies } from "../../fakeFinalData";
 import { SearchBar } from "../search-bar/SearchBar";
 import { Card } from "../stats/Card";
 import "./../../styles/detail.scss";
@@ -17,7 +16,7 @@ import { DetailChartTag } from "./DetailChartTag";
 import { DetailCountry } from "./DetailCountry";
 
 interface Point {
-  x: string;
+  x: string; //date
   y: number;
 }
 
@@ -34,41 +33,76 @@ export const Detail = () => {
   const getTechnologiesData = () => {
     const getData = async () => {
       try {
-        const techs = await getTechonolgies();
-        const dataArray = techs.data;
-        const chartData = dataArray.map((value: any) => {
-          return { name: value.name, jobsOpenArray: value.jobs_open };
-        });
-        const jobsOpenArray = dataArray[0]["jobs_open"];
-        const jobsOpenByCountry = jobsOpenArray.map((val: any) => val.country);
-        const technologiesFormatted = jobsOpenByCountry[0].map(
-          (value: any) => ({
-            name: value.name,
-            jobs: value.jobs,
-          })
+        const techsPromise = await fetch(
+          "http://localhost:5000/api/v1/technologies"
         );
+        const techs = await techsPromise.json();
+        // const techs = await getTechonolgies();
+        const dataArray = techs.data;
+
+        const chartData = dataArray.map((value: any) => {
+          return { name: value.name, jobsOpenArray: value.jobs_total };
+        });
+
+        const jobsOpenArray = dataArray[0]["jobs_total"];
+        // const jobsOpenByCountry = jobsOpenArray.map((val: any) => val.country);
+        // const technologiesFormatted = jobsOpenByCountry[0].map(
+        //   (value: any) => ({
+        //     name: value.name,
+        //     jobs: value.jobs,
+        //   })
+        // );
+
         const chartLine: ChartLine = {
           id: "",
           color: "hsl(207, 70%, 50%)",
           data: [],
         };
-        const finalChartData = [];
-        for (let i = 0; i < chartData.length; i++) {
-          chartLine.id = chartData[i].name;
-          for (let j = 0; j < chartData[i].jobsOpenArray.length; j++) {
-            let point: Point = { x: "", y: 0 };
-            point.x = chartData[i].jobsOpenArray[j].date;
-            point.y = chartData[i].jobsOpenArray[j].jobs_total;
-            chartLine.data.push(point);
+        const finalChartData: ChartLine[] = [];
+
+        const dataAsMap = new Map();
+        for (let i = 0; i < dataArray.length; i++) {
+          const element = dataArray[i];
+          element.date = new Date(element.date).toLocaleDateString();
+          if (!dataAsMap.has(element.name)) {
+            dataAsMap.set(element.name, [
+              { x: element.date, y: element.jobs_total },
+            ]);
+          } else {
+            dataAsMap.set(element.name, [
+              ...dataAsMap.get(element.name),
+              { x: element.date, y: element.jobs_total },
+            ]);
           }
-          finalChartData.push({ ...chartLine });
         }
 
+        // "data": [
+        //   {
+        //     "x": "plane",
+        //     "y": 187
+        //   },
+
+        dataAsMap.forEach((v, k) => {
+          chartLine.id = k;
+          chartLine.data = v;
+          finalChartData.push({ ...chartLine });
+        });
+        // for (let i = 0; i < dataArray.length; i++) {
+        //   chartLine.id = dataArray[i].name;
+        //   const date = dataArray[i].date;
+        //   for (let j = 0; j < dataArray[i].countries.length; j++) {
+        //     let point: Point = { x: "", y: 0 };
+        //     point.x = date;
+        //     point.y = dataArray[i].countries[j].jobs_total;
+        //     chartLine.data.push(point);
+        //   }
+        //   finalChartData.push({ ...chartLine });
+        // }
+
         setFormattedChartData(finalChartData);
-        setTechnologies(technologiesFormatted);
-      } catch (error) {
-        console.log("Error in fetch data");
-      }
+        //
+        // setTechnologies(chartData);
+      } catch (error) {}
     };
     getData();
   };

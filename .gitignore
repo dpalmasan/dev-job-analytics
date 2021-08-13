@@ -143,3 +143,4 @@ jobserver-config.yaml
 dump/
 
 config.env
+.yarn.lock

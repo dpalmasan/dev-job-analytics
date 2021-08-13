@@ -13,11 +13,11 @@ export const DetailChartTag = ({
 }: DetailChartTagProps) => {
   return (
     <HStack spacing={4}>
-      {formattedChartData.map((charData: any) => {
+      {formattedChartData.map((charData: any, index) => {
         return (
           <Tag
             size={"lg"}
-            key={"lg"}
+            key={index}
             borderRadius="full"
             variant="solid"
             colorScheme={"telegram"}

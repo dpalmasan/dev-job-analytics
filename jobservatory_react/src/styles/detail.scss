@@ -19,22 +19,22 @@ $applyBackground: false;
   justify-content: center;
   align-items: center;
   margin-top: 180px;
-  background-color: aqua;
+  // background-color: aqua;
 }
 .detail-chart-container {
-  height: 500px;
+  height: 600px;
   flex-direction: row;
-  display: flex;
-  background: green;
+  // display: flex;
+  // background: green;
 }
 .technologies-input-container {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  background: red;
+  // background: red;
 }
 .stats-container {
   display: flex;
   flex-direction: column;
-  background: olive;
+  // background: olive;
 }
