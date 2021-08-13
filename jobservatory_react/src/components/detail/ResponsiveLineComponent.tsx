@@ -10,6 +10,13 @@ interface DetailChartProps {
 export const ResponsiveLineComponent = ({
   formattedChartData,
 }: DetailChartProps) => {
+  console.log("formattedChartData :>> ", formattedChartData);
+  for (let i = 0; i < formattedChartData.length; i++) {
+    const dataDatesArray = formattedChartData[i];
+    dataDatesArray.data.sort(
+      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+    );
+  }
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <ResponsiveLine
@@ -22,7 +29,7 @@ export const ResponsiveLineComponent = ({
         type: "linear",
         min: "auto",
         max: "auto",
-        stacked: true,
+        stacked: false,
         reverse: false,
       }}
       yFormat=" >-.2f"

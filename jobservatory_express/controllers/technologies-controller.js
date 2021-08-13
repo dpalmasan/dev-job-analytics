@@ -2,7 +2,7 @@ const Technology = require("../models/Technology");
 
 //@desc Get all techs
 //@route GET /api/v1/technologies
-exports.getTechnologies = async (req, res, next) => {
+exports. = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
     return res.status(200).json({

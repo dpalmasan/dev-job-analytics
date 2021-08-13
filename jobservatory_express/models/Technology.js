@@ -10,6 +10,10 @@ const JobserverRecord = new mongoose.Schema({
     type: Number,
     required: [true, "Add some number"],
   },
+  date: {
+    type: Date,
+    required: [true, "Date is empty"],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

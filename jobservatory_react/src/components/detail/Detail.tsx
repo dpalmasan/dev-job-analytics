@@ -39,7 +39,7 @@ export const Detail = () => {
         const techs = await techsPromise.json();
         // const techs = await getTechonolgies();
         const dataArray = techs.data;
-
+        console.log("dataArray :>> ", dataArray);
         const chartData = dataArray.map((value: any) => {
           return { name: value.name, jobsOpenArray: value.jobs_total };
         });
