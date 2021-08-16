@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const StackOverflowQuestion = new mongoose.Schema({
-  name: {
+  tag: {
     type: String,
     trim: true,
     required: [true, "Add some name - required"],
@@ -10,14 +10,10 @@ const StackOverflowQuestion = new mongoose.Schema({
     type: Number,
     required: [true, "Add some number"],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
   date: {
     type: Date,
     required: [true, "Add some date"],
   },
 });
 
-module.exports = mongoose.model("question", StackOverflowQuestion);
+module.exports = mongoose.model("so_question", StackOverflowQuestion);

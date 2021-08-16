@@ -1,7 +1,9 @@
 """Implement Stack Exchange client for API requests."""
 from abc import ABC
 from abc import abstractmethod
+from typing import Dict
 from typing import Optional
+from typing import Union
 
 import requests
 
@@ -75,15 +77,15 @@ class Questions(StackOverflowResource):
         :return: The number of questions.
         :rtype: int
         """
-        params = {
+        params: Dict[str, Union[str, int]] = {
             "site": "stackoverflow",
             "filter": "total",
         }
         if tag is not None:
             params["tagged"] = tag
         if start_ts is not None:
-            params["start_ts"]
-        if tag is not None:
-            params["tagged"] = tag
+            params["fromdate"] = start_ts
+        if end_ts is not None:
+            params["todate"] = end_ts
         results = self.get(params=params)
         return int(results["total"])
