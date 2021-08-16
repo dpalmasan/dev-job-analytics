@@ -6,7 +6,7 @@ const JobserverRecord = new mongoose.Schema({
     trim: true,
     required: [true, "Add some name - required"],
   },
-  jobs_open: {
+  jobs_total: {
     type: Number,
     required: [true, "Add some number"],
   },

@@ -4,6 +4,7 @@ const colors = require("colors");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 var cors = require("cors");
+var moment = require("moment");
 
 dotenv.config({ path: "./config/config.env" });
 

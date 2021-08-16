@@ -37,21 +37,7 @@ export const Detail = () => {
           "http://localhost:5000/api/v1/technologies"
         );
         const techs = await techsPromise.json();
-        // const techs = await getTechonolgies();
         const dataArray = techs.data;
-        console.log("dataArray :>> ", dataArray);
-        const chartData = dataArray.map((value: any) => {
-          return { name: value.name, jobsOpenArray: value.jobs_total };
-        });
-
-        const jobsOpenArray = dataArray[0]["jobs_total"];
-        // const jobsOpenByCountry = jobsOpenArray.map((val: any) => val.country);
-        // const technologiesFormatted = jobsOpenByCountry[0].map(
-        //   (value: any) => ({
-        //     name: value.name,
-        //     jobs: value.jobs,
-        //   })
-        // );
 
         const chartLine: ChartLine = {
           id: "",
@@ -61,6 +47,8 @@ export const Detail = () => {
         const finalChartData: ChartLine[] = [];
 
         const dataAsMap = new Map();
+        const countryDataMap = new Map();
+
         for (let i = 0; i < dataArray.length; i++) {
           const element = dataArray[i];
           element.date = new Date(element.date).toLocaleDateString();
@@ -76,17 +64,24 @@ export const Detail = () => {
           }
         }
 
-        // "data": [
-        //   {
-        //     "x": "plane",
-        //     "y": 187
-        //   },
-
+        const getCountryDistributionOfCurrentDay = () => {
+          const element = dataArray;
+          if (!countryDataMap.has(element.name)) {
+            countryDataMap.set(element.name, element.countries);
+          } else {
+            countryDataMap.set(element.name, [
+              ...countryDataMap.get(element.name),
+              ...element.countries,
+            ]);
+          }
+        };
+        getCountryDistributionOfCurrentDay();
         dataAsMap.forEach((v, k) => {
           chartLine.id = k;
           chartLine.data = v;
           finalChartData.push({ ...chartLine });
         });
+        console.log("countryDataMap :>> ", countryDataMap);
         // for (let i = 0; i < dataArray.length; i++) {
         //   chartLine.id = dataArray[i].name;
         //   const date = dataArray[i].date;
@@ -147,10 +142,10 @@ export const Detail = () => {
       />
       <div className="detail-chart-container">
         <DetailChart formattedChartData={formattedChartData} />
-        <div className="stats-container">
+        {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>
           <Card percentage={-12.3} value={23018} title={"Angular"}></Card>
-        </div>
+        </div> */}
       </div>
 
       <div className="detail-chart-country">

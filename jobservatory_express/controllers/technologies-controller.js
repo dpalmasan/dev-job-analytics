@@ -1,10 +1,50 @@
 const Technology = require("../models/Technology");
+var moment = require("moment");
 
 //@desc Get all techs
 //@route GET /api/v1/technologies
 exports.getTechnologies = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
+    return res.status(200).json({
+      success: true,
+      count: technologies.length,
+      data: technologies,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: `Server error ${error}` });
+  }
+};
+
+//@route GET /api/v1/technologies/countries
+exports.getTechnologiesByCountry = async (req, res, next) => {
+  try {
+    var startdate = moment();
+    startdate = startdate.subtract(2, "days");
+    startdate = startdate.format();
+    console.log(`startdate`, startdate);
+    const technologies = await Technology.find({
+      date: {
+        $gte: startdate,
+      },
+    });
+    console.log(`technologies`, technologies);
+
+    // technologies.find([
+    //   {
+    //     $project: {
+    //       items: {
+    //         $filter: {
+    //           input: "$items",
+    //           as: "item",
+    //           cond: { $gte: ["$$item.price", 100] },
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
     return res.status(200).json({
       success: true,
       count: technologies.length,
