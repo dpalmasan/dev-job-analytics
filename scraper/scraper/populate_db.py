@@ -1,12 +1,18 @@
 """Data import from website to DB job."""
 from datetime import datetime
+from datetime import time
 from datetime import timedelta
+from time import sleep
 from typing import List
 from typing import Optional
+
+import pytz
 
 from scraper import scraper
 from scraper.jobserver_record import CountryJobCount
 from scraper.jobserver_record import JobserverRecord
+from scraper.so_questions import StackOverflowQuestion
+from scraper.stack_overflow_client import Questions
 
 
 def import_data(
@@ -74,3 +80,74 @@ def import_data(
             prev_job_distribution = job_distribution
             prev_job_count = job_count
             prev_date = date
+
+
+def ds_to_utc_date(ds: str) -> datetime:
+    """Transform a ds in format YYYY-MM-DD into a UTC datetime.
+
+    :param ds: Date string in format YYYY-MM-DD
+    :type ds: str
+    :return: Datetime object with UTC timezone
+    :rtype: datetime
+    """
+    utc_time = pytz.timezone("UTC")
+    utc_date = utc_time.localize(datetime.strptime(ds, "%Y-%m-%d"))
+    return utc_date
+
+
+def get_last_second_from_utc_date(date: datetime) -> datetime:
+    """Get the 23:59:59 date in UTC timezone from a datetime object.
+
+    :param date: Input date
+    :type date: datetime
+    :return: Last second date
+    :rtype: datetime
+    """
+    utc_time = pytz.timezone("UTC")
+    return utc_time.localize(datetime.combine(date, time.max))
+
+
+def date_to_timestamp(date: datetime) -> int:
+    """Get timestamp from date object.
+
+    :param date: Input date
+    :type date: datetime
+    :return: TS in seconds
+    :rtype: int
+    """
+    return int(datetime.timestamp(date))
+
+
+def backfill_so_question_data(fromdate: str, todate: str, tags: List[str]):
+    """Backfill StackOverflow.
+
+    :param fromdate: Starting date for the backfill in format YYYY-MM-DD
+    :type fromdate: str
+    :param todate: End date
+    :type todate: str
+    :param tags: Tags to look for (e.g. javascript, nodejs)
+    :type tags: List[str]
+    """
+    questions = Questions()
+    cur_date = ds_to_utc_date(fromdate)
+    end_date = ds_to_utc_date(todate)
+    request_count = 0
+    while cur_date <= end_date:
+        for tag in tags:
+            start_ts = date_to_timestamp(cur_date)
+            end_ts = date_to_timestamp(get_last_second_from_utc_date(cur_date))
+            record = StackOverflowQuestion(
+                tag=tag,
+                date=cur_date,
+                count=questions.get_total_questions(
+                    start_ts=start_ts, end_ts=end_ts, tag=tag
+                ),
+            )
+            record.save()
+            request_count += 1
+
+            # To not get banned https://api.stackexchange.com/docs/throttle
+            if request_count > 25:
+                sleep(5)
+                request_count = 0
+        cur_date += timedelta(days=1)

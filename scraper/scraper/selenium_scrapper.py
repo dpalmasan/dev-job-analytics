@@ -27,6 +27,8 @@ except (ImportError, ModuleNotFoundError):
 class LoggedLinkedinScrapper(LinkedinScraper):
     """Implement a LinkedinScraper using identity."""
 
+    driver: Optional[webdriver.chrome.webdriver.WebDriver]
+
     def __init__(
         self,
         email: str,
@@ -40,7 +42,7 @@ class LoggedLinkedinScrapper(LinkedinScraper):
         :param password: Password
         :type password: str
         """
-        self.driver = driver
+        self.driver: Optional[webdriver.chrome.webdriver.WebDriver] = driver
         if self.driver is None:
             self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.email = email
@@ -71,6 +73,8 @@ class LoggedLinkedinScrapper(LinkedinScraper):
             params["f_TPR"] = f"r{(days + 1)*SECONDS_PER_DAY}"
 
         url_query = self.url + "?" + urlencode(params)
-        self.driver.get(url_query)
-        element = self.driver.find_element_by_tag_name("small")
+
+        if isinstance(self.driver, webdriver.chrome.webdriver.WebDriver):
+            self.driver.get(url_query)
+            element = self.driver.find_element_by_tag_name("small")
         return int(JOB_REGEX.sub("", element.text))
