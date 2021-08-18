@@ -10,6 +10,8 @@ dotenv.config({ path: "./config/config.env" });
 
 connectDB();
 const technologies = require("./routes/api/technologies");
+const questions = require("./routes/api/questions");
+
 // const path = require("path");
 const app = express();
 app.use(express.json());
@@ -19,6 +21,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use("/api/v1/technologies", technologies);
+app.use("/api/v1/questions", questions);
 
 const PORT = process.env.PORT || 5000;
 
