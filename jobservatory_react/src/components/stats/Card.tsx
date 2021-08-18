@@ -1,10 +1,9 @@
 import {
-  StatGroup,
   Stat,
+  StatArrow,
+  StatHelpText,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  StatArrow,
 } from "@chakra-ui/react";
 import React, { FC } from "react";
 

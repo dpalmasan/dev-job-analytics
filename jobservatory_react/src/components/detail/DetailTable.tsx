@@ -1,20 +1,14 @@
 import {
   Table,
   TableCaption,
-  Thead,
-  Tr,
-  Th,
   Tbody,
   Td,
-  Tfoot,
-  Box,
-  SimpleGrid,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import React, { FC, useEffect } from "react";
-import { useState } from "react";
-import { getTechonolgies } from "../../fakeFinalData";
-import reactImage from "./../../images/reactImage.png";
-import angularImage from "./../../images/angularImage.png";
+import React, { FC } from "react";
+
 interface DetailTableProps {
   technologies: any[];
 }
