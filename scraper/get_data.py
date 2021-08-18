@@ -46,6 +46,11 @@ def main():
             "Express",
             "Svelte",
             "Meteor",
+            "PHP",
+            "Kotlin",
+            "Swift",
+            "Data Scientist",
+            "Machine Learning",
         ],
         0,
     )

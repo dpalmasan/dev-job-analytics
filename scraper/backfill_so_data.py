@@ -1,8 +1,27 @@
 """Backfill job for SO question data."""
+import argparse
+
 import yaml
 from mongoengine import connect
 
 from scraper.populate_db import backfill_so_question_data
+from scraper.populate_db import is_valid_ds
+
+
+def datestring(ds: str) -> str:
+    """Define custom type for argparse.
+
+    :param ds: String to be "casted".
+    :type ds: str
+    :raises argparse.ArgumentTypeError: If ds is not in YYYY-MM-DD format.
+    :return: Valid datestring
+    :rtype: str
+    """
+    if not is_valid_ds(ds):
+        raise argparse.ArgumentTypeError(
+            f"'{ds}' is not a valid datestring. Valid format is " "YYYY-MM-DD"
+        )
+    return ds
 
 
 def main():
@@ -30,8 +49,20 @@ def main():
         "rails",
         "express",
         "angular",
+        "php",
     ]
-    backfill_so_question_data("2021-08-09", "2021-08-15", tags)
+
+    parser = argparse.ArgumentParser(
+        description="Backfill StackOverflow Question data."
+    )
+    parser.add_argument(
+        "start_date", help="Start date for data importing.", type=datestring
+    )
+    parser.add_argument(
+        "end_date", help="End date for data importing.", type=datestring
+    )
+    args = parser.parse_args()
+    backfill_so_question_data(args.start_date, args.end_date, tags)
 
 
 if __name__ == "__main__":

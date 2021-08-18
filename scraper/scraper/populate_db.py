@@ -15,6 +15,9 @@ from scraper.so_questions import StackOverflowQuestion
 from scraper.stack_overflow_client import Questions
 
 
+DS_FORMAT = "%Y-%m-%d"
+
+
 def import_data(
     sc: scraper.JobserverScraper,
     technologies: List[str],
@@ -80,6 +83,22 @@ def import_data(
             prev_job_distribution = job_distribution
             prev_job_count = job_count
             prev_date = date
+
+
+def is_valid_ds(ds: str) -> bool:
+    """Check if a datestring is in YYYY-MM-DD format.
+
+    :param ds: Datestring to check
+    :type ds: str
+    :return: True if it is valid, false otherwise.
+    :rtype: bool
+    """
+    try:
+        datetime.strptime(ds, DS_FORMAT)
+    except ValueError:
+        return False
+
+    return True
 
 
 def ds_to_utc_date(ds: str) -> datetime:
