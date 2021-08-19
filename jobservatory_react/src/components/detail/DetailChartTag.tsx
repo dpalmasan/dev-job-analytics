@@ -12,21 +12,25 @@ export const DetailChartTag = ({
   removeElementOnChart,
 }: DetailChartTagProps) => {
   return (
-    <HStack spacing={4}>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
       {formattedChartData.map((charData: any, index) => {
         return (
-          <Tag
-            size={"lg"}
-            key={index}
-            borderRadius="full"
-            variant="solid"
-            colorScheme={"telegram"}
-          >
-            <TagLabel>{charData.id}</TagLabel>
-            <TagCloseButton onClick={() => removeElementOnChart(charData.id)} />
-          </Tag>
+          <div style={{ margin: 3 }}>
+            <Tag
+              size={"lg"}
+              key={index}
+              borderRadius="full"
+              variant="solid"
+              colorScheme={"telegram"}
+            >
+              <TagLabel>{charData.id}</TagLabel>
+              <TagCloseButton
+                onClick={() => removeElementOnChart(charData.id)}
+              />
+            </Tag>
+          </div>
         );
       })}
-    </HStack>
+    </div>
   );
 };

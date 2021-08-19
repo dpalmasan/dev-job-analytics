@@ -7,22 +7,22 @@ $applyBackground: false;
   @if $applyBackground == true {
     background: cornflowerblue;
   }
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 .stats {
   display: flex;
   flex: 1;
 }
 .detail-chart-country {
-  height: 200px;
+  min-height: 600px;
   justify-content: center;
   align-items: center;
-  margin-top: 180px;
+  margin-top: 50px;
   // background-color: aqua;
 }
 .detail-chart-container {
-  height: 600px;
+  min-height: 600px;
   flex-direction: row;
   // display: flex;
   // background: green;

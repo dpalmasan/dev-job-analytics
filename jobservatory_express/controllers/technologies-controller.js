@@ -30,21 +30,6 @@ exports.getTechnologiesByCountry = async (req, res, next) => {
         $gte: startdate,
       },
     });
-    console.log(`technologies`, technologies);
-
-    // technologies.find([
-    //   {
-    //     $project: {
-    //       items: {
-    //         $filter: {
-    //           input: "$items",
-    //           as: "item",
-    //           cond: { $gte: ["$$item.price", 100] },
-    //         },
-    //       },
-    //     },
-    //   },
-    // ]);
     return res.status(200).json({
       success: true,
       count: technologies.length,

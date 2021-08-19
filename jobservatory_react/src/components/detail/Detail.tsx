@@ -45,10 +45,7 @@ export const Detail = () => {
           data: [],
         };
         const finalChartData: ChartLine[] = [];
-
         const dataAsMap = new Map();
-        const countryDataMap = new Map();
-
         for (let i = 0; i < dataArray.length; i++) {
           const element = dataArray[i];
           element.date = new Date(element.date).toLocaleDateString();
@@ -63,47 +60,32 @@ export const Detail = () => {
             ]);
           }
         }
-
-        const getCountryDistributionOfCurrentDay = () => {
-          const element = dataArray;
-          if (!countryDataMap.has(element.name)) {
-            countryDataMap.set(element.name, element.countries);
-          } else {
-            countryDataMap.set(element.name, [
-              ...countryDataMap.get(element.name),
-              ...element.countries,
-            ]);
-          }
-        };
-        getCountryDistributionOfCurrentDay();
         dataAsMap.forEach((v, k) => {
           chartLine.id = k;
           chartLine.data = v;
           finalChartData.push({ ...chartLine });
         });
-        console.log("countryDataMap :>> ", countryDataMap);
-        // for (let i = 0; i < dataArray.length; i++) {
-        //   chartLine.id = dataArray[i].name;
-        //   const date = dataArray[i].date;
-        //   for (let j = 0; j < dataArray[i].countries.length; j++) {
-        //     let point: Point = { x: "", y: 0 };
-        //     point.x = date;
-        //     point.y = dataArray[i].countries[j].jobs_total;
-        //     chartLine.data.push(point);
-        //   }
-        //   finalChartData.push({ ...chartLine });
-        // }
-
         setFormattedChartData(finalChartData);
-        //
-        // setTechnologies(chartData);
       } catch (error) {}
+    };
+    getData();
+  };
+
+  const getTechnologiesByCountriesData = () => {
+    const getData = async () => {
+      const techPormisesByCountry = await fetch(
+        "http://localhost:5000/api/v1/technologies/countries"
+      );
+      const techsByCountries = await techPormisesByCountry.json();
+      console.log("techsByCountries :>> ", techsByCountries);
+      setTechnologies(techsByCountries.data);
     };
     getData();
   };
 
   useEffect(() => {
     getTechnologiesData();
+    getTechnologiesByCountriesData();
   }, []);
 
   const removeElementOnChart = (chartID: string) => {
@@ -136,10 +118,12 @@ export const Detail = () => {
           placeholder={"August 2021"}
         />
       </div>
+
       <DetailChartTag
         removeElementOnChart={removeElementOnChart}
         formattedChartData={formattedChartData}
       />
+
       <div className="detail-chart-container">
         <DetailChart formattedChartData={formattedChartData} />
         {/* <div className="stats-container">
