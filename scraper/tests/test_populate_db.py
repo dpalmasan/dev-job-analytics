@@ -181,3 +181,9 @@ def test_backfill_so_question_data(mongodb_connection, so_question_request):
     assert record.tag == "javascript"
     assert record.date == datetime(2021, 8, 12, 0, 0)
     assert record.count == 285
+
+
+def test_is_valid_ds():
+    """Test validity of a datestring."""
+    assert not pdb.is_valid_ds("20200101")
+    assert pdb.is_valid_ds("2021-08-01")
