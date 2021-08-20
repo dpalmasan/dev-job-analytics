@@ -14,6 +14,8 @@ import "./../../styles/detail.scss";
 import { DetailChart } from "./DetailChart";
 import { DetailChartTag } from "./DetailChartTag";
 import { DetailCountry } from "./DetailCountry";
+import { DetailStackOverFlowChart } from "./DetailStackOverFlowChart";
+
 
 interface Point {
   x: string; //date
@@ -29,6 +31,7 @@ export interface ChartLine {
 export const Detail = () => {
   const [technologies, setTechnologies] = useState([]);
   const [formattedChartData, setFormattedChartData] = useState<ChartLine[]>([]);
+  const [questions, setQuestions] = useState([])
 
   const getTechnologiesData = () => {
     const getData = async () => {
@@ -83,9 +86,22 @@ export const Detail = () => {
     getData();
   };
 
+  const getStackOverFlowData = () => {
+    const getData = async () => {
+      const questionsPromise = await fetch(
+        "http://localhost:5000/api/v1/questions"
+      );
+      const questionsResult = await questionsPromise.json();
+      console.log("questionsResult :>> ", questionsResult);
+      setQuestions(questionsResult.data);
+    };
+    getData();
+  };
+
   useEffect(() => {
     getTechnologiesData();
     getTechnologiesByCountriesData();
+    getStackOverFlowData();
   }, []);
 
   const removeElementOnChart = (chartID: string) => {
@@ -125,6 +141,7 @@ export const Detail = () => {
       />
 
       <div className="detail-chart-container">
+      {console.log("formattedChartData :>> ", formattedChartData)}
         <DetailChart formattedChartData={formattedChartData} />
         {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>
@@ -134,6 +151,9 @@ export const Detail = () => {
 
       <div className="detail-chart-country">
         <DetailCountry chartData={technologies} />
+      </div>
+      <div className="detail-chart-container">
+        <DetailStackOverFlowChart formattedChartData={questions} />
       </div>
     </div>
   );

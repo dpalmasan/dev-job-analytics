@@ -1,7 +1,4 @@
-import { useColorMode } from "@chakra-ui/react";
-import { ResponsiveLine } from "@nivo/line";
 import React, { FC } from "react";
-import { Card } from "../stats/Card";
 import { ChartLine } from "./Detail";
 import { ResponsiveLineComponent } from "./ResponsiveLineComponent";
 

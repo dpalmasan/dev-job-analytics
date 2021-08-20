@@ -10,7 +10,6 @@ interface DetailChartProps {
 export const ResponsiveLineComponent = ({
   formattedChartData,
 }: DetailChartProps) => {
-  console.log("formattedChartData :>> ", formattedChartData);
   for (let i = 0; i < formattedChartData.length; i++) {
     const dataDatesArray = formattedChartData[i];
     dataDatesArray.data.sort(
