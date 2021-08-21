@@ -2,28 +2,31 @@ import { useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import React from "react";
 import { ChartLine } from "./Detail";
+import { ResponsiveLineComponent } from "./ResponsiveLineComponent";
 
-interface DetailChartProps {
-  formattedChartData: ChartLine[];
+export interface StackOverFlowQuestion {
+  id: string;
+  tag: string;
+  name: string;
+  count: number;
+  date: string;
 }
 
-export const ResponsiveLineComponent = ({
+interface DetailStackOverFlowChartProps {
+  formattedChartData: StackOverFlowQuestion[];
+}
+
+export const DetailStackOverFlowChart = ({
   formattedChartData,
-}: DetailChartProps) => {
-  console.log("formattedChartData :>> ", formattedChartData);
-  for (let i = 0; i < formattedChartData.length; i++) {
-    const dataDatesArray = formattedChartData[i];
-    dataDatesArray.data.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
-    );
-  }
+}: DetailStackOverFlowChartProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <ResponsiveLine
       lineWidth={3}
-      colors={{ scheme: "spectral" }}
+      colors={{ scheme: "nivo" }}
       data={formattedChartData}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
       xScale={{ type: "point" }}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}
       yScale={{
@@ -39,7 +42,7 @@ export const ResponsiveLineComponent = ({
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: -45,
         legend: "Day",
         legendOffset: 36,
         legendPosition: "middle",
@@ -48,7 +51,7 @@ export const ResponsiveLineComponent = ({
         tickSize: 5,
         tickPadding: 0,
         tickRotation: 0,
-        legend: "Jobs Open",
+        legend: "Questions Asked",
         legendOffset: -55,
         legendPosition: "middle",
       }}
