@@ -84,67 +84,90 @@ export const Detail = () => {
   return isLoading ? (
     <CircularProgress isIndeterminate color="green.300" />
   ) : (
-    <div className="detail-container">
-      <div className="color-switcher">
-        <ColorModeSwitcher />
+    <div>
+      <div
+        style={{
+          backgroundColor: theme.colors.linkedin[800],
+          height: 180,
+        }}
+      >
+        <div className="color-switcher">
+          <ColorModeSwitcher />
+        </div>
+        <div>
+          <Heading
+            size="md"
+            fontSize="35px"
+            style={{
+              display: "flex",
+              marginLeft: 150,
+              alignItems: "center",
+            }}
+          >
+            <Image
+              borderRadius="full"
+              boxSize="100px"
+              src={logo}
+              alt="Segun Adebayo"
+              style={{ marginRight: 15 }}
+            />
+            Jobservatory
+          </Heading>
+        </div>
       </div>
-      <div>
-        <Heading
-          size="md"
-          fontSize="35px"
-          style={{ display: "flex", marginBottom: 50, alignItems: "center" }}
-        >
-          <Image
-            borderRadius="full"
-            boxSize="100px"
-            src={logo}
-            alt="Segun Adebayo"
-            style={{ marginRight: 15 }}
+      <div className="detail-container">
+        <div className="technologies-input-container">
+          <SearchBar />
+          <Select
+            size="lg"
+            borderColor="grey"
+            color={theme.colors.teal}
+            value={"01/08/2021"}
+            maxWidth={"200px"}
+            placeholder={"August 2021 "}
           />
-          Jobservatory
-        </Heading>
-      </div>
-      <div className="technologies-input-container">
-        <SearchBar />
-        <Select
-          size="lg"
-          borderColor="grey"
-          color={theme.colors.teal}
-          value={"01/08/2021"}
-          maxWidth={"200px"}
-          placeholder={"August 2021 "}
-        />
-      </div>
-      <div>
-        <DetailChartTag
-          removeElementOnChart={removeElementOnChart}
-          formattedChartData={formattedChartData}
-        />
-      </div>
+        </div>
+        <div>
+          <DetailChartTag
+            removeElementOnChart={removeElementOnChart}
+            formattedChartData={formattedChartData}
+          />
+        </div>
 
-      <div className="detail-chart-container">
-        <Heading size="md" fontSize="35px">
-          Jobs open by day
-        </Heading>
+        <div className="detail-chart-container">
+          <Heading size="md" fontSize="35px" textAlign="center">
+            Jobs open by day
+          </Heading>
 
-        <DetailChart formattedChartData={formattedChartData} />
-        {/* <div className="stats-container">
+          <DetailChart formattedChartData={formattedChartData} />
+          {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>
           <Card percentage={-12.3} value={23018} title={"Angular"}></Card>
         </div> */}
-      </div>
+        </div>
 
-      <div className="detail-chart-country">
-        <Heading size="md" fontSize="35px" marginTop="40px">
-          Jobs open by country
-        </Heading>
-        <DetailCountry chartData={technologies} />
-      </div>
-      <div className="detail-chart-container">
-        <Heading size="md" fontSize="35px" marginTop="120px">
-          Jobs open by questions
-        </Heading>
-        <DetailStackOverFlowChart formattedChartData={questions} />
+        <div className="detail-chart-country">
+          <Heading
+            size="md"
+            fontSize="35px"
+            marginTop="40px"
+            textAlign="center"
+          >
+            Jobs open by country
+          </Heading>
+          <DetailCountry chartData={technologies} />
+        </div>
+        <div className="detail-chart-container">
+          <Heading
+            size="md"
+            fontSize="35px"
+            marginTop="120px"
+            textAlign="center"
+          >
+            Jobs open by questions
+          </Heading>
+          <DetailStackOverFlowChart formattedChartData={questions} />
+        </div>
       </div>
     </div>
   );
