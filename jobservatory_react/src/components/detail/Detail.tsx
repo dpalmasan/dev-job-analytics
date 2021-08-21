@@ -16,7 +16,6 @@ import { DetailChartTag } from "./DetailChartTag";
 import { DetailCountry } from "./DetailCountry";
 import { DetailStackOverFlowChart } from "./DetailStackOverFlowChart";
 
-
 interface Point {
   x: string; //date
   y: number;
@@ -31,7 +30,7 @@ export interface ChartLine {
 export const Detail = () => {
   const [technologies, setTechnologies] = useState([]);
   const [formattedChartData, setFormattedChartData] = useState<ChartLine[]>([]);
-  const [questions, setQuestions] = useState([])
+  const [questions, setQuestions] = useState([]);
 
   const getTechnologiesData = () => {
     const getData = async () => {
@@ -118,20 +117,23 @@ export const Detail = () => {
       <div className="color-switcher">
         <ColorModeSwitcher />
       </div>
-      <div className="search-bar">
+      {/* <div className="search-bar">
         <SearchBar />
-      </div>
+      </div> */}
       <div className="technologies-input-container">
-        <InputGroup style={{ width: 400 }}>
+        <SearchBar />
+        {/* <InputGroup style={{ width: 400 }}>
           <Input placeholder="Add technology or occupation" />
           <InputRightElement children={<AddIcon color={"facebook"} />} />
-        </InputGroup>
+        </InputGroup> */}
+
         <Select
+          size="lg"
           borderColor="grey"
           color={theme.colors.teal}
           value={"01/08/2021"}
-          width={"160px"}
-          placeholder={"August 2021"}
+          maxWidth={"200px"}
+          placeholder={"August 2021 "}
         />
       </div>
 
@@ -141,7 +143,7 @@ export const Detail = () => {
       />
 
       <div className="detail-chart-container">
-      {console.log("formattedChartData :>> ", formattedChartData)}
+        {console.log("formattedChartData :>> ", formattedChartData)}
         <DetailChart formattedChartData={formattedChartData} />
         {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>

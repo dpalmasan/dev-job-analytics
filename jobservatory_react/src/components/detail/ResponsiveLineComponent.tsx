@@ -20,7 +20,7 @@ export const ResponsiveLineComponent = ({
   return (
     <ResponsiveLine
       lineWidth={3}
-      colors={{ scheme: "spectral" }}
+      colors={{ scheme: "nivo" }}
       data={formattedChartData}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}

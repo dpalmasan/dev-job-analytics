@@ -1,3 +1,4 @@
+import { useColorMode } from "@chakra-ui/react";
 import { ResponsiveBar } from "@nivo/bar";
 
 interface Country {
@@ -17,6 +18,7 @@ interface DetailCountryProps {
 }
 
 export const DetailCountry = ({ chartData }: DetailCountryProps) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const arrayFormattedToShow = [];
   const setOfCountry = new Set();
   for (let i = 0; i < chartData.length; i++) {
@@ -39,6 +41,7 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
       indexBy="name"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
+      theme={{ textColor: colorMode === "light" ? "black" : "white" }}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
       valueFormat={{ format: "", enabled: false }}
