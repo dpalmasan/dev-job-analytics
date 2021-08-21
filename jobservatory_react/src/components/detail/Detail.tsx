@@ -1,4 +1,12 @@
-import { CircularProgress, Select, theme } from "@chakra-ui/react";
+import {
+  CircularProgress,
+  Select,
+  Stack,
+  theme,
+  Text,
+  Image,
+  Heading,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   fetchCountriesData,
@@ -12,7 +20,7 @@ import { DetailChart } from "./DetailChart";
 import { DetailChartTag } from "./DetailChartTag";
 import { DetailCountry } from "./DetailCountry";
 import { DetailStackOverFlowChart } from "./DetailStackOverFlowChart";
-
+import logo from "./../../images/vector-person-looking-in-binoculars-illustration.jpg";
 interface Point {
   x: string; //date
   y: number;
@@ -33,6 +41,7 @@ export const Detail = () => {
   const getTechnologiesData = () => {
     const getData = async () => {
       const technologiesResult = await fetchTechnologiesData();
+      technologiesResult.splice(10);
       setFormattedChartData(technologiesResult);
     };
     getData();
@@ -41,6 +50,7 @@ export const Detail = () => {
   const getTechnologiesByCountriesData = () => {
     const getData = async () => {
       const countriesResult = await fetchCountriesData();
+      countriesResult.splice(10);
       setTechnologies(countriesResult);
     };
     getData();
@@ -49,6 +59,7 @@ export const Detail = () => {
   const getStackOverFlowData = () => {
     const getData = async () => {
       const questionsResult = await fetchQuestionsData();
+      questionsResult.splice(10);
       setQuestions(questionsResult);
     };
     getData();
@@ -77,6 +88,22 @@ export const Detail = () => {
       <div className="color-switcher">
         <ColorModeSwitcher />
       </div>
+      <div>
+        <Heading
+          size="md"
+          fontSize="35px"
+          style={{ display: "flex", marginBottom: 50, alignItems: "center" }}
+        >
+          <Image
+            borderRadius="full"
+            boxSize="100px"
+            src={logo}
+            alt="Segun Adebayo"
+            style={{ marginRight: 15 }}
+          />
+          Jobservatory
+        </Heading>
+      </div>
       <div className="technologies-input-container">
         <SearchBar />
         <Select
@@ -88,13 +115,18 @@ export const Detail = () => {
           placeholder={"August 2021 "}
         />
       </div>
-
-      <DetailChartTag
-        removeElementOnChart={removeElementOnChart}
-        formattedChartData={formattedChartData}
-      />
+      <div>
+        <DetailChartTag
+          removeElementOnChart={removeElementOnChart}
+          formattedChartData={formattedChartData}
+        />
+      </div>
 
       <div className="detail-chart-container">
+        <Heading size="md" fontSize="35px">
+          Jobs open by day
+        </Heading>
+
         <DetailChart formattedChartData={formattedChartData} />
         {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>
@@ -103,9 +135,15 @@ export const Detail = () => {
       </div>
 
       <div className="detail-chart-country">
+        <Heading size="md" fontSize="35px" marginTop="40px">
+          Jobs open by country
+        </Heading>
         <DetailCountry chartData={technologies} />
       </div>
       <div className="detail-chart-container">
+        <Heading size="md" fontSize="35px" marginTop="120px">
+          Jobs open by questions
+        </Heading>
         <DetailStackOverFlowChart formattedChartData={questions} />
       </div>
     </div>

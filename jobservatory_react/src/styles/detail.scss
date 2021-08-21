@@ -22,8 +22,9 @@ $applyBackground: false;
   // background-color: aqua;
 }
 .detail-chart-container {
-  min-height: 600px;
+  min-height: 750px;
   flex-direction: row;
+  
   // display: flex;
   // background: green;
 }
@@ -41,4 +42,5 @@ $applyBackground: false;
 .tag-container{
   display: flex; 
   flex-wrap: wrap;
+  margin-bottom: 50px;
 }

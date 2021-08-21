@@ -26,7 +26,7 @@ export const DetailStackOverFlowChart = ({
       lineWidth={3}
       colors={{ scheme: "nivo" }}
       data={formattedChartData}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
       xScale={{ type: "point" }}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}
       yScale={{
@@ -42,7 +42,7 @@ export const DetailStackOverFlowChart = ({
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: -45,
         legend: "Day",
         legendOffset: 36,
         legendPosition: "middle",
