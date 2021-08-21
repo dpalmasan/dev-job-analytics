@@ -30,7 +30,6 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
       setOfCountry.add(countryData.name);
       objectFormatted[`${countryData.name}`] = countryData.jobs;
     }
-    console.log("objectFormatted :>> ", objectFormatted);
     arrayFormattedToShow.push(objectFormatted);
   }
 

@@ -19,46 +19,13 @@ interface DetailStackOverFlowChartProps {
 export const DetailStackOverFlowChart = ({
   formattedChartData,
 }: DetailStackOverFlowChartProps) => {
-  formattedChartData.sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
   const { colorMode, toggleColorMode } = useColorMode();
-  const chartLine: ChartLine = {
-    id: "",
-    data: [],
-    color: "hsl(207, 70%, 50%)",
-  };
-  const finalChartData: ChartLine[] = [];
-  const dataAsMap = new Map();
-  for (let i = 0; i < formattedChartData.length; i++) {
-    const element = formattedChartData[i];
-    element.date = new Date(element.date).toLocaleDateString();
-    if (!dataAsMap.has(element.tag)) {
-      dataAsMap.set(element.tag, [{ x: element.date, y: element.count }]);
-    } else {
-      dataAsMap.set(element.tag, [
-        ...dataAsMap.get(element.tag),
-        { x: element.date, y: element.count },
-      ]);
-    }
-  }
-  dataAsMap.forEach((v, k) => {
-    chartLine.id = k;
-    chartLine.data = v;
-    finalChartData.push({ ...chartLine });
-  });
-  for (let i = 0; i < finalChartData.length; i++) {
-    const dataDatesArray = finalChartData[i];
-    dataDatesArray.data.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
-    );
-  }
 
   return (
     <ResponsiveLine
       lineWidth={3}
       colors={{ scheme: "nivo" }}
-      data={finalChartData}
+      data={formattedChartData}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}

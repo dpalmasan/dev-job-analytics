@@ -5,7 +5,7 @@ import React from "react";
 export const SearchBar = () => {
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
-      console.log("do validate");
+      console.log(" Enter pressed");
     }
   };
 

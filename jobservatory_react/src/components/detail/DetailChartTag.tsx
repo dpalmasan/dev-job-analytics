@@ -12,13 +12,12 @@ export const DetailChartTag = ({
   removeElementOnChart,
 }: DetailChartTagProps) => {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
-      {formattedChartData.map((charData: any, index) => {
+    <div className="tag-container">
+      {formattedChartData.map((charData: ChartLine, index) => {
         return (
-          <div style={{ margin: 3 }}>
+          <div style={{ margin: 3 }} key={index}>
             <Tag
-              size={"lg"}
-              key={index}
+              size="lg"
               borderRadius="full"
               variant="solid"
               colorScheme={"telegram"}

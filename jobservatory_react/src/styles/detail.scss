@@ -38,3 +38,7 @@ $applyBackground: false;
   flex-direction: column;
   // background: olive;
 }
+.tag-container{
+  display: flex; 
+  flex-wrap: wrap;
+}

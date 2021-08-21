@@ -1,15 +1,12 @@
-import { AddIcon } from "@chakra-ui/icons";
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  Select,
-  theme,
-} from "@chakra-ui/react";
+import { CircularProgress, Select, theme } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import {
+  fetchCountriesData,
+  fetchQuestionsData,
+  fetchTechnologiesData,
+} from "../../api";
 import { ColorModeSwitcher } from "../../ColorModeSwitcher";
 import { SearchBar } from "../search-bar/SearchBar";
-import { Card } from "../stats/Card";
 import "./../../styles/detail.scss";
 import { DetailChart } from "./DetailChart";
 import { DetailChartTag } from "./DetailChartTag";
@@ -31,68 +28,28 @@ export const Detail = () => {
   const [technologies, setTechnologies] = useState([]);
   const [formattedChartData, setFormattedChartData] = useState<ChartLine[]>([]);
   const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getTechnologiesData = () => {
     const getData = async () => {
-      try {
-        const techsPromise = await fetch(
-          "http://localhost:5000/api/v1/technologies"
-        );
-        const techs = await techsPromise.json();
-        const dataArray = techs.data;
-
-        const chartLine: ChartLine = {
-          id: "",
-          color: "hsl(207, 70%, 50%)",
-          data: [],
-        };
-        const finalChartData: ChartLine[] = [];
-        const dataAsMap = new Map();
-        for (let i = 0; i < dataArray.length; i++) {
-          const element = dataArray[i];
-          element.date = new Date(element.date).toLocaleDateString();
-          if (!dataAsMap.has(element.name)) {
-            dataAsMap.set(element.name, [
-              { x: element.date, y: element.jobs_total },
-            ]);
-          } else {
-            dataAsMap.set(element.name, [
-              ...dataAsMap.get(element.name),
-              { x: element.date, y: element.jobs_total },
-            ]);
-          }
-        }
-        dataAsMap.forEach((v, k) => {
-          chartLine.id = k;
-          chartLine.data = v;
-          finalChartData.push({ ...chartLine });
-        });
-        setFormattedChartData(finalChartData);
-      } catch (error) {}
+      const technologiesResult = await fetchTechnologiesData();
+      setFormattedChartData(technologiesResult);
     };
     getData();
   };
 
   const getTechnologiesByCountriesData = () => {
     const getData = async () => {
-      const techPormisesByCountry = await fetch(
-        "http://localhost:5000/api/v1/technologies/countries"
-      );
-      const techsByCountries = await techPormisesByCountry.json();
-      console.log("techsByCountries :>> ", techsByCountries);
-      setTechnologies(techsByCountries.data);
+      const countriesResult = await fetchCountriesData();
+      setTechnologies(countriesResult);
     };
     getData();
   };
 
   const getStackOverFlowData = () => {
     const getData = async () => {
-      const questionsPromise = await fetch(
-        "http://localhost:5000/api/v1/questions"
-      );
-      const questionsResult = await questionsPromise.json();
-      console.log("questionsResult :>> ", questionsResult);
-      setQuestions(questionsResult.data);
+      const questionsResult = await fetchQuestionsData();
+      setQuestions(questionsResult);
     };
     getData();
   };
@@ -101,6 +58,7 @@ export const Detail = () => {
     getTechnologiesData();
     getTechnologiesByCountriesData();
     getStackOverFlowData();
+    setIsLoading(false);
   }, []);
 
   const removeElementOnChart = (chartID: string) => {
@@ -112,21 +70,15 @@ export const Detail = () => {
     setFormattedChartData([...currentFormattedData]);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgress isIndeterminate color="green.300" />
+  ) : (
     <div className="detail-container">
       <div className="color-switcher">
         <ColorModeSwitcher />
       </div>
-      {/* <div className="search-bar">
-        <SearchBar />
-      </div> */}
       <div className="technologies-input-container">
         <SearchBar />
-        {/* <InputGroup style={{ width: 400 }}>
-          <Input placeholder="Add technology or occupation" />
-          <InputRightElement children={<AddIcon color={"facebook"} />} />
-        </InputGroup> */}
-
         <Select
           size="lg"
           borderColor="grey"
@@ -143,7 +95,6 @@ export const Detail = () => {
       />
 
       <div className="detail-chart-container">
-        {console.log("formattedChartData :>> ", formattedChartData)}
         <DetailChart formattedChartData={formattedChartData} />
         {/* <div className="stats-container">
           <Card percentage={7.8} value={101127} title={"React"}></Card>
