@@ -22,8 +22,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
     "concurrently": "^6.2.0",
-    "nodemon": "^2.0.12"
+    "mocha": "^9.1.0",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6"
   },
   "proxy": "http://localhost:5000"
 }
