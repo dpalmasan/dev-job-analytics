@@ -16,18 +16,3 @@ app.listen(
       .blue.bold
   )
 );
-
-// // const logger = (req, res, next) => {
-// //   console.log(`hello`);
-// //   next();
-// // };
-
-// //body parser middleware
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-
-// app.use("/api/members", require("./routes/api/members"));
-
-// const PORT = process.env.PORT || 5000;
-
-// app.listen(PORT, () => console.log("Server running", PORT));

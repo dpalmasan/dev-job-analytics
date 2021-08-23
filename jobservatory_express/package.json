@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index",
     "server": "nodemon index",
+    "test": "mocha tests",
     "client": "npm start --prefix ./../jobservatory",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
