@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Heading,
+  useColorMode,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -22,7 +23,7 @@ import { DetailCountry } from "./DetailCountry";
 import { DetailStackOverFlowChart } from "./DetailStackOverFlowChart";
 import logo from "./../../images/vector-person-looking-in-binoculars-illustration.jpg";
 interface Point {
-  x: string; //date
+  x: any; //date
   y: number;
 }
 
@@ -33,6 +34,7 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const [technologies, setTechnologies] = useState([]);
   const [formattedChartData, setFormattedChartData] = useState<ChartLine[]>([]);
   const [questions, setQuestions] = useState([]);
@@ -88,31 +90,36 @@ export const Detail = () => {
       <div
         style={{
           backgroundColor: theme.colors.linkedin[800],
-          height: 180,
         }}
       >
-        <div className="color-switcher">
-          <ColorModeSwitcher />
-        </div>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingBottom: 20,
+            paddingTop: 20,
+          }}
+        >
           <Heading
             size="md"
             fontSize="35px"
             style={{
               display: "flex",
-              marginLeft: 150,
+              marginLeft: 100,
               alignItems: "center",
             }}
+            textColor={"white"}
           >
             <Image
               borderRadius="full"
-              boxSize="100px"
+              boxSize="70px"
               src={logo}
-              alt="Segun Adebayo"
+              alt="jobservatory logo"
               style={{ marginRight: 15 }}
             />
             Jobservatory
           </Heading>
+          <ColorModeSwitcher />
         </div>
       </div>
       <div className="detail-container">
@@ -135,7 +142,12 @@ export const Detail = () => {
         </div>
 
         <div className="detail-chart-container">
-          <Heading size="md" fontSize="35px" textAlign="center">
+          <Heading
+            size="md"
+            fontSize="35px"
+            textAlign="center"
+            color={colorMode === "light" ? theme.colors.linkedin[800] : "white"}
+          >
             Jobs open by day
           </Heading>
 
@@ -152,6 +164,7 @@ export const Detail = () => {
             fontSize="35px"
             marginTop="40px"
             textAlign="center"
+            color={colorMode === "light" ? theme.colors.linkedin[800] : "white"}
           >
             Jobs open by country
           </Heading>
@@ -163,8 +176,9 @@ export const Detail = () => {
             fontSize="35px"
             marginTop="120px"
             textAlign="center"
+            color={colorMode === "light" ? theme.colors.linkedin[800] : "white"}
           >
-            Jobs open by questions
+            StackOverFlow activity
           </Heading>
           <DetailStackOverFlowChart formattedChartData={questions} />
         </div>

@@ -1,5 +1,6 @@
-import { useColorMode } from "@chakra-ui/react";
+import { color, useColorMode } from "@chakra-ui/react";
 import { ResponsiveBar } from "@nivo/bar";
+import React from "react";
 
 interface Country {
   name: string;
@@ -38,47 +39,26 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
       data={arrayFormattedToShow}
       keys={Array.from(setOfCountry)}
       indexBy="name"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 130, bottom: 50, left: 70 }}
       padding={0.3}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      valueFormat={{ format: "", enabled: false }}
-      colors={{ scheme: "nivo" }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "#38bcb2",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "#eed312",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      fill={[
-        {
-          match: {
-            id: "fries",
-          },
-          id: "dots",
-        },
-        {
-          match: {
-            id: "sandwich",
-          },
-          id: "lines",
-        },
-      ]}
+      colors={{ scheme: "paired" }}
+      labelFormat={{ color: colorMode === "light" ? "black" : "white" }}
+      tooltip={({ id, value, color }) => (
+        <div
+          style={{
+            padding: 12,
+            color: colorMode === "light" ? "black" : "white",
+            background: colorMode === "light" ? "white" : "#222222",
+          }}
+        >
+          <strong>
+            {id}: {Number(value).toLocaleString()}
+          </strong>
+        </div>
+      )}
       borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
       axisTop={null}
       axisRight={null}
@@ -86,17 +66,17 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "country",
+        legend: "Country",
         legendPosition: "middle",
         legendOffset: 32,
       }}
       axisLeft={{
-        tickSize: 5,
-        tickPadding: 5,
+        tickSize: 0,
+        tickPadding: 0,
         tickRotation: 0,
-        legend: "food",
+        legend: "Jobs open",
         legendPosition: "middle",
-        legendOffset: -40,
+        legendOffset: -60,
       }}
       labelSkipWidth={12}
       labelSkipHeight={12}
@@ -111,7 +91,7 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
           translateY: 0,
           itemsSpacing: 2,
           itemWidth: 100,
-          itemHeight: 20,
+          itemHeight: 30,
           itemDirection: "left-to-right",
           itemOpacity: 0.85,
           symbolSize: 20,
