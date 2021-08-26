@@ -9,6 +9,13 @@ interface DetailChartProps {
 
 export const DetailChart: FC<DetailChartProps> = ({ formattedChartData }) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  for (let i = 0; i < formattedChartData.length; i++) {
+    const chartData = formattedChartData[i];
+    for (let j = 0; j < chartData.data.length; j++) {
+      const value = chartData.data[j];
+      value.x = new Date(value.x).toLocaleDateString();
+    }
+  }
 
   return (
     <ResponsiveLine
@@ -25,6 +32,23 @@ export const DetailChart: FC<DetailChartProps> = ({ formattedChartData }) => {
         stacked: false,
         reverse: false,
       }}
+      tooltip={({ point }) => (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            padding: 12,
+            color: colorMode === "light" ? "black" : "white",
+            background: colorMode === "light" ? "white" : "#222222",
+          }}
+        >
+          <strong>{point.serieId}</strong>
+          <strong>
+            Date: {new Date(point.data.x).toLocaleDateString()} Jobs:{" "}
+            {Number(point.data.y).toLocaleString()}
+          </strong>
+        </div>
+      )}
       yFormat=" >-.2f"
       axisTop={null}
       axisRight={null}

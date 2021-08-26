@@ -1,26 +1,33 @@
 import { useColorMode } from "@chakra-ui/react";
-import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveLine, Serie } from "@nivo/line";
 import React from "react";
 import { ChartLine } from "./Detail";
 import { ResponsiveLineComponent } from "./ResponsiveLineComponent";
 
-export interface StackOverFlowQuestion {
-  id: string;
-  tag: string;
-  name: string;
-  count: number;
-  date: string;
-}
+// export interface StackOverFlowQuestion {
+//   id: string;
+//   tag: string;
+//   name: string;
+//   count: number;
+//   date: string;
+// }
 
 interface DetailStackOverFlowChartProps {
-  formattedChartData: StackOverFlowQuestion[];
+  formattedChartData: ChartLine[];
 }
 
 export const DetailStackOverFlowChart = ({
   formattedChartData,
 }: DetailStackOverFlowChartProps) => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
+  for (let i = 0; i < formattedChartData.length; i++) {
+    const chartData = formattedChartData[i];
+    for (let j = 0; j < chartData.data.length; j++) {
+      const value = chartData.data[j];
+      value.x = new Date(value.x).toLocaleDateString();
+    }
+  }
   return (
     <ResponsiveLine
       lineWidth={3}
@@ -47,6 +54,19 @@ export const DetailStackOverFlowChart = ({
         legendOffset: 36,
         legendPosition: "middle",
       }}
+      tooltip={({ point }) => (
+        <div
+          style={{
+            padding: 12,
+            color: colorMode === "light" ? "black" : "white",
+            background: colorMode === "light" ? "white" : "#222222",
+          }}
+        >
+          <strong>
+            {point.serieId}: {Number(point.data.y).toLocaleString()}
+          </strong>
+        </div>
+      )}
       axisLeft={{
         tickSize: 5,
         tickPadding: 0,
