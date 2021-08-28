@@ -6,7 +6,7 @@ const JobserverRecord = require("../models/Technology");
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/jobservatory', {
+mongoose.connect('mongodb://localhost:27017/jobservatory', {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true
