@@ -4,19 +4,11 @@ const expect = require('chai').expect;
 const StackOverflowQuestions = require("../models/StackOverflowQuestion");
 const JobserverRecord = require("../models/Technology");
 const mongoose = require('mongoose');
+const connectDB = require("../config/db");
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/jobservatory', {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true
-});
 
-mongoose.connection
-  .once('open', () => {})
-  .on('error', (error) => {
-      console.warn('Error : ',error);
-  });
+process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory'
+
 
 describe('Jobservatory server', () => {
   var app;
@@ -29,7 +21,7 @@ describe('Jobservatory server', () => {
     },
     {
       tag: 'python',
-      date: new Date("2021-08-18T00:00:00.000Z"),
+      date: new Date("2021-08-17T00:00:00.000Z"),
       count: 511
     }
   ]
@@ -56,27 +48,32 @@ describe('Jobservatory server', () => {
   ]
 
   before((done) => {
-    mongoose.connection.collections.so_questions.drop()
-      .then(() => StackOverflowQuestions.insertMany(questions)
-      )
-      .then((docs, err) => {
+    connectDB()
+      .then(() => {
+        // Idempotency on runs
+        return mongoose.connection.db.dropDatabase((err, result) => {
+          console.log("Dropping database")
+        })
+    })
+    .then(() => {
+      return StackOverflowQuestions.insertMany(questions)
+    })
+    .then((docs, err) => {
+      if (err) { done(err); }
+    })
+    .then(() => {
+      // CAUTION: Will hang if schema is wrong! 
+      return JobserverRecord.insertMany(techs)
+    })
+    .then((docs, err) => {
+      if (err) { return done(err) }
+      app = createApp();
+      server = app.listen((err) => {
         if (err) { done(err); }
-      })
-      .then(() => {
-        mongoose.connection.collections.jobserver_records.drop()
-      })
-      .then(() => {
-        // CAUTION: Will hang if schema is wrong! 
-        return JobserverRecord.insertMany(techs)
-      })
-      .then((docs, err) => {
-        if (err) { return done(err) }
-        app = createApp();
-        server = app.listen((err) => {
-          if (err) { done(err); }
-          done();
-        });
-      })
+        console.log("calling done!")
+        done();
+      });
+    })
   });
 
   after((done) => {
@@ -109,7 +106,7 @@ describe('Jobservatory server', () => {
               color: "hsl(207, 70%, 50%)",
               data: [
                 {
-                  x: "2021-08-16T04:00:00.000Z",
+                  x: new Date("2021-08-17T00:00:00.000Z").toISOString(),
                   y: 230
                 }
               ],
@@ -119,7 +116,7 @@ describe('Jobservatory server', () => {
               color: "hsl(207, 70%, 50%)",
               data: [
                 {
-                  x: "2021-08-17T04:00:00.000Z",
+                  x: new Date("2021-08-17T00:00:00.000Z").toISOString(),
                   y: 511
                 }
               ],
@@ -149,7 +146,7 @@ describe('Jobservatory server', () => {
               color: "hsl(207, 70%, 50%)",
               data: [
                 {
-                  x: "2021-08-11T04:00:00.000Z",
+                  x: new Date("2021-08-12T00:00:00.000Z").toISOString(),
                   y: 65646
                 }
               ],
