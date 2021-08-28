@@ -76,14 +76,10 @@ export const Detail = () => {
   }, []);
 
   const fetchTechByName = async (searchValue: string) => {
-    try {
-      const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      if (techByNameResult) {
-        const newChartData = [...formattedChartData, techByNameResult];
-        setFormattedChartData(newChartData);
-      }
-    } catch (error) {
-      console.log(`error`, error);
+    const techByNameResult = await fetchTechnologyByNameData(searchValue);
+    if (techByNameResult) {
+      const newChartData = [...formattedChartData, techByNameResult];
+      setFormattedChartData(newChartData);
     }
   };
 
