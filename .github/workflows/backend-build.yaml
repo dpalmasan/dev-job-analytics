@@ -25,11 +25,11 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
 
     - name: Install dependencies
-    - working-directory: jobservatory_express
-    - run: npm install
+      working-directory: jobservatory_express
+      run: npm install
 
     - name: Run tests
-    - working-directory: jobservatory_express
-    - run: npm test
+      working-directory: jobservatory_express
+      run: npm test
       env:
         CI: true
