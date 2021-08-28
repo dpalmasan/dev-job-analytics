@@ -7,8 +7,7 @@ const {
   getTechnologiesByCountry,
 } = require("./../../controllers/technologies-controller");
 
-router.route("/").get(getTechnologies).post(addTechnologies);
+router.route("/").get(getTechnologies);
 router.route("/countries").get(getTechnologiesByCountry);
-router.route("/:id").delete(deleteTechnologies);
 
 module.exports = router;
