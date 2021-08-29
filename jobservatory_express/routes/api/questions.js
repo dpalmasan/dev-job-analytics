@@ -1,9 +1,10 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
 const {
   getStackOverflowQuestions,
-} = require("./../../controllers/questions-controller");
+} = require('../../controllers/questions-controller');
 
-router.route("/").get(getStackOverflowQuestions);
+router.route('/').get(getStackOverflowQuestions);
 
 module.exports = router;

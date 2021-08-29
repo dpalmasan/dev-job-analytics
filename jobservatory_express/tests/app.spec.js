@@ -1,35 +1,33 @@
 const request = require('supertest');
-const createApp = require('../app');
-const expect = require('chai').expect;
-const StackOverflowQuestions = require("../models/StackOverflowQuestion");
-const JobserverRecord = require("../models/Technology");
+const { expect } = require('chai');
 const mongoose = require('mongoose');
-const connectDB = require("../config/db");
+const createApp = require('../app');
+const connectDB = require('../config/db');
+const StackOverflowQuestions = require('../models/StackOverflowQuestion');
+const JobserverRecord = require('../models/Technology');
 
-
-process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory'
-
+process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory';
 
 describe('Jobservatory server', () => {
-  var app;
-  var server;
-  let questions = [
+  let app;
+  let server;
+  const questions = [
     {
       tag: 'php',
-      date: new Date("2021-08-17T00:00:00.000Z"),
-      count: 230
+      date: new Date('2021-08-17T00:00:00.000Z'),
+      count: 230,
     },
     {
       tag: 'python',
-      date: new Date("2021-08-17T00:00:00.000Z"),
-      count: 511
-    }
-  ]
+      date: new Date('2021-08-17T00:00:00.000Z'),
+      count: 511,
+    },
+  ];
 
-  let techs = [
+  const techs = [
     {
       name: 'Angular.js',
-      date: new Date("2021-08-12T00:00:00.000Z"),
+      date: new Date('2021-08-12T00:00:00.000Z'),
       jobs_total: 65646,
       countries: [
         { name: 'Estados Unidos', jobs: 18633 },
@@ -42,52 +40,48 @@ describe('Jobservatory server', () => {
         { name: 'Chile', jobs: 112 },
         { name: 'Alemania', jobs: 3898 },
         { name: 'Países Bajos', jobs: 1099 },
-        { name: 'Australia', jobs: 467 }
-      ]
-    }
-  ]
+        { name: 'Australia', jobs: 467 },
+      ],
+    },
+  ];
 
   before((done) => {
     connectDB()
       .then(() => {
         // Idempotency on runs
-        return mongoose.connection.db.dropDatabase((err, result) => {
-          console.log("Dropping database")
-        })
-    })
-    .then(() => {
-      return StackOverflowQuestions.insertMany(questions)
-    })
-    .then((docs, err) => {
-      if (err) { done(err); }
-    })
-    .then(() => {
-      // CAUTION: Will hang if schema is wrong! 
-      return JobserverRecord.insertMany(techs)
-    })
-    .then((docs, err) => {
-      if (err) { return done(err) }
-      app = createApp();
-      server = app.listen((err) => {
+        mongoose.connection.db.dropDatabase((err, result) => {
+          if (err) { done(err); }
+          console.log(`Dropping database: ${result}`);
+        });
+      })
+      .then(() => StackOverflowQuestions.insertMany(questions))
+      .then((docs, err) => {
         if (err) { done(err); }
-        console.log("calling done!")
-        done();
+      })
+      // CAUTION: Will hang if schema is wrong!
+      .then(() => JobserverRecord.insertMany(techs))
+      .then((docs, err) => {
+        if (err) { return done(err); }
+        app = createApp();
+        server = app.listen((serverErr) => {
+          if (serverErr) { done(serverErr); }
+          done();
+        });
+        return server;
       });
-    })
   });
 
   after((done) => {
     mongoose.connection.close((err) => {
       if (err) {
-        console.error(err);
+        done(err);
       }
-
       // Mocha will hang if we do not close the server!
       server.close(() => {
         done();
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('Should return StackOverflow Questions /api/v1/questions', (done) => {
     request(app)
@@ -98,35 +92,35 @@ describe('Jobservatory server', () => {
         if (err) {
           return done(err);
         }
-        results = res.body;
+        const results = res.body;
         expect(results).to.be.deep.equal({
           count: 2,
           data: [
             {
-              color: "hsl(207, 70%, 50%)",
+              color: 'hsl(207, 70%, 50%)',
               data: [
                 {
-                  x: new Date("2021-08-17T00:00:00.000Z").toISOString(),
-                  y: 230
-                }
+                  x: new Date('2021-08-17T00:00:00.000Z').toISOString(),
+                  y: 230,
+                },
               ],
-              id: "php"
+              id: 'php',
             },
             {
-              color: "hsl(207, 70%, 50%)",
+              color: 'hsl(207, 70%, 50%)',
               data: [
                 {
-                  x: new Date("2021-08-17T00:00:00.000Z").toISOString(),
-                  y: 511
-                }
+                  x: new Date('2021-08-17T00:00:00.000Z').toISOString(),
+                  y: 511,
+                },
               ],
-              id: "python",
-            }
+              id: 'python',
+            },
           ],
-          success: true
+          success: true,
         });
-        done();
-      })
+        return done();
+      });
   });
 
   it('Should return technologies on /api/v1/technologies', (done) => {
@@ -138,24 +132,52 @@ describe('Jobservatory server', () => {
         if (err) {
           return done(err);
         }
-        results = res.body;
+        const results = res.body;
         expect(results).to.be.deep.equal({
           count: 1,
           data: [
             {
-              color: "hsl(207, 70%, 50%)",
+              color: 'hsl(207, 70%, 50%)',
               data: [
                 {
-                  x: new Date("2021-08-12T00:00:00.000Z").toISOString(),
-                  y: 65646
-                }
+                  x: new Date('2021-08-12T00:00:00.000Z').toISOString(),
+                  y: 65646,
+                },
               ],
-              id: "Angular.js"
-            }
+              id: 'Angular.js',
+            },
           ],
-          success: true
+          success: true,
         });
-        done();
-      })
+        return done();
+      });
   });
-})
+
+  it('Should return technologies by name on /api/v1/technologies/:name', (done) => {
+    request(app)
+      .get('/api/v1/technologies/Angular.js')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          count: 1,
+          data: {
+            color: 'hsl(207, 70%, 50%)',
+            data: [
+              {
+                x: new Date('2021-08-12T00:00:00.000Z').toISOString(),
+                y: 65646,
+              },
+            ],
+            id: 'Angular.js',
+          },
+          success: true,
+        });
+        return done();
+      });
+  });
+});

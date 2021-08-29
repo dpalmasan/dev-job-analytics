@@ -1,58 +1,54 @@
-const express = require("express");
-const router = express.Router();
-const members = [{ id: 1, name: "juanito", age: 40 }];
+const express = require('express');
 
-//get all values
-router.get("/", (req, res) => {
+const router = express.Router();
+const members = [{ id: 1, name: 'juanito', age: 40 }];
+
+router.get('/', (req, res) => {
   res.json(members);
 });
 
-//get specific value
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   const data = members.filter((v) => v.id === Number(req.params.id));
   if (data.length > 0) {
     res.json(data);
   } else {
-    res.status(400).json({ message: "Member not found" });
+    res.status(400).json({ message: 'Member not found' });
   }
 });
 
-//Add
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   const newMember = {
     id: Math.floor(Math.random() * 1000),
     name: req.body.name,
     age: req.body.age,
-    status: "active",
+    status: 'active',
   };
   if (!newMember.name || !newMember.age) {
-    res.status(400).json({ message: "Please fill data correctly" });
+    res.status(400).json({ message: 'Please fill data correctly' });
   } else {
     members.push(newMember);
     res.send(members);
   }
 });
 
-//update specific value
-router.put("/:id", (req, res) => {
+router.put('/:id', (req, res) => {
   const dataIndex = members.findIndex((v) => v.id === Number(req.params.id));
   if (dataIndex) {
     const newValue = req.body;
     members[dataIndex] = { ...members[dataIndex], ...newValue };
     res.json(members);
   } else {
-    res.status(400).json({ message: "Member not found" });
+    res.status(400).json({ message: 'Member not found' });
   }
 });
 
-//delete Last element
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   const dataIndex = members.findIndex((v) => v.id === Number(req.params.id));
   if (dataIndex) {
     members.splice(dataIndex, 1);
     res.json(members);
   } else {
-    res.status(400).json({ message: "Member not found" });
+    res.status(400).json({ message: 'Member not found' });
   }
 });
 

@@ -1,10 +1,8 @@
-const dotenv = require("dotenv");
-const colors = require("colors");
-const connectDB = require("./config/db");
-const createApp = require("./app");
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const createApp = require('./app');
 
-
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: './config/config.env' });
 connectDB();
 
 const app = createApp();
@@ -13,6 +11,6 @@ app.listen(
   PORT,
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT} / CORS ENABLED`
-      .blue.bold
-  )
+      .blue.bold,
+  ),
 );

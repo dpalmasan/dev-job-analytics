@@ -1,11 +1,10 @@
-const Technology = require("../models/Technology");
-var moment = require("moment");
+const moment = require('moment');
+const Technology = require('../models/Technology');
 
-
-function parseDataToChart(technologies){
+function parseDataToChart(technologies) {
   const chartLine = {
-    id: "",
-    color: "hsl(207, 70%, 50%)",
+    id: '',
+    color: 'hsl(207, 70%, 50%)',
     data: [],
   };
   const finalChartData = [];
@@ -29,17 +28,18 @@ function parseDataToChart(technologies){
     chartLine.data = v;
     finalChartData.push({ ...chartLine });
   });
-  return finalChartData
+  return finalChartData;
 }
 
-//@desc Get all techs
-//@route GET /api/v1/technologies
+/* eslint-disable no-unused-vars */
+// @desc Get all techs
+// @route GET /api/v1/technologies
 exports.getTechnologies = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
-    const finalChartData = parseDataToChart(technologies)
+    const finalChartData = parseDataToChart(technologies);
     finalChartData.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
     );
     return res.status(200).json({
       success: true,
@@ -53,19 +53,19 @@ exports.getTechnologies = async (req, res, next) => {
   }
 };
 
-//@desc one job by name
-//@route GET /api/v1/technologies/:name
-exports.getTechnologiesByName = async (req, res, next) => {  
+// @desc one job by name
+// @route GET /api/v1/technologies/:name
+exports.getTechnologiesByName = async (req, res, next) => {
   try {
-    const name = req.params.name;
+    const { name } = req.params;
     const technologies = await Technology.find({
       name: {
         $eq: name,
       },
     });
-    const finalChartData = parseDataToChart(technologies)
+    const finalChartData = parseDataToChart(technologies);
     finalChartData.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
     );
     return res.status(200).json({
       success: true,
@@ -79,11 +79,11 @@ exports.getTechnologiesByName = async (req, res, next) => {
   }
 };
 
-//@route GET /api/v1/technologies/countries
+// @route GET /api/v1/technologies/countries
 exports.getTechnologiesByCountry = async (req, res, next) => {
   try {
-    var startdate = moment();
-    startdate = startdate.subtract(2, "days");
+    let startdate = moment();
+    startdate = startdate.subtract(2, 'days');
     startdate = startdate.format();
     const technologies = await Technology.find({
       date: {
@@ -102,11 +102,12 @@ exports.getTechnologiesByCountry = async (req, res, next) => {
   }
 };
 
-//@route GET /api/v1/technologies/countries
+// @route GET /api/v1/technologies/countries
+// @route GET /api/v1/technologies/countries
 exports.getTechnologiesByCountry = async (req, res, next) => {
   try {
-    var startdate = moment();
-    startdate = startdate.subtract(2, "days");
+    let startdate = moment();
+    startdate = startdate.subtract(2, 'days');
     startdate = startdate.format();
     const technologies = await Technology.find({
       date: {

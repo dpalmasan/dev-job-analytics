@@ -1,9 +1,9 @@
-const StackOverflowQuestion = require("../models/StackOverflowQuestion");
+const StackOverflowQuestion = require('../models/StackOverflowQuestion');
 
-function parseDataToChart(questions){
+function parseDataToChart(questions) {
   const chartLine = {
-    id: "",
-    color: "hsl(207, 70%, 50%)",
+    id: '',
+    color: 'hsl(207, 70%, 50%)',
     data: [],
   };
   const finalChartData = [];
@@ -27,19 +27,18 @@ function parseDataToChart(questions){
     chartLine.data = v;
     finalChartData.push({ ...chartLine });
   });
-  return finalChartData
+  return finalChartData;
 }
 
-
-
-//@desc Get all questions
-//@route GET /api/v1/questions
+/* eslint-disable no-unused-vars */
+// @desc Get all questions
+// @route GET /api/v1/questions
 exports.getStackOverflowQuestions = async (req, res, next) => {
   try {
     const questions = await StackOverflowQuestion.find();
-    const finalChartData = parseDataToChart(questions)
+    const finalChartData = parseDataToChart(questions);
     finalChartData.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
     return res.status(200).json({
       success: true,
@@ -52,4 +51,3 @@ exports.getStackOverflowQuestions = async (req, res, next) => {
       .json({ success: false, error: `Server error ${error}` });
   }
 };
-
