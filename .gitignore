@@ -144,3 +144,4 @@ dump/
 
 config.env
 .yarn.lock
+.nyc_output
