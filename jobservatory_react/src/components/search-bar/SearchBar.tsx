@@ -1,11 +1,16 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { InputGroup, InputLeftElement, Input, theme } from "@chakra-ui/react";
-import React from "react";
+import { Input, InputGroup, InputLeftElement, theme } from "@chakra-ui/react";
+import React, { FC, useState } from "react";
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  fetchTechByName: (searchValue: string) => Promise<void>;
+}
+export const SearchBar: FC<SearchBarProps> = ({ fetchTechByName }) => {
+  const [searchValue, setSearchValue] = useState("");
+
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
-      console.log(" Enter pressed");
+      fetchTechByName(searchValue);
     }
   };
 
@@ -25,6 +30,8 @@ export const SearchBar = () => {
       />
       <Input
         color={theme.colors.teal}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Add technologies: React, Ruby ..."
       />
     </InputGroup>

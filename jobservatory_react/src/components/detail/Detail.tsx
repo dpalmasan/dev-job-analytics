@@ -13,6 +13,7 @@ import {
   fetchCountriesData,
   fetchQuestionsData,
   fetchTechnologiesData,
+  fetchTechnologyByNameData,
 } from "../../api";
 import { ColorModeSwitcher } from "../../ColorModeSwitcher";
 import { SearchBar } from "../search-bar/SearchBar";
@@ -74,6 +75,14 @@ export const Detail = () => {
     setIsLoading(false);
   }, []);
 
+  const fetchTechByName = async (searchValue: string) => {
+    const techByNameResult = await fetchTechnologyByNameData(searchValue);
+    if (techByNameResult) {
+      const newChartData = [...formattedChartData, techByNameResult];
+      setFormattedChartData(newChartData);
+    }
+  };
+
   const removeElementOnChart = (chartID: string) => {
     let currentFormattedData = [...formattedChartData];
     const indexOfElementToRemove = currentFormattedData.findIndex(
@@ -124,7 +133,7 @@ export const Detail = () => {
       </div>
       <div className="detail-container">
         <div className="technologies-input-container">
-          <SearchBar />
+          <SearchBar fetchTechByName={fetchTechByName} />
           <Select
             size="lg"
             borderColor="grey"
@@ -152,10 +161,6 @@ export const Detail = () => {
           </Heading>
 
           <DetailChart formattedChartData={formattedChartData} />
-          {/* <div className="stats-container">
-          <Card percentage={7.8} value={101127} title={"React"}></Card>
-          <Card percentage={-12.3} value={23018} title={"Angular"}></Card>
-        </div> */}
         </div>
 
         <div className="detail-chart-country">

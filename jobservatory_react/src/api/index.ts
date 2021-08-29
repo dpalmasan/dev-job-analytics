@@ -33,3 +33,22 @@ export const fetchQuestionsData = async () => {
     return [];
   }
 };
+
+export const fetchTechnologyByNameData = async (searchValue: string) => {
+  try {
+    const fetchedTech = await fetch(
+      `http://localhost:5000/api/v1/technologies/${searchValue}`
+    );
+    const response = await fetchedTech.json();
+    const responseData = response.data;
+    if (responseData) {
+      return responseData;
+    } else {
+      //TODO: Raise warning that element doesn't exist
+      return null;
+    }
+  } catch (error) {
+    //TODO: Raise warning that element doesn't exist
+    console.log(`error`, error);
+  }
+};
