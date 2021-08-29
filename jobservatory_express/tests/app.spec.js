@@ -152,4 +152,32 @@ describe('Jobservatory server', () => {
         return done();
       });
   });
+
+  it('Should return technologies by name on /api/v1/technologies/:name', (done) => {
+    request(app)
+      .get('/api/v1/technologies/Angular.js')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          count: 1,
+          data: {
+            color: 'hsl(207, 70%, 50%)',
+            data: [
+              {
+                x: new Date('2021-08-12T00:00:00.000Z').toISOString(),
+                y: 65646,
+              },
+            ],
+            id: 'Angular.js',
+          },
+          success: true,
+        });
+        return done();
+      });
+  });
 });
