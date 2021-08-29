@@ -34,4 +34,4 @@ jobs:
       - name: Run test suite
         working-directory: scraper
         run: |
-          poetry run pytest tests
+          poetry run pytest
