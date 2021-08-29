@@ -10,7 +10,7 @@ function parseDataToChart(questions){
   const dataAsMap = new Map();
   for (let i = 0; i < questions.length; i++) {
     const element = questions[i];
-    element.date = new Date(element.date).toLocaleDateString();
+    element.date = new Date(element.date).toISOString();
     if (!dataAsMap.has(element.tag)) {
       dataAsMap.set(element.tag, [
         { x: element.date, y: element.count },

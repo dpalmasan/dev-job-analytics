@@ -12,7 +12,7 @@ function parseDataToChart(technologies){
   const dataAsMap = new Map();
   for (let i = 0; i < technologies.length; i++) {
     const element = technologies[i];
-    element.date = new Date(element.date).toLocaleDateString();
+    element.date = new Date(element.date).toISOString();
     if (!dataAsMap.has(element.name)) {
       dataAsMap.set(element.name, [
         { x: element.date, y: element.jobs_total },
