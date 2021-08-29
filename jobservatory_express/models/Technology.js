@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const JobserverRecord = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: [true, "Add some name - required"],
+    required: [true, 'Add some name - required'],
   },
   jobs_total: {
     type: Number,
-    required: [true, "Add some number"],
+    required: [true, 'Add some number'],
   },
   date: {
     type: Date,
-    required: [true, "Date is empty"],
+    required: [true, 'Date is empty'],
   },
   createdAt: {
     type: Date,
@@ -20,4 +20,4 @@ const JobserverRecord = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("jobserver_record", JobserverRecord);
+module.exports = mongoose.model('jobserver_record', JobserverRecord);
