@@ -77,7 +77,6 @@ class LoggedLinkedinScrapper(LinkedinScraper):
 
         url_query = self.url + "?" + urlencode(params)
 
-        print(isinstance(self.driver, webdriver.chrome.webdriver.WebDriver))
         if isinstance(self.driver, webdriver.chrome.webdriver.WebDriver):
             self.driver.get(url_query)
             element = self.driver.find_element_by_tag_name("small")
