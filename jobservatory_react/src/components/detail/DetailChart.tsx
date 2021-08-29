@@ -1,27 +1,31 @@
-import { useColorMode } from "@chakra-ui/react";
+import { CircularProgress, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import React, { FC } from "react";
-import { ChartLine } from "./Detail";
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
 
-interface DetailChartProps {
-  formattedChartData: ChartLine[];
-}
-
-export const DetailChart: FC<DetailChartProps> = ({ formattedChartData }) => {
-  const { colorMode, toggleColorMode } = useColorMode();
-  for (let i = 0; i < formattedChartData.length; i++) {
-    const chartData = formattedChartData[i];
+export const DetailChart: FC = () => {
+  const { jobsOpenByDate, loading } = useSelector(
+    (state: RootState) => state.detail
+  );
+  const { colorMode } = useColorMode();
+  for (let i = 0; i < jobsOpenByDate.length; i++) {
+    const chartData = jobsOpenByDate[i];
     for (let j = 0; j < chartData.data.length; j++) {
       const value = chartData.data[j];
       value.x = new Date(value.x).toLocaleDateString();
     }
   }
 
-  return (
+  return loading ? (
+    <div className="loading-container">
+      <CircularProgress value={30} size="120px" isIndeterminate />
+    </div>
+  ) : (
     <ResponsiveLine
       lineWidth={3}
       colors={{ scheme: "nivo" }}
-      data={formattedChartData}
+      data={jobsOpenByDate}
       margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
       xScale={{ type: "point" }}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}

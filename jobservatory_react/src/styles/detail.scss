@@ -45,3 +45,9 @@ $applyBackground: false;
   flex-wrap: wrap;
   margin-bottom: 50px;
 }
+.loading-container{
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}

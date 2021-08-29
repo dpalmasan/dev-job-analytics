@@ -1,28 +1,18 @@
 import { useColorMode } from "@chakra-ui/react";
-import { ResponsiveLine, Serie } from "@nivo/line";
-import React from "react";
+import { ResponsiveLine } from "@nivo/line";
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
 import { ChartLine } from "./Detail";
-import { ResponsiveLineComponent } from "./ResponsiveLineComponent";
 
-// export interface StackOverFlowQuestion {
-//   id: string;
-//   tag: string;
-//   name: string;
-//   count: number;
-//   date: string;
-// }
-
-interface DetailStackOverFlowChartProps {
-  formattedChartData: ChartLine[];
-}
-
-export const DetailStackOverFlowChart = ({
-  formattedChartData,
-}: DetailStackOverFlowChartProps) => {
+export const DetailStackOverFlowChart: FC = () => {
+  const { questionsOpen, loading } = useSelector(
+    (state: RootState) => state.detail
+  );
   const { colorMode } = useColorMode();
 
-  for (let i = 0; i < formattedChartData.length; i++) {
-    const chartData = formattedChartData[i];
+  for (let i = 0; i < questionsOpen.length; i++) {
+    const chartData = questionsOpen[i];
     for (let j = 0; j < chartData.data.length; j++) {
       const value = chartData.data[j];
       value.x = new Date(value.x).toLocaleDateString();
@@ -32,7 +22,7 @@ export const DetailStackOverFlowChart = ({
     <ResponsiveLine
       lineWidth={3}
       colors={{ scheme: "nivo" }}
-      data={formattedChartData}
+      data={questionsOpen}
       margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
       xScale={{ type: "point" }}
       theme={{ textColor: colorMode === "light" ? "black" : "white" }}

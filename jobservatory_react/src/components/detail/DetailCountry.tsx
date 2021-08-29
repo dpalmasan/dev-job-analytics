@@ -1,29 +1,18 @@
-import { color, useColorMode } from "@chakra-ui/react";
+import { CircularProgress, useColorMode } from "@chakra-ui/react";
 import { ResponsiveBar } from "@nivo/bar";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
 
-interface Country {
-  name: string;
-  jobs: number;
-}
-interface DataByCountry {
-  countries: Country[];
-  createdAt: string;
-  date: string;
-  jobs_total: number;
-  name: string;
-  _id: string;
-}
-interface DetailCountryProps {
-  chartData: DataByCountry[];
-}
-
-export const DetailCountry = ({ chartData }: DetailCountryProps) => {
-  const { colorMode, toggleColorMode } = useColorMode();
+export const DetailCountry = () => {
+  const { jobsOpenByCountry, loading } = useSelector(
+    (state: RootState) => state.detail
+  );
+  const { colorMode } = useColorMode();
   const arrayFormattedToShow = [];
   const setOfCountry = new Set();
-  for (let i = 0; i < chartData.length; i++) {
-    const dataElement = chartData[i];
+  for (let i = 0; i < jobsOpenByCountry.length; i++) {
+    const dataElement = jobsOpenByCountry[i];
     let objectFormatted: any = {};
     objectFormatted.name = dataElement.name;
     for (let j = 0; j < dataElement.countries.length; j++) {
@@ -34,7 +23,11 @@ export const DetailCountry = ({ chartData }: DetailCountryProps) => {
     arrayFormattedToShow.push(objectFormatted);
   }
 
-  return (
+  return loading ? (
+    <div className="loading-container">
+      <CircularProgress value={30} size="120px" isIndeterminate />
+    </div>
+  ) : (
     <ResponsiveBar
       data={arrayFormattedToShow}
       keys={Array.from(setOfCountry)}

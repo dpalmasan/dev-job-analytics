@@ -1,28 +1,29 @@
 import {
   CircularProgress,
-  Select,
-  Stack,
-  theme,
-  Text,
-  Image,
   Heading,
+  Image,
+  Select,
+  theme,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import {
-  fetchCountriesData,
-  fetchQuestionsData,
-  fetchTechnologiesData,
-  fetchTechnologyByNameData,
-} from "../../api";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTechnologyByNameData } from "../../api";
 import { ColorModeSwitcher } from "../../ColorModeSwitcher";
+import {
+  addTech,
+  addTechData,
+  fetchData,
+  removeTech,
+} from "../../features/detail/action-creators";
+import { RootState } from "../../features/store";
 import { SearchBar } from "../search-bar/SearchBar";
+import logo from "./../../images/vector-person-looking-in-binoculars-illustration.jpg";
 import "./../../styles/detail.scss";
 import { DetailChart } from "./DetailChart";
 import { DetailChartTag } from "./DetailChartTag";
 import { DetailCountry } from "./DetailCountry";
 import { DetailStackOverFlowChart } from "./DetailStackOverFlowChart";
-import logo from "./../../images/vector-person-looking-in-binoculars-illustration.jpg";
 interface Point {
   x: any; //date
   y: number;
@@ -36,65 +37,23 @@ export interface ChartLine {
 
 export const Detail = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const [technologies, setTechnologies] = useState([]);
-  const [formattedChartData, setFormattedChartData] = useState<ChartLine[]>([]);
-  const [questions, setQuestions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const getTechnologiesData = () => {
-    const getData = async () => {
-      const technologiesResult = await fetchTechnologiesData();
-      technologiesResult.splice(10);
-      setFormattedChartData(technologiesResult);
-    };
-    getData();
-  };
-
-  const getTechnologiesByCountriesData = () => {
-    const getData = async () => {
-      const countriesResult = await fetchCountriesData();
-      countriesResult.splice(10);
-      setTechnologies(countriesResult);
-    };
-    getData();
-  };
-
-  const getStackOverFlowData = () => {
-    const getData = async () => {
-      const questionsResult = await fetchQuestionsData();
-      questionsResult.splice(10);
-      setQuestions(questionsResult);
-    };
-    getData();
-  };
+  const dispatch = useDispatch();
+  const { jobsOpenByDate, jobsOpenByCountry, questionsOpen, loading, error } =
+    useSelector((state: RootState) => state.detail);
 
   useEffect(() => {
-    getTechnologiesData();
-    getTechnologiesByCountriesData();
-    getStackOverFlowData();
-    setIsLoading(false);
+    dispatch(fetchData());
   }, []);
 
   const fetchTechByName = async (searchValue: string) => {
-    const techByNameResult = await fetchTechnologyByNameData(searchValue);
-    if (techByNameResult) {
-      const newChartData = [...formattedChartData, techByNameResult];
-      setFormattedChartData(newChartData);
-    }
+    dispatch(addTechData(searchValue));
   };
 
   const removeElementOnChart = (chartID: string) => {
-    let currentFormattedData = [...formattedChartData];
-    const indexOfElementToRemove = currentFormattedData.findIndex(
-      (value: any) => value.id === chartID
-    );
-    currentFormattedData.splice(indexOfElementToRemove, 1);
-    setFormattedChartData([...currentFormattedData]);
+    dispatch(removeTech(chartID));
   };
 
-  return isLoading ? (
-    <CircularProgress isIndeterminate color="green.300" />
-  ) : (
+  return (
     <div>
       <div
         style={{
@@ -146,7 +105,7 @@ export const Detail = () => {
         <div>
           <DetailChartTag
             removeElementOnChart={removeElementOnChart}
-            formattedChartData={formattedChartData}
+            formattedChartData={jobsOpenByDate}
           />
         </div>
 
@@ -160,7 +119,7 @@ export const Detail = () => {
             Jobs open by day
           </Heading>
 
-          <DetailChart formattedChartData={formattedChartData} />
+          <DetailChart />
         </div>
 
         <div className="detail-chart-country">
@@ -173,7 +132,7 @@ export const Detail = () => {
           >
             Jobs open by country
           </Heading>
-          <DetailCountry chartData={technologies} />
+          <DetailCountry />
         </div>
         <div className="detail-chart-container">
           <Heading
@@ -185,7 +144,7 @@ export const Detail = () => {
           >
             StackOverFlow activity
           </Heading>
-          <DetailStackOverFlowChart formattedChartData={questions} />
+          <DetailStackOverFlowChart formattedChartData={questionsOpen} />
         </div>
       </div>
     </div>
