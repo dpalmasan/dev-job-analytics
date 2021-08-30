@@ -24,6 +24,9 @@ except (ImportError, ModuleNotFoundError):
     raise
 
 
+LINKEDIN_LOGIN_URL = "https://www.linkedin.com/login"
+
+
 class LoggedLinkedinScrapper(LinkedinScraper):
     """Implement a LinkedinScraper using identity."""
 
@@ -52,7 +55,7 @@ class LoggedLinkedinScrapper(LinkedinScraper):
     def _login(self):
         if self.logged:
             return
-        self.driver.get("https://www.linkedin.com/login")
+        self.driver.get(LINKEDIN_LOGIN_URL)
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, "username"))
         )

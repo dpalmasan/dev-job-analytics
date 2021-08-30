@@ -45,6 +45,18 @@ mock = "^4.0.3"
 mongomock = "^3.23.0"
 freezegun = "^1.1.0"
 
+[tool.coverage.run]
+branch = true
+source = ["scraper"]
+
+[tool.pytest.ini_options]
+minversion = "6.0.0rc1"
+# Always using Coverage.py disables debugging.
+addopts = "--cov=scraper --cov-fail-under=85 -ra -v"
+testpaths = [
+  "tests",
+]
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

@@ -3,14 +3,15 @@ const StackOverflowQuestion = require("../models/StackOverflowQuestion");
 var moment = require("moment");
 var helpers = require('./helpers/index.ts')
 
-//@desc Get all techs
-//@route GET /api/v1/technologies
+/* eslint-disable no-unused-vars */
+// @desc Get all techs
+// @route GET /api/v1/technologies
 exports.getTechnologies = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
     const finalChartData = helpers.parseDataToChart(technologies)
     finalChartData.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
     );
     return res.status(200).json({
       success: true,
@@ -24,9 +25,9 @@ exports.getTechnologies = async (req, res, next) => {
   }
 };
 
-//@desc one job by name
-//@route GET /api/v1/technologies/:name
-exports.getTechnologiesByName = async (req, res, next) => {  
+// @desc one job by name
+// @route GET /api/v1/technologies/:name
+exports.getTechnologiesByName = async (req, res, next) => {
   try {
     const name = req.params.name;
     var startdate = moment();
@@ -68,11 +69,12 @@ exports.getTechnologiesByName = async (req, res, next) => {
   }
 };
 
-//@route GET /api/v1/technologies/countries
+// @route GET /api/v1/technologies/countries
+// @route GET /api/v1/technologies/countries
 exports.getTechnologiesByCountry = async (req, res, next) => {
   try {
-    var startdate = moment();
-    startdate = startdate.subtract(2, "days");
+    let startdate = moment();
+    startdate = startdate.subtract(2, 'days');
     startdate = startdate.format();
     const technologies = await Technology.find({
       date: {

@@ -3,7 +3,7 @@ import yaml
 from mongoengine import connect
 
 from scraper.populate_db import import_data
-from scraper.selenium_scrapper import LoggedLinkedinScrapper
+from scraper.selenium_scraper import LoggedLinkedinScrapper
 
 
 def main():
