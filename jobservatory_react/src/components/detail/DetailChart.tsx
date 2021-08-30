@@ -16,7 +16,7 @@ export const DetailChart: FC = () => {
       value.x = new Date(value.x).toLocaleDateString();
     }
   }
-
+  console.log(`testing ing jobsOpenByDate`, jobsOpenByDate);
   return loading ? (
     <div className="loading-container">
       <CircularProgress value={30} size="120px" isIndeterminate />

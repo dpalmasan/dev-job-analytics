@@ -1,22 +1,12 @@
-import {
-  CircularProgress,
-  Heading,
-  Image,
-  Select,
-  theme,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Heading, Image, Select, theme, useColorMode } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTechnologyByNameData } from "../../api";
+import { useDispatch } from "react-redux";
 import { ColorModeSwitcher } from "../../ColorModeSwitcher";
 import {
-  addTech,
   addTechData,
   fetchData,
   removeTech,
 } from "../../features/detail/action-creators";
-import { RootState } from "../../features/store";
 import { SearchBar } from "../search-bar/SearchBar";
 import logo from "./../../images/vector-person-looking-in-binoculars-illustration.jpg";
 import "./../../styles/detail.scss";
@@ -36,10 +26,8 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const dispatch = useDispatch();
-  const { jobsOpenByDate, jobsOpenByCountry, questionsOpen, loading, error } =
-    useSelector((state: RootState) => state.detail);
 
   useEffect(() => {
     dispatch(fetchData());
@@ -103,10 +91,7 @@ export const Detail = () => {
           />
         </div>
         <div>
-          <DetailChartTag
-            removeElementOnChart={removeElementOnChart}
-            formattedChartData={jobsOpenByDate}
-          />
+          <DetailChartTag removeElementOnChart={removeElementOnChart} />
         </div>
 
         <div className="detail-chart-container">
@@ -144,7 +129,7 @@ export const Detail = () => {
           >
             StackOverFlow activity
           </Heading>
-          <DetailStackOverFlowChart formattedChartData={questionsOpen} />
+          <DetailStackOverFlowChart />
         </div>
       </div>
     </div>

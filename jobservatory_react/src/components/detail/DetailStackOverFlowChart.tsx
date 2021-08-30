@@ -1,9 +1,8 @@
-import { useColorMode } from "@chakra-ui/react";
+import { CircularProgress, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
-import { ChartLine } from "./Detail";
 
 export const DetailStackOverFlowChart: FC = () => {
   const { questionsOpen, loading } = useSelector(
@@ -18,7 +17,11 @@ export const DetailStackOverFlowChart: FC = () => {
       value.x = new Date(value.x).toLocaleDateString();
     }
   }
-  return (
+  return loading ? (
+    <div className="loading-container">
+      <CircularProgress value={30} size="120px" isIndeterminate />
+    </div>
+  ) : (
     <ResponsiveLine
       lineWidth={3}
       colors={{ scheme: "nivo" }}

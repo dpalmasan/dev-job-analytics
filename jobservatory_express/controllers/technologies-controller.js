@@ -1,43 +1,14 @@
 const Technology = require("../models/Technology");
+const StackOverflowQuestion = require("../models/StackOverflowQuestion");
 var moment = require("moment");
-
-
-function parseDataToChart(technologies){
-  const chartLine = {
-    id: "",
-    color: "hsl(207, 70%, 50%)",
-    data: [],
-  };
-  const finalChartData = [];
-  const dataAsMap = new Map();
-  for (let i = 0; i < technologies.length; i++) {
-    const element = technologies[i];
-    element.date = new Date(element.date).toISOString();
-    if (!dataAsMap.has(element.name)) {
-      dataAsMap.set(element.name, [
-        { x: element.date, y: element.jobs_total },
-      ]);
-    } else {
-      dataAsMap.set(element.name, [
-        ...dataAsMap.get(element.name),
-        { x: element.date, y: element.jobs_total },
-      ]);
-    }
-  }
-  dataAsMap.forEach((v, k) => {
-    chartLine.id = k;
-    chartLine.data = v;
-    finalChartData.push({ ...chartLine });
-  });
-  return finalChartData
-}
+var helpers = require('./helpers/index.ts')
 
 //@desc Get all techs
 //@route GET /api/v1/technologies
 exports.getTechnologies = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
-    const finalChartData = parseDataToChart(technologies)
+    const finalChartData = helpers.parseDataToChart(technologies)
     finalChartData.sort(
       (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
     );
@@ -58,19 +29,37 @@ exports.getTechnologies = async (req, res, next) => {
 exports.getTechnologiesByName = async (req, res, next) => {  
   try {
     const name = req.params.name;
+    var startdate = moment();
+    startdate = startdate.subtract(2, "days");
+    startdate = startdate.format();
+
     const technologies = await Technology.find({
       name: {
         $eq: name,
       },
     });
-    const finalChartData = parseDataToChart(technologies)
-    finalChartData.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
-    );
+    const jobsOpenByDate = helpers.parseDataToChart(technologies)
+    
+    const yesterdayTechnologies = await Technology.find({
+      date: {
+        $gte: startdate,
+      },
+    });
+    const jobsOpenByCountry = yesterdayTechnologies.filter((value) => value.name === name)
+
+    //TODO: Fix this to handle name upperCase lowerCase diff
+    const questions = await StackOverflowQuestion.find({
+      tag: {
+        $eq: name,
+      },
+    });
+
+    const questionsOpen = helpers.parseDataToChartQuestions(questions)
+    
     return res.status(200).json({
       success: true,
       count: 1,
-      data: finalChartData.length > 0 ? finalChartData[0] : null,
+      data: {jobsOpenByDate,jobsOpenByCountry, questionsOpen}
     });
   } catch (error) {
     return res

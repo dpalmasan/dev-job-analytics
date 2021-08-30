@@ -57,6 +57,7 @@ export const addTechData = (searchValue: string) => {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
       console.log(`techByNameResult`, techByNameResult);
       if (techByNameResult) {
+        console.log(`techByNameResult`, techByNameResult);
         dispatch(addTech(techByNameResult));
       } else {
         dispatch(fetchDataEnd());
@@ -80,6 +81,7 @@ export const fetchData = () => {
         jobsOpenByCountry,
         questionsOpen,
       };
+      console.log(`fetchedData`, fetchedData);
       dispatch(fetchDataSuccess(fetchedData));
     } catch (error) {
       console.log(`error show show`, error);

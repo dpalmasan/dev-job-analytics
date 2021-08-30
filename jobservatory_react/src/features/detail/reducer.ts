@@ -42,29 +42,59 @@ export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
       console.log(`action.payload`, action.payload);
-      const currentJobsOpenByDate = [...state.jobsOpenByDate, action.payload];
-      console.log(`state`, state);
+      const newJobsOpenByDate = [
+        ...state.jobsOpenByDate,
+        ...action.payload.jobsOpenByDate,
+      ];
+      const newJobsOpenByCountry = [
+        ...state.jobsOpenByCountry,
+        ...action.payload.jobsOpenByCountry,
+      ];
+      const newQuestionsOpen = [
+        ...state.questionsOpen,
+        ...action.payload.questionsOpen,
+      ];
       return {
         ...state,
-        jobsOpenByDate: currentJobsOpenByDate,
+        jobsOpenByDate: newJobsOpenByDate,
+        jobsOpenByCountry: newJobsOpenByCountry,
+        questionsOpen: newQuestionsOpen,
         loading: false,
       };
     }
     case REMOVE_TECH: {
       const currentJobsOpenByDate = [...state.jobsOpenByDate];
+      const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
+      const currentQuestionsOpen = [...state.jobsOpenByDate];
       const indexOfElementToRemove = currentJobsOpenByDate.findIndex(
+        (value: any) => value.id === action.payload
+      );
+      const indexOfElementToRemoveOnCountry =
+        currentJobsOpenByCountry.findIndex(
+          (value: any) => value.id === action.payload
+        );
+      const indexOfElementToRemoveOnQuestion = currentQuestionsOpen.findIndex(
         (value: any) => value.id === action.payload
       );
       if (indexOfElementToRemove != null) {
         currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
       }
+      if (indexOfElementToRemoveOnCountry != null) {
+        currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
+      }
+      if (indexOfElementToRemoveOnQuestion != null) {
+        currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
+      }
       return {
         ...state,
         jobsOpenByDate: currentJobsOpenByDate,
+        jobsOpenByCountry: currentJobsOpenByCountry,
+        questionsOpen: currentQuestionsOpen,
       };
     }
 
     case FETCH_DATA_SUCCESS: {
+      console.log(`data success`, action.payload);
       return {
         jobsOpenByDate: action.payload.jobsOpenByDate,
         jobsOpenByCountry: action.payload.jobsOpenByCountry,
