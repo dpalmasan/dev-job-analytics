@@ -1,7 +1,7 @@
 exports.parseDataToChartQuestions = (questions) => {
   const chartLine = {
-    id: "",
-    color: "hsl(207, 70%, 50%)",
+    id: '',
+    color: 'hsl(207, 70%, 50%)',
     data: [],
   };
   const finalChartData = [];
@@ -24,15 +24,15 @@ exports.parseDataToChartQuestions = (questions) => {
     finalChartData.push({ ...chartLine });
   });
   finalChartData.sort(
-    (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+    (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
   );
   return finalChartData;
 };
 
 exports.parseDataToChart = (technologies) => {
   const chartLine = {
-    id: "",
-    color: "hsl(207, 70%, 50%)",
+    id: '',
+    color: 'hsl(207, 70%, 50%)',
     data: [],
   };
   const finalChartData = [];
@@ -55,7 +55,7 @@ exports.parseDataToChart = (technologies) => {
     finalChartData.push({ ...chartLine });
   });
   finalChartData.sort(
-    (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime()
+    (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
   );
   return finalChartData;
 };

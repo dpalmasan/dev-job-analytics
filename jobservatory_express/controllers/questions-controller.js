@@ -1,12 +1,12 @@
-const StackOverflowQuestion = require("../models/StackOverflowQuestion");
-var helpers = require('./helpers/index.ts')
+const StackOverflowQuestion = require('../models/StackOverflowQuestion');
+const helpers = require('./helpers/index.ts');
 
-//@desc Get all questions
-//@route GET /api/v1/questions
-exports.getStackOverflowQuestions = async (req, res, next) => {
+// @desc Get all questions
+// @route GET /api/v1/questions
+exports.getStackOverflowQuestions = async (req, res) => {
   try {
     const questions = await StackOverflowQuestion.find();
-    const finalChartData = helpers.parseDataToChartQuestions(questions)
+    const finalChartData = helpers.parseDataToChartQuestions(questions);
     return res.status(200).json({
       success: true,
       count: finalChartData.length,
