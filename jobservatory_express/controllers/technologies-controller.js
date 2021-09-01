@@ -6,7 +6,7 @@ const StackOverflowQuestion = require('../models/StackOverflowQuestion');
 /* eslint-disable no-unused-vars */
 // @desc Get all techs
 // @route GET /api/v1/technologies
-exports.getTechnologies = async (req, res, next) => {
+exports.getTechnologies = async (req, res) => {
   try {
     const technologies = await Technology.find();
     const finalChartData = helpers.parseDataToChart(technologies);
@@ -46,7 +46,9 @@ exports.getTechnologiesByName = async (req, res, next) => {
       },
     });
 
-    const jobsOpenByCountry = yesterdayTechnologies.filter((value) => value.name === name);
+    const jobsOpenByCountry = yesterdayTechnologies.filter(
+      (value) => value.name === name,
+    );
 
     // TODO: Fix this to handle name upperCase lowerCase diff
     const questions = await StackOverflowQuestion.find({
