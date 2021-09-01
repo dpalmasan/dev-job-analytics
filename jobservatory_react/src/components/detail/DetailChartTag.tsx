@@ -1,19 +1,19 @@
-import { HStack, Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
+import { Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
 import { ChartLine } from "./Detail";
-
 interface DetailChartTagProps {
-  formattedChartData: ChartLine[];
   removeElementOnChart: (chartID: string) => void;
 }
 
 export const DetailChartTag = ({
-  formattedChartData,
   removeElementOnChart,
 }: DetailChartTagProps) => {
-  return (
+  const { jobsOpenByDate } = useSelector((state: RootState) => state.detail);
+  return jobsOpenByDate.length > 0 ? (
     <div className="tag-container">
-      {formattedChartData.map((charData: ChartLine, index) => {
+      {jobsOpenByDate.map((charData: ChartLine, index) => {
         return (
           <div style={{ margin: 3 }} key={index}>
             <Tag
@@ -31,5 +31,5 @@ export const DetailChartTag = ({
         );
       })}
     </div>
-  );
+  ) : null;
 };

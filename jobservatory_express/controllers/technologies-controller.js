@@ -1,35 +1,7 @@
 const moment = require('moment');
+const helpers = require('./helpers/index.ts');
 const Technology = require('../models/Technology');
-
-function parseDataToChart(technologies) {
-  const chartLine = {
-    id: '',
-    color: 'hsl(207, 70%, 50%)',
-    data: [],
-  };
-  const finalChartData = [];
-  const dataAsMap = new Map();
-  for (let i = 0; i < technologies.length; i++) {
-    const element = technologies[i];
-    element.date = new Date(element.date).toISOString();
-    if (!dataAsMap.has(element.name)) {
-      dataAsMap.set(element.name, [
-        { x: element.date, y: element.jobs_total },
-      ]);
-    } else {
-      dataAsMap.set(element.name, [
-        ...dataAsMap.get(element.name),
-        { x: element.date, y: element.jobs_total },
-      ]);
-    }
-  }
-  dataAsMap.forEach((v, k) => {
-    chartLine.id = k;
-    chartLine.data = v;
-    finalChartData.push({ ...chartLine });
-  });
-  return finalChartData;
-}
+const StackOverflowQuestion = require('../models/StackOverflowQuestion');
 
 /* eslint-disable no-unused-vars */
 // @desc Get all techs
@@ -37,7 +9,7 @@ function parseDataToChart(technologies) {
 exports.getTechnologies = async (req, res, next) => {
   try {
     const technologies = await Technology.find();
-    const finalChartData = parseDataToChart(technologies);
+    const finalChartData = helpers.parseDataToChart(technologies);
     finalChartData.sort(
       (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
     );
@@ -58,42 +30,36 @@ exports.getTechnologies = async (req, res, next) => {
 exports.getTechnologiesByName = async (req, res, next) => {
   try {
     const { name } = req.params;
+    let startdate = moment();
+    startdate = startdate.subtract(2, 'days');
+    startdate = startdate.format();
+
     const technologies = await Technology.find({
       name: {
         $eq: name,
       },
     });
-    const finalChartData = parseDataToChart(technologies);
-    finalChartData.sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
-    );
-    return res.status(200).json({
-      success: true,
-      count: 1,
-      data: finalChartData.length > 0 ? finalChartData[0] : null,
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, error: `Server error ${error}` });
-  }
-};
-
-// @route GET /api/v1/technologies/countries
-exports.getTechnologiesByCountry = async (req, res, next) => {
-  try {
-    let startdate = moment();
-    startdate = startdate.subtract(2, 'days');
-    startdate = startdate.format();
-    const technologies = await Technology.find({
+    const jobsOpenByDate = helpers.parseDataToChart(technologies);
+    const yesterdayTechnologies = await Technology.find({
       date: {
         $gte: startdate,
       },
     });
+
+    const jobsOpenByCountry = yesterdayTechnologies.filter((value) => value.name === name);
+
+    // TODO: Fix this to handle name upperCase lowerCase diff
+    const questions = await StackOverflowQuestion.find({
+      tag: {
+        $eq: name,
+      },
+    });
+
+    const questionsOpen = helpers.parseDataToChartQuestions(questions);
     return res.status(200).json({
       success: true,
-      count: technologies.length,
-      data: technologies,
+      count: 1,
+      data: { jobsOpenByDate, jobsOpenByCountry, questionsOpen },
     });
   } catch (error) {
     return res

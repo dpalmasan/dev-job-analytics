@@ -1,45 +1,12 @@
 const StackOverflowQuestion = require('../models/StackOverflowQuestion');
+const helpers = require('./helpers/index.ts');
 
-function parseDataToChart(questions) {
-  const chartLine = {
-    id: '',
-    color: 'hsl(207, 70%, 50%)',
-    data: [],
-  };
-  const finalChartData = [];
-  const dataAsMap = new Map();
-  for (let i = 0; i < questions.length; i++) {
-    const element = questions[i];
-    element.date = new Date(element.date).toISOString();
-    if (!dataAsMap.has(element.tag)) {
-      dataAsMap.set(element.tag, [
-        { x: element.date, y: element.count },
-      ]);
-    } else {
-      dataAsMap.set(element.tag, [
-        ...dataAsMap.get(element.tag),
-        { x: element.date, y: element.count },
-      ]);
-    }
-  }
-  dataAsMap.forEach((v, k) => {
-    chartLine.id = k;
-    chartLine.data = v;
-    finalChartData.push({ ...chartLine });
-  });
-  return finalChartData;
-}
-
-/* eslint-disable no-unused-vars */
 // @desc Get all questions
 // @route GET /api/v1/questions
-exports.getStackOverflowQuestions = async (req, res, next) => {
+exports.getStackOverflowQuestions = async (req, res) => {
   try {
     const questions = await StackOverflowQuestion.find();
-    const finalChartData = parseDataToChart(questions);
-    finalChartData.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-    );
+    const finalChartData = helpers.parseDataToChartQuestions(questions);
     return res.status(200).json({
       success: true,
       count: finalChartData.length,
