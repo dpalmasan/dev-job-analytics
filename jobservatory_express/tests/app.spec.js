@@ -1,10 +1,15 @@
 const request = require('supertest');
-const { expect } = require('chai');
+const chai = require('chai');
+const chaiExclude = require('chai-exclude');
+const sinon = require('sinon');
 const mongoose = require('mongoose');
 const createApp = require('../app');
 const connectDB = require('../config/db');
 const StackOverflowQuestions = require('../models/StackOverflowQuestion');
 const JobserverRecord = require('../models/Technology');
+
+const { expect, assert } = chai;
+chai.use(chaiExclude);
 
 process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory';
 
@@ -46,25 +51,35 @@ describe('Jobservatory server', () => {
   ];
 
   before((done) => {
+    this.clock = (date) => sinon.useFakeTimers(new Date(date));
+    this.clock('2021-08-12');
     connectDB()
       .then(() => {
         // Idempotency on runs
         mongoose.connection.db.dropDatabase((err, result) => {
-          if (err) { done(err); }
+          if (err) {
+            done(err);
+          }
           console.log(`Dropping database: ${result}`);
         });
       })
       .then(() => StackOverflowQuestions.insertMany(questions))
       .then((docs, err) => {
-        if (err) { done(err); }
+        if (err) {
+          done(err);
+        }
       })
       // CAUTION: Will hang if schema is wrong!
       .then(() => JobserverRecord.insertMany(techs))
       .then((docs, err) => {
-        if (err) { return done(err); }
+        if (err) {
+          return done(err);
+        }
         app = createApp();
         server = app.listen((serverErr) => {
-          if (serverErr) { done(serverErr); }
+          if (serverErr) {
+            done(serverErr);
+          }
           done();
         });
         return server;
@@ -163,20 +178,91 @@ describe('Jobservatory server', () => {
           return done(err);
         }
         const results = res.body;
-        expect(results).to.be.deep.equal({
+        assert.deepEqualExcludingEvery(results, {
           count: 1,
           data: {
-            color: 'hsl(207, 70%, 50%)',
-            data: [
+            jobsOpenByCountry: [
               {
-                x: new Date('2021-08-12T00:00:00.000Z').toISOString(),
-                y: 65646,
+                __v: 0,
+                _id: '6114648052046e6c76cc05e4',
+                countries: [
+                  {
+                    _id: '6114648052046e6c76cc05e5',
+                    jobs: 18633,
+                    name: 'Estados Unidos',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05e6',
+                    jobs: 1032,
+                    name: 'Reino Unido',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05e7',
+                    jobs: 1852,
+                    name: 'Canadá',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05e8',
+                    jobs: 842,
+                    name: 'Polonia',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05e9',
+                    jobs: 3222,
+                    name: 'Brasil',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05ea',
+                    jobs: 15659,
+                    name: 'India',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05eb',
+                    jobs: 6890,
+                    name: 'China',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05ec',
+                    jobs: 112,
+                    name: 'Chile',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05ed',
+                    jobs: 3898,
+                    name: 'Alemania',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05ee',
+                    jobs: 1099,
+                    name: 'Países Bajos',
+                  },
+                  {
+                    _id: '6114648052046e6c76cc05ef',
+                    jobs: 467,
+                    name: 'Australia',
+                  },
+                ],
+                date: '2021-08-12T00:00:00.000Z',
+                jobs_total: 65646,
+                name: 'Angular.js',
               },
             ],
-            id: 'Angular.js',
+            jobsOpenByDate: [
+              {
+                color: 'hsl(207, 70%, 50%)',
+                data: [
+                  {
+                    x: '2021-08-12T00:00:00.000Z',
+                    y: 65646,
+                  },
+                ],
+                id: 'Angular.js',
+              },
+            ],
+            questionsOpen: [],
           },
           success: true,
-        });
+        }, ['_id']);
         return done();
       });
   });

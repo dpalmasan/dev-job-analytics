@@ -1,7 +1,7 @@
 const moment = require('moment');
+const helpers = require('./helpers/index.ts');
 const Technology = require('../models/Technology');
 const StackOverflowQuestion = require('../models/StackOverflowQuestion');
-const helpers = require('./helpers/index.ts');
 
 /* eslint-disable no-unused-vars */
 // @desc Get all techs
@@ -40,12 +40,12 @@ exports.getTechnologiesByName = async (req, res, next) => {
       },
     });
     const jobsOpenByDate = helpers.parseDataToChart(technologies);
-
     const yesterdayTechnologies = await Technology.find({
       date: {
         $gte: startdate,
       },
     });
+
     const jobsOpenByCountry = yesterdayTechnologies.filter(
       (value) => value.name === name,
     );
@@ -58,11 +58,6 @@ exports.getTechnologiesByName = async (req, res, next) => {
     });
 
     const questionsOpen = helpers.parseDataToChartQuestions(questions);
-    console.log(`data rendered`, {
-      jobsOpenByDate,
-      jobsOpenByCountry,
-      questionsOpen,
-    });
     return res.status(200).json({
       success: true,
       count: 1,
