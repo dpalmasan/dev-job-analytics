@@ -1,12 +1,13 @@
 import { Heading, Image, Select, theme, useColorMode } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import {
   addTechData,
   fetchData,
   removeTech,
 } from '../../features/detail/action-creators';
+import { RootState } from '../../features/store';
 import { SearchBar } from '../search-bar/SearchBar';
 import logo from './../../images/vector-person-looking-in-binoculars-illustration.jpg';
 import './../../styles/detail.scss';
@@ -26,6 +27,8 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
+  const { jobsOpenByDate, loading, jobsOpenByCountry, questionsOpen } =
+    useSelector((state: RootState) => state.detail);
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
 
@@ -91,7 +94,11 @@ export const Detail = () => {
           />
         </div>
         <div>
-          <DetailChartTag removeElementOnChart={removeElementOnChart} />
+          <DetailChartTag
+            removeElementOnChart={removeElementOnChart}
+            jobsOpenByDate={jobsOpenByDate}
+            loading={loading}
+          />
         </div>
 
         <div className='detail-chart-container'>
@@ -104,7 +111,7 @@ export const Detail = () => {
             Jobs open by day
           </Heading>
 
-          <DetailChart />
+          <DetailChart jobsOpenByDate={jobsOpenByDate} loading={loading} />
         </div>
 
         <div className='detail-chart-country'>
@@ -117,7 +124,10 @@ export const Detail = () => {
           >
             Jobs open by country
           </Heading>
-          <DetailCountry />
+          <DetailCountry
+            jobsOpenByCountry={jobsOpenByCountry}
+            loading={loading}
+          />
         </div>
         <div className='detail-chart-container'>
           <Heading

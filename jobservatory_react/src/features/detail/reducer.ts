@@ -13,7 +13,7 @@ interface Country {
   name: string;
   jobs: number;
 }
-interface DataByCountry {
+export interface DataByCountry {
   countries: Country[];
   createdAt: string;
   date: string;

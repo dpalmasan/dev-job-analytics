@@ -2,12 +2,12 @@ import {
   fetchDataFailure,
   fetchDataRequest,
   fetchDataSuccess,
-} from '../../features/detail/action-creators';
+} from './../../../features/detail/action-creators';
 // Replace this with the appropriate imports for your project
 import {
   detailReducer,
   initialState as detailInitialState,
-} from './../../features/detail/reducer';
+} from './../../../features/detail/reducer';
 
 let jobsOpenByCountry;
 let jobsOpenByDate;

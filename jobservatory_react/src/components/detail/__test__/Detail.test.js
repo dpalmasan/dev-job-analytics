@@ -1,4 +1,4 @@
-import { Detail } from './Detail';
+import { Detail } from '../Detail';
 import { render, screen } from '@testing-library/react';
 import { prettyDOM } from '@testing-library/dom';
 import { createStore } from 'redux';
@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import {
   detailReducer,
   initialState as detailInitialState,
-} from './../../features/detail/reducer';
+} from '../../../features/detail/reducer';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import thunk from 'redux-thunk';
