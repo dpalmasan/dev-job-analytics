@@ -1,4 +1,4 @@
-import { ChartLine } from "../../components/detail/Detail";
+import { ChartLine } from '../../components/detail/Detail';
 
 import {
   ADD_TECH,
@@ -7,7 +7,7 @@ import {
   FETCH_DATA_SUCCESS,
   FETCH_DATA_END,
   REMOVE_TECH,
-} from "./actions";
+} from './actions';
 
 interface Country {
   name: string;
@@ -30,7 +30,7 @@ interface ChartState {
   error?: string;
 }
 
-const initialState: ChartState = {
+export const initialState: ChartState = {
   jobsOpenByDate: [],
   jobsOpenByCountry: [],
   questionsOpen: [],
@@ -67,14 +67,14 @@ export function detailReducer(state = initialState, action: any): ChartState {
       const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
       const currentQuestionsOpen = [...state.jobsOpenByDate];
       const indexOfElementToRemove = currentJobsOpenByDate.findIndex(
-        (value: any) => value.id === action.payload
+        (value: any) => value.id === action.payload,
       );
       const indexOfElementToRemoveOnCountry =
         currentJobsOpenByCountry.findIndex(
-          (value: any) => value.id === action.payload
+          (value: any) => value.id === action.payload,
         );
       const indexOfElementToRemoveOnQuestion = currentQuestionsOpen.findIndex(
-        (value: any) => value.id === action.payload
+        (value: any) => value.id === action.payload,
       );
       if (indexOfElementToRemove != null) {
         currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
