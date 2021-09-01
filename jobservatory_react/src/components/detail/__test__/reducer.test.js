@@ -1,17 +1,23 @@
 import {
+  addTechData,
   fetchDataFailure,
   fetchDataRequest,
   fetchDataSuccess,
+  addTech,
 } from './../../../features/detail/action-creators';
-// Replace this with the appropriate imports for your project
 import {
   detailReducer,
   initialState as detailInitialState,
 } from './../../../features/detail/reducer';
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 
 let jobsOpenByCountry;
 let jobsOpenByDate;
 let questionsOpen;
+
+let server;
+
 beforeEach(() => {
   jobsOpenByCountry = [
     {
@@ -43,6 +49,16 @@ beforeEach(() => {
       id: 'Java',
     },
   ];
+  server = setupServer(
+    rest.get(
+      'http://localhost:5000/api/v1/technologies/:name',
+      (req, res, ctx) => {
+        return res(
+          ctx.json({ jobsOpenByCountry, jobsOpenByDate, questionsOpen }),
+        );
+      },
+    ),
+  );
 });
 
 describe('detailReducer', () => {
@@ -84,6 +100,23 @@ describe('detailReducer', () => {
       detailInitialState,
       fetchDataSuccessAction,
     );
+    const newExpectedState = {
+      jobsOpenByDate: jobsOpenByDate,
+      jobsOpenByCountry: jobsOpenByCountry,
+      questionsOpen: questionsOpen,
+      loading: false,
+      error: undefined,
+    };
+    expect(updatedState).toEqual(newExpectedState);
+  });
+
+  test('return state correctly when ADD_TECH action is trigger', async () => {
+    const addTechAction = addTech({
+      jobsOpenByDate,
+      jobsOpenByCountry,
+      questionsOpen,
+    });
+    const updatedState = detailReducer(detailInitialState, addTechAction);
     const newExpectedState = {
       jobsOpenByDate: jobsOpenByDate,
       jobsOpenByCountry: jobsOpenByCountry,

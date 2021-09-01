@@ -3,8 +3,8 @@ import {
   fetchQuestionsData,
   fetchTechnologiesData,
   fetchTechnologyByNameData,
-} from "../../api";
-import { ChartLine } from "../../components/detail/Detail";
+} from '../../api';
+import { ChartLine } from '../../components/detail/Detail';
 import {
   ADD_TECH,
   FETCH_DATA_END,
@@ -12,7 +12,7 @@ import {
   FETCH_DATA_REQUEST,
   FETCH_DATA_SUCCESS,
   REMOVE_TECH,
-} from "./actions";
+} from './actions';
 
 export const addTech = (data: ChartLine) => ({
   type: ADD_TECH,
@@ -55,9 +55,9 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      console.log(`techByNameResult`, techByNameResult);
+      // console.log(`techByNameResult`, techByNameResult);
       if (techByNameResult) {
-        console.log(`techByNameResult`, techByNameResult);
+        // console.log(`techByNameResult`, techByNameResult);
         dispatch(addTech(techByNameResult));
       } else {
         dispatch(fetchDataEnd());
@@ -70,7 +70,7 @@ export const addTechData = (searchValue: string) => {
 
 export const fetchData = () => {
   return async (dispatch: any) => {
-    console.log("En proceso");
+    // console.log('En proceso');
     dispatch(fetchDataRequest());
     try {
       const jobsOpenByDate = await fetchTechnologiesData();
@@ -81,7 +81,7 @@ export const fetchData = () => {
         jobsOpenByCountry,
         questionsOpen,
       };
-      console.log(`fetchedData`, fetchedData);
+      // console.log(`fetchedData`, fetchedData);
       dispatch(fetchDataSuccess(fetchedData));
     } catch (error) {
       console.log(`error show show`, error);

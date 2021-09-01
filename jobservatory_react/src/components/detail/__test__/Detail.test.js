@@ -35,6 +35,6 @@ describe('<Detail />', () => {
   test('display jobs open by day title correctly correctly', () => {
     const detailComponent = customRender(<Detail />, { detailInitialState });
     const result = detailComponent.getByText('Jobs open by day');
-    console.log(prettyDOM(detailComponent.container));
+    expect(result).toBeInTheDocument();
   });
 });
