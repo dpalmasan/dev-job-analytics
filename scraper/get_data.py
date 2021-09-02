@@ -1,6 +1,7 @@
 """Utility to import data into a MongoDB."""
 import yaml
 from mongoengine import connect
+from selenium import webdriver
 
 from scraper.populate_db import import_data
 from scraper.selenium_scraper import LoggedLinkedinScrapper
@@ -18,7 +19,16 @@ def main():
         host=config["db"]["uri"],
     )
 
-    sc = LoggedLinkedinScrapper(config["email"], config["password"])
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = config["google_chrome_path"]
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(
+        executable_path=config["chrome_driver_path"],
+        chrome_options=chrome_options,
+    )
+    sc = LoggedLinkedinScrapper(config["email"], config["password"], driver)
     import_data(
         sc,
         [

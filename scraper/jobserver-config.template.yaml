@@ -5,3 +5,5 @@ db:
   user: "DB_USER"
   pass: "DB_PASS"
   uri: "CONNECTION_URI"
+chrome_driver_path: "CHROME DRIVER PATH"
+google_chrome_path: "GOOGLE CHROME BINARY PATH"
