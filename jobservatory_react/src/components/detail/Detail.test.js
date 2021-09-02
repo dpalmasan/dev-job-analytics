@@ -1,7 +1,6 @@
 import { Detail } from './Detail';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { prettyDOM } from '@testing-library/dom';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 // Replace this with the appropriate imports for your project
 import {
@@ -35,6 +34,9 @@ describe('<Detail />', () => {
   test('display jobs open by day title correctly correctly', () => {
     const detailComponent = customRender(<Detail />, { detailInitialState });
     const result = detailComponent.getByText('Jobs open by day');
+
+    // What do we do with result?
+    console.log(result);
     console.log(prettyDOM(detailComponent.container));
   });
 });

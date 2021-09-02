@@ -1,11 +1,5 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Button,
   ChakraProvider,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   theme,
 } from "@chakra-ui/react";
 import * as React from "react";
