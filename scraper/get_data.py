@@ -18,7 +18,19 @@ def main():
         host=config["db"]["uri"],
     )
 
-    sc = LoggedLinkedinScrapper(config["email"], config["password"])
+    # We need to debug when IP or account gets blocked due to scraping.
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.binary_location = config["google_chrome_path"]
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--disable-dev-shm-usage")
+    # chrome_options.add_argument("--no-sandbox")
+    # driver = webdriver.Chrome(
+    #     executable_path=config["chrome_driver_path"],
+    #     chrome_options=chrome_options,
+    # )
+    sc = LoggedLinkedinScrapper(
+        config["email"], config["password"], driver=None
+    )
     import_data(
         sc,
         [
