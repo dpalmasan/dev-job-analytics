@@ -1,14 +1,14 @@
-import React from 'react';
+// import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Home } from './Home';
-import { GoButton } from './GoButton';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import { App } from './../../App';
+// import { fireEvent, render, screen } from '@testing-library/react';
+// import { Home } from './Home';
+// import { GoButton } from './GoButton';
+// import { createMemoryHistory } from 'history';
+// import { Router } from 'react-router-dom';
+// import { App } from './../../App';
 
-import { prettyDOM } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
+// import { prettyDOM } from '@testing-library/dom';
+// import userEvent from '@testing-library/user-event';
 
 test('Empty test is OK', () => {
   expect(true).toBe(true);
