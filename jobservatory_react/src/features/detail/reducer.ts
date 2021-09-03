@@ -13,7 +13,7 @@ interface Country {
   name: string;
   jobs: number;
 }
-interface DataByCountry {
+export interface DataByCountry {
   countries: Country[];
   createdAt: string;
   date: string;
@@ -41,7 +41,7 @@ export const initialState: ChartState = {
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
-      console.log(`action.payload`, action.payload);
+      // console.log(`action.payload`, action.payload);
       const newJobsOpenByDate = [
         ...state.jobsOpenByDate,
         ...action.payload.jobsOpenByDate,
@@ -94,7 +94,7 @@ export function detailReducer(state = initialState, action: any): ChartState {
     }
 
     case FETCH_DATA_SUCCESS: {
-      console.log(`data success`, action.payload);
+      // console.log(`data success`, action.payload);
       return {
         jobsOpenByDate: action.payload.jobsOpenByDate,
         jobsOpenByCountry: action.payload.jobsOpenByCountry,
