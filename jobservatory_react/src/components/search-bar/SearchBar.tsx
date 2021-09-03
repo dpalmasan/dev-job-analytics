@@ -1,6 +1,7 @@
-import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, theme } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+// import { SearchIcon } from '@chakra-ui/icons';
+// import { Input, InputGroup, InputLeftElement, theme } from '@chakra-ui/react';
+// import React, { FC, useState } from 'react';
+import { FC } from 'react';
 
 interface SearchBarProps {
   fetchTechByName: (searchValue: string) => Promise<void>;

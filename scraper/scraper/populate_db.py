@@ -83,6 +83,7 @@ def import_data(
             prev_job_distribution = job_distribution
             prev_job_count = job_count
             prev_date = date
+            sleep(2)
 
 
 def is_valid_ds(ds: str) -> bool:

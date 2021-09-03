@@ -2,6 +2,7 @@
 
 This is an optional dependency.
 """
+import time
 from typing import Optional
 from urllib.parse import urlencode
 
@@ -77,7 +78,11 @@ class LoggedLinkedinScrapper(LinkedinScraper):
 
         url_query = self.url + "?" + urlencode(params)
 
-        if isinstance(self.driver, webdriver.chrome.webdriver.WebDriver):
-            self.driver.get(url_query)
-            element = self.driver.find_element_by_tag_name("small")
-        return int(JOB_REGEX.sub("", element.text))
+        try:
+            if isinstance(self.driver, webdriver.chrome.webdriver.WebDriver):
+                self.driver.get(url_query)
+                time.sleep(3)
+                element = self.driver.find_element_by_tag_name("small")
+            return int(JOB_REGEX.sub("", element.text))
+        except Exception:
+            return 0

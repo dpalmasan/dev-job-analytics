@@ -1,0 +1,42 @@
+name: Frontend tests
+
+on: [push, pull_request]
+
+jobs:
+  frontend-build:
+    # We want to run on external PRs, but not on our own internal PRs as they'll be run
+    # by the push to the branch. Without this if check, checks are duplicated since
+    # internal PRs match both the push and pull_request events.
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install dependencies
+      working-directory: jobservatory_react
+      run: yarn install
+
+    - name: Run tests
+      working-directory: jobservatory_react
+      run: yarn test:coverage
+      env:
+        CI: true
+    - name: Uninstall Yarn
+      if: always()
+      run: npm uninstall -g yarn

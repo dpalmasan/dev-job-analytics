@@ -34,7 +34,7 @@ export const Detail = () => {
 
   useEffect(() => {
     dispatch(fetchData());
-  }, []);
+  }, [dispatch]);
 
   const fetchTechByName = async (searchValue: string) => {
     dispatch(addTechData(searchValue));
