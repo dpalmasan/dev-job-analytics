@@ -1,16 +1,19 @@
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import {
-  addTechData,
+  addTech,
+  fetchDataEnd,
   fetchDataFailure,
   fetchDataRequest,
   fetchDataSuccess,
-  addTech,
+  removeTech,
 } from './../../../features/detail/action-creators';
 import {
   detailReducer,
   initialState as detailInitialState,
+  getIndexOfElementToRemove,
+  getCountryIndexElementToRemove,
 } from './../../../features/detail/reducer';
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 let jobsOpenByCountry;
 let jobsOpenByDate;
@@ -22,7 +25,7 @@ beforeEach(() => {
   jobsOpenByCountry = [
     {
       _id: '612cfb05be86bd4e49c7711e',
-      name: 'React.js',
+      name: 'Java',
       date: '2021-08-30T00:00:00.000Z',
       jobs_total: 159905,
       countries: [
@@ -125,5 +128,64 @@ describe('detailReducer', () => {
       error: undefined,
     };
     expect(updatedState).toEqual(newExpectedState);
+  });
+
+  test('return state correctly when REMOVE_TECH action is trigger', () => {
+    const fetchedData = {
+      jobsOpenByDate,
+      jobsOpenByCountry,
+      questionsOpen,
+    };
+
+    const fetchDataSuccessAction = fetchDataSuccess(fetchedData);
+    const updatedState = detailReducer(
+      detailInitialState,
+      fetchDataSuccessAction,
+    );
+    let newExpectedState = {
+      jobsOpenByDate: jobsOpenByDate,
+      jobsOpenByCountry: jobsOpenByCountry,
+      questionsOpen: questionsOpen,
+      loading: false,
+      error: undefined,
+    };
+    expect(updatedState).toEqual(newExpectedState);
+    const fetchDataRemoveAction = removeTech('Java');
+    const updatedStateAfterRemove = detailReducer(
+      detailInitialState,
+      fetchDataRemoveAction,
+    );
+    newExpectedState = {
+      jobsOpenByDate: [],
+      jobsOpenByCountry: [],
+      questionsOpen: [],
+      loading: false,
+      error: undefined,
+    };
+    expect(newExpectedState).toEqual(updatedStateAfterRemove);
+  });
+
+  test("return default state if the action doesn't exists", () => {
+    const fetchAnyAction = { type: 'FOO_ACTION', payload: [] };
+    const updatedState = detailReducer(detailInitialState, fetchAnyAction);
+    expect(updatedState).toEqual(detailInitialState);
+  });
+
+  test('return state correctly when FETCH_DATA_END is trigger', () => {
+    const fetchDataEndAction = fetchDataEnd();
+    const updatedState = detailReducer(detailInitialState, fetchDataEndAction);
+    const newExpectedState = {
+      ...detailInitialState,
+      loading: false,
+    };
+    expect(updatedState).toEqual(newExpectedState);
+  });
+  test('return correct array when the removeElements function are trigger', () => {
+    const action = { payload: 'Java' };
+    let index = getIndexOfElementToRemove(jobsOpenByDate, action);
+    expect(index).not.toEqual(-1);
+    //Second function that find index on countries
+    index = getCountryIndexElementToRemove(jobsOpenByCountry, action);
+    expect(index).not.toEqual(-1);
   });
 });

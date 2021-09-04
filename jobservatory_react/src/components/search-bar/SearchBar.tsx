@@ -7,7 +7,6 @@ interface SearchBarProps {
 }
 export const SearchBar: FC<SearchBarProps> = ({ fetchTechByName }) => {
   const [searchValue, setSearchValue] = useState('');
-
   const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {
       fetchTechByName(searchValue);

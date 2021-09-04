@@ -38,6 +38,21 @@ export const initialState: ChartState = {
   error: undefined,
 };
 
+export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
+  console.log(`values`, values);
+  console.log(`action`, action);
+  return values.findIndex((value: any) => value.id === action.payload);
+};
+
+export const getCountryIndexElementToRemove = (
+  values: DataByCountry[],
+  action: any,
+) => {
+  console.log(`values`, values);
+  console.log(`action`, action);
+  return values.findIndex((value: any) => value.name === action.payload);
+};
+
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
@@ -66,25 +81,24 @@ export function detailReducer(state = initialState, action: any): ChartState {
       const currentJobsOpenByDate = [...state.jobsOpenByDate];
       const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
       const currentQuestionsOpen = [...state.jobsOpenByDate];
-      const indexOfElementToRemove = currentJobsOpenByDate.findIndex(
-        (value: any) => value.id === action.payload,
+
+      const indexOfElementToRemove = getIndexOfElementToRemove(
+        currentJobsOpenByDate,
+        action,
       );
-      const indexOfElementToRemoveOnCountry =
-        currentJobsOpenByCountry.findIndex(
-          (value: any) => value.id === action.payload,
-        );
-      const indexOfElementToRemoveOnQuestion = currentQuestionsOpen.findIndex(
-        (value: any) => value.id === action.payload,
+      const indexOfElementToRemoveOnCountry = getCountryIndexElementToRemove(
+        currentJobsOpenByCountry,
+        action,
       );
-      if (indexOfElementToRemove != null) {
-        currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
-      }
-      if (indexOfElementToRemoveOnCountry != null) {
-        currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
-      }
-      if (indexOfElementToRemoveOnQuestion != null) {
-        currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
-      }
+      const indexOfElementToRemoveOnQuestion = getIndexOfElementToRemove(
+        currentQuestionsOpen,
+        action,
+      );
+
+      currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
+      currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
+      currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
+
       return {
         ...state,
         jobsOpenByDate: currentJobsOpenByDate,

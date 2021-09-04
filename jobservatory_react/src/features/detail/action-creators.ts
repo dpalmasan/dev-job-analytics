@@ -67,7 +67,6 @@ export const addTechData = (searchValue: string) => {
     }
   };
 };
-
 export const fetchData = () => {
   return async (dispatch: any) => {
     // console.log('En proceso');
