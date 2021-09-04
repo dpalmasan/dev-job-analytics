@@ -1,9 +1,7 @@
 import { CircularProgress, useColorMode } from '@chakra-ui/react';
 import { ResponsiveBar } from '@nivo/bar';
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { DataByCountry } from '../../features/detail/reducer';
-import { RootState } from '../../features/store';
 
 interface DetailCountryProps {
   jobsOpenByCountry: DataByCountry[];

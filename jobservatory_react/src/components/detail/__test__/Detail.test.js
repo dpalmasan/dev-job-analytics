@@ -1,6 +1,5 @@
-import { Detail } from "./Detail";
+import { Detail } from "../Detail";
 import { render } from "@testing-library/react";
-import { prettyDOM } from "@testing-library/dom";
 import { Provider } from "react-redux";
 // Replace this with the appropriate imports for your project
 import {
