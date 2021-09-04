@@ -27,14 +27,14 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { jobsOpenByDate, loading, jobsOpenByCountry, questionsOpen } =
+  const { jobsOpenByDate, loading, jobsOpenByCountry } =
     useSelector((state: RootState) => state.detail);
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchData());
-  }, []);
+  }, [dispatch]);
 
   const fetchTechByName = async (searchValue: string) => {
     dispatch(addTechData(searchValue));

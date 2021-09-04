@@ -1,8 +1,6 @@
 import { CircularProgress, useColorMode } from '@chakra-ui/react';
 import { ResponsiveLine } from '@nivo/line';
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../features/store';
 import { ChartLine } from './Detail';
 
 interface DetailChartProps {

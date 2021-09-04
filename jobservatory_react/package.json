@@ -35,7 +35,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:coverage": "CI=true react-scripts test --coverage",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 20,
+        "functions": 20,
+        "lines": 20,
+        "statements": 20
+      }
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -58,6 +70,7 @@
     "@testing-library/react": "^10.4.9",
     "@types/node-sass": "^4.11.1",
     "@types/react": "^16.14.8",
+    "msw": "^0.35.0",
     "node-sass": "^6.0.0",
     "redux-devtools": "^3.7.0"
   }

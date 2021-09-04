@@ -1,16 +1,14 @@
-import { Detail } from '../Detail';
-import { render, screen } from '@testing-library/react';
-import { prettyDOM } from '@testing-library/dom';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { Detail } from "../Detail";
+import { render } from "@testing-library/react";
+import { Provider } from "react-redux";
 // Replace this with the appropriate imports for your project
 import {
   detailReducer,
   initialState as detailInitialState,
-} from '../../../features/detail/reducer';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+} from "../../../features/detail/reducer";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import thunk from 'redux-thunk';
+import thunk from "redux-thunk";
 
 const customRender = (
   ui,
@@ -23,7 +21,7 @@ const customRender = (
       middleware: [...getDefaultMiddleware(), thunk],
     }),
     ...renderOptions
-  } = {},
+  } = {}
 ) => {
   const Wrapper = ({ children }) => (
     <Provider store={store}>{children}</Provider>
@@ -31,10 +29,10 @@ const customRender = (
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
-describe('<Detail />', () => {
-  test('display jobs open by day title correctly correctly', () => {
+describe("<Detail />", () => {
+  test("display jobs open by day title correctly correctly", () => {
     const detailComponent = customRender(<Detail />, { detailInitialState });
-    const result = detailComponent.getByText('Jobs open by day');
+    const result = detailComponent.getByText("Jobs open by day");
     expect(result).toBeInTheDocument();
   });
 });

@@ -19,8 +19,6 @@ let jobsOpenByCountry;
 let jobsOpenByDate;
 let questionsOpen;
 
-let server;
-
 beforeEach(() => {
   jobsOpenByCountry = [
     {
@@ -52,7 +50,7 @@ beforeEach(() => {
       id: 'Java',
     },
   ];
-  server = setupServer(
+  setupServer(
     rest.get(
       'http://localhost:5000/api/v1/technologies/:name',
       (req, res, ctx) => {
