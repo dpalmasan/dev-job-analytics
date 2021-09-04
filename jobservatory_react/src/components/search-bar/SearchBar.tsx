@@ -8,14 +8,14 @@ interface SearchBarProps {
 export const SearchBar: FC<SearchBarProps> = ({ fetchTechByName }) => {
   const [searchValue, setSearchValue] = useState('');
   const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
-      fetchTechByName(searchValue);
-    }
+    if (event.key !== 'Enter') return;
+    fetchTechByName(searchValue);
   };
 
   return (
     <InputGroup
       size='lg'
+      data-testid='input-searchbar-group'
       borderColor='grey'
       color={theme.colors.teal}
       style={{ paddingRight: 10 }}
