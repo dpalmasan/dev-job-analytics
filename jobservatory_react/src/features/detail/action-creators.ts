@@ -69,7 +69,6 @@ export const addTechData = (searchValue: string) => {
 };
 export const fetchData = () => {
   return async (dispatch: any) => {
-    // console.log('En proceso');
     dispatch(fetchDataRequest());
     try {
       const jobsOpenByDate = await fetchTechnologiesData();
@@ -80,7 +79,6 @@ export const fetchData = () => {
         jobsOpenByCountry,
         questionsOpen,
       };
-      // console.log(`fetchedData`, fetchedData);
       dispatch(fetchDataSuccess(fetchedData));
     } catch (error) {
       console.log(`error show show`, error);

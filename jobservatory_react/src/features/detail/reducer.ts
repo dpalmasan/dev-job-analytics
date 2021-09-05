@@ -39,8 +39,8 @@ export const initialState: ChartState = {
 };
 
 export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
-  console.log(`values`, values);
-  console.log(`action`, action);
+  // console.log(`values`, values);
+  // console.log(`action`, action);
   return values.findIndex((value: any) => value.id === action.payload);
 };
 
@@ -48,8 +48,8 @@ export const getCountryIndexElementToRemove = (
   values: DataByCountry[],
   action: any,
 ) => {
-  console.log(`values`, values);
-  console.log(`action`, action);
+  // console.log(`values`, values);
+  // console.log(`action`, action);
   return values.findIndex((value: any) => value.name === action.payload);
 };
 

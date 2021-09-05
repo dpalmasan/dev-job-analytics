@@ -1,9 +1,11 @@
 export const fetchTechnologiesData = async () => {
   try {
     const techsPromise = await fetch(
-      "http://localhost:5000/api/v1/technologies"
+      'http://localhost:5000/api/v1/technologies',
     );
     const techs = await techsPromise.json();
+    console.log(`techs4`, techs);
+    console.log(`techs4 data`, techs.data);
     return techs.data;
   } catch (error) {
     return [];
@@ -13,7 +15,7 @@ export const fetchTechnologiesData = async () => {
 export const fetchCountriesData = async () => {
   try {
     const techPormiseByCountry = await fetch(
-      "http://localhost:5000/api/v1/technologies/countries"
+      'http://localhost:5000/api/v1/technologies/countries',
     );
     const techsByCountries = await techPormiseByCountry.json();
     return techsByCountries.data;
@@ -25,7 +27,7 @@ export const fetchCountriesData = async () => {
 export const fetchQuestionsData = async () => {
   try {
     const techsPromiseByQuestions = await fetch(
-      "http://localhost:5000/api/v1/questions"
+      'http://localhost:5000/api/v1/questions',
     );
     const techsByQuestions = await techsPromiseByQuestions.json();
     return techsByQuestions.data;
@@ -37,7 +39,7 @@ export const fetchQuestionsData = async () => {
 export const fetchTechnologyByNameData = async (searchValue: string) => {
   try {
     const fetchedTech = await fetch(
-      `http://localhost:5000/api/v1/technologies/${searchValue}`
+      `http://localhost:5000/api/v1/technologies/${searchValue}`,
     );
     const response = await fetchedTech.json();
     const responseData = response.data;

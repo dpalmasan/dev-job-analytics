@@ -27,14 +27,15 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { jobsOpenByDate, loading, jobsOpenByCountry } =
-    useSelector((state: RootState) => state.detail);
+  const { jobsOpenByDate, loading, jobsOpenByCountry } = useSelector(
+    (state: RootState) => state.detail,
+  );
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchData());
-  }, [dispatch]);
+  }, []);
 
   const fetchTechByName = async (searchValue: string) => {
     dispatch(addTechData(searchValue));
@@ -44,7 +45,9 @@ export const Detail = () => {
     dispatch(removeTech(chartID));
   };
 
-  return (
+  return loading ? (
+    <div>LOADING</div>
+  ) : (
     <div>
       <div
         style={{
