@@ -1,8 +1,19 @@
 const request = require('supertest');
 const chai = require('chai');
 const chaiExclude = require('chai-exclude');
+const redis = require('redis');
 const sinon = require('sinon');
 const mongoose = require('mongoose');
+
+// Adding stubs to redis Nodejs because we don't want to have the tests
+// hang
+const redisClient = {
+  getAsync: () => undefined,
+  setex: () => {},
+};
+
+sinon.stub(redis, 'createClient').callsFake(() => redisClient);
+
 const createApp = require('../app');
 const connectDB = require('../config/db');
 const StackOverflowQuestions = require('../models/StackOverflowQuestion');

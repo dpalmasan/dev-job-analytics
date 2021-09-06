@@ -1,24 +1,42 @@
+const bluebird = require('bluebird');
 const moment = require('moment');
+const redis = require('redis');
 const helpers = require('./helpers/index.ts');
 const Technology = require('../models/Technology');
 const StackOverflowQuestion = require('../models/StackOverflowQuestion');
+
+// So we can use await on client (add getAsync method)
+bluebird.promisifyAll(redis.RedisClient.prototype);
+const client = redis.createClient(process.env.REDIS_PORT);
 
 /* eslint-disable no-unused-vars */
 // @desc Get all techs
 // @route GET /api/v1/technologies
 exports.getTechnologies = async (req, res) => {
   try {
+    const techs = await client.getAsync('technologies');
+    if (techs) {
+      const chartData = JSON.parse(techs);
+      return res.status(200).json({
+        success: true,
+        count: chartData.length,
+        data: chartData,
+      });
+    }
     const technologies = await Technology.find();
     const finalChartData = helpers.parseDataToChart(technologies);
     finalChartData.sort(
       (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
     );
+
+    client.setex('technologies', 600, JSON.stringify(finalChartData));
     return res.status(200).json({
       success: true,
       count: finalChartData.length,
       data: finalChartData,
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ success: false, error: `Server error ${error}` });
