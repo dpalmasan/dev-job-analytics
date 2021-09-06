@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { render, screen, waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -31,25 +32,29 @@ const customRender = (
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
-const server = setupServer(...dataHandlers);
+let server = setupServer(...dataHandlers);
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('<Detail />', () => {
-  test('display jobs open by day title correctly correctly', () => {
-    // const detailComponent = customRender(<Detail />, { detailInitialState });
-    // const result = detailComponent.getByText('Jobs open by day');
-    // expect(result).toBeInTheDocument();
-  });
+  test('display jobs open by day title correctly correctly', () => {});
 
   test('display loading icon on init', async () => {
     customRender(<Detail />, { detailInitialState });
     expect(screen.getByText('LOADING')).toBeInTheDocument();
+  });
 
-    await act(async () => customRender(<Detail />, { detailInitialState }));
+  test('return error if fetch fails', async () => {
+    server.use(
+      rest.get('http://localhost:5000/api/v1/technologies', (req, res, ctx) => {
+        return res(ctx.status(500));
+      }),
+    );
+    customRender(<Detail />, { detailInitialState });
+    expect(screen.getByText('LOADING')).toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.getByText('Jobservatory')).toBeInTheDocument();
+      expect(screen.getByText('Error: Server error')).toBeInTheDocument();
     });
   });
 });

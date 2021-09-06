@@ -27,7 +27,7 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { jobsOpenByDate, loading, jobsOpenByCountry } = useSelector(
+  const { jobsOpenByDate, loading, jobsOpenByCountry, error } = useSelector(
     (state: RootState) => state.detail,
   );
   const { colorMode } = useColorMode();
@@ -47,6 +47,8 @@ export const Detail = () => {
 
   return loading ? (
     <div>LOADING</div>
+  ) : error ? (
+    <div>{error}</div>
   ) : (
     <div>
       <div

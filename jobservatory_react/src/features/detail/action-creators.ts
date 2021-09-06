@@ -30,7 +30,8 @@ export const fetchDataRequest = () => {
   };
 };
 
-export const fetchDataFailure = (error: any) => {
+export const fetchDataFailure = (error: string) => {
+  console.log(`errorcito`, error);
   return {
     type: FETCH_DATA_FAILURE,
     payload: error,
@@ -55,10 +56,8 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      // console.log(`techByNameResult`, techByNameResult);
-      if (techByNameResult) {
-        // console.log(`techByNameResult`, techByNameResult);
-        dispatch(addTech(techByNameResult));
+      if (techByNameResult.success) {
+        dispatch(addTech(techByNameResult.data));
       } else {
         dispatch(fetchDataEnd());
       }
@@ -74,15 +73,25 @@ export const fetchData = () => {
       const jobsOpenByDate = await fetchTechnologiesData();
       const jobsOpenByCountry = await fetchCountriesData();
       const questionsOpen = await fetchQuestionsData();
-      const fetchedData = {
-        jobsOpenByDate,
-        jobsOpenByCountry,
-        questionsOpen,
-      };
-      dispatch(fetchDataSuccess(fetchedData));
+      if (
+        jobsOpenByDate.success &&
+        jobsOpenByCountry.success &&
+        questionsOpen.success
+      ) {
+        const jobsOpenByDateData = jobsOpenByDate.data;
+        const jobsOpenByCountryData = jobsOpenByCountry.data;
+        const questionsOpenData = questionsOpen.data;
+        const fetchedData = {
+          jobsOpenByDateData,
+          jobsOpenByCountryData,
+          questionsOpenData,
+        };
+        dispatch(fetchDataSuccess(fetchedData));
+      } else {
+        throw new Error('Server error');
+      }
     } catch (error) {
-      console.log(`error show show`, error);
-      dispatch(fetchDataFailure(error));
+      dispatch(fetchDataFailure(error.toString()));
     }
   };
 };
