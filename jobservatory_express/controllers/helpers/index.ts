@@ -59,3 +59,18 @@ exports.parseDataToChart = (technologies) => {
   );
   return finalChartData;
 };
+
+exports.techMapping = {
+  'Angular.js': 'angular',
+  Django: 'django',
+  Express: 'express',
+  FastAPI: 'fastapi',
+  Flask: 'flask',
+  Java: 'java',
+  'Node.js': 'nodejs',
+  PHP: 'php',
+  Python: 'python',
+  'React.js': 'react',
+  'Ruby on Rails': 'rails',
+  'Vue.js': 'vue',
+};
