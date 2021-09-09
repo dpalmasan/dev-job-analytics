@@ -140,6 +140,9 @@ cython_debug/
 .vscode/
 jobserver-config.yaml
 
+# Development stuff we don't want to add to staging area
+dev/
+
 dump/
 
 config.env
