@@ -56,7 +56,7 @@ export const getCountryIndexElementToRemove = (
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
-      // console.log(`action.payload`, action.payload);
+      //console.log(`action.payload`, action.payload);
       const newJobsOpenByDate = [
         ...state.jobsOpenByDate,
         ...action.payload.jobsOpenByDate,

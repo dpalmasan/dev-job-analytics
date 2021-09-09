@@ -29,7 +29,12 @@ export const DetailCountry: FC<DetailCountryProps> = ({
 
   return loading ? (
     <div className='loading-container'>
-      <CircularProgress value={30} size='120px' isIndeterminate />
+      <CircularProgress
+        data-testid={'LOADING'}
+        value={30}
+        size='120px'
+        isIndeterminate
+      />
     </div>
   ) : (
     <ResponsiveBar

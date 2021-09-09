@@ -55,4 +55,63 @@ export const dataHandlers = [
     };
     return res(ctx.status(200), ctx.json(finalData));
   }),
+  rest.get(
+    `http://localhost:5000/api/v1/technologies/React.js`,
+    (req, res, ctx) => {
+      const questionsOpen = [
+        {
+          color: 'hsl(207, 70%, 50%)',
+          data: [{ x: '8/8/2021', y: 380 }],
+          id: 'React.js',
+        },
+      ];
+      const jobsOpenByDate = [
+        {
+          color: 'hsl(207, 70%, 50%)',
+          data: [{ x: '2021-09-01T00:00:00.000Z', y: 514836 }],
+          id: 'React.js',
+        },
+      ];
+      const jobsOpenByCountry = [
+        {
+          _id: '612cfb05be86bd4e49c7711e',
+          name: 'React.js',
+          date: '2021-08-30T00:00:00.000Z',
+          jobs_total: 159905,
+          countries: [
+            {
+              name: 'Estados Unidos',
+              jobs: 64616,
+            },
+          ],
+        },
+      ];
+      const data = {
+        questionsOpen,
+        jobsOpenByDate,
+        jobsOpenByCountry,
+      };
+      const finalData = {
+        count: 1,
+        data,
+        success: true,
+      };
+      return res(ctx.status(200), ctx.json(finalData));
+    },
+  ),
+
+  // try {
+  //   const fetchedTech = await fetch(
+  //     `http://localhost:5000/api/v1/technologies/${searchValue}`,
+  //   );
+  //   if (!fetchedTech.ok) {
+  //     throw new Error('Server error');
+  //   }
+  //   const response = await fetchedTech.json();
+  //   return response;
+  // } catch (error) {
+  //   //TODO: Raise warning that element doesn't exist
+  //   console.log(`PASO 3 ERROR ADENTRO`, { ok: false, error });
+  //   return { ok: false, error };
+  // }
 ];

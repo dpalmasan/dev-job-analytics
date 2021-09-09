@@ -38,7 +38,13 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('<Detail />', () => {
-  test('display jobs open by day title correctly correctly', () => {});
+  test('display jobs open by day title correctly on init', async () => {
+    customRender(<Detail />, { detailInitialState });
+    expect(screen.getByText('LOADING')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Jobservatory')).toBeInTheDocument();
+    });
+  });
 
   test('display loading icon on init', async () => {
     customRender(<Detail />, { detailInitialState });

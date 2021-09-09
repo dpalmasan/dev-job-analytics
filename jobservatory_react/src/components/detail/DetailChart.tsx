@@ -22,7 +22,12 @@ export const DetailChart: FC<DetailChartProps> = ({
   }
   return loading ? (
     <div className='loading-container'>
-      <CircularProgress value={30} size='120px' isIndeterminate />
+      <CircularProgress
+        data-testid={'LOADING'}
+        value={30}
+        size='120px'
+        isIndeterminate
+      />
     </div>
   ) : (
     <ResponsiveLine

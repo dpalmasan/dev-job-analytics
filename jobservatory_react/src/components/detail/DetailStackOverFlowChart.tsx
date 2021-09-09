@@ -1,12 +1,12 @@
-import { CircularProgress, useColorMode } from "@chakra-ui/react";
-import { ResponsiveLine } from "@nivo/line";
-import React, { FC } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../features/store";
+import { CircularProgress, useColorMode } from '@chakra-ui/react';
+import { ResponsiveLine } from '@nivo/line';
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../features/store';
 
 export const DetailStackOverFlowChart: FC = () => {
   const { questionsOpen, loading } = useSelector(
-    (state: RootState) => state.detail
+    (state: RootState) => state.detail,
   );
   const { colorMode } = useColorMode();
 
@@ -18,41 +18,46 @@ export const DetailStackOverFlowChart: FC = () => {
     }
   }
   return loading ? (
-    <div className="loading-container">
-      <CircularProgress value={30} size="120px" isIndeterminate />
+    <div className='loading-container'>
+      <CircularProgress
+        data-testid={'LOADING'}
+        value={30}
+        size='120px'
+        isIndeterminate
+      />
     </div>
   ) : (
     <ResponsiveLine
       lineWidth={3}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: 'nivo' }}
       data={questionsOpen}
       margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
-      xScale={{ type: "point" }}
-      theme={{ textColor: colorMode === "light" ? "black" : "white" }}
+      xScale={{ type: 'point' }}
+      theme={{ textColor: colorMode === 'light' ? 'black' : 'white' }}
       yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
+        type: 'linear',
+        min: 'auto',
+        max: 'auto',
         stacked: false,
         reverse: false,
       }}
-      yFormat=" >-.2f"
+      yFormat=' >-.2f'
       axisTop={null}
       axisRight={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: -45,
-        legend: "Day",
+        legend: 'Day',
         legendOffset: 36,
-        legendPosition: "middle",
+        legendPosition: 'middle',
       }}
       tooltip={({ point }) => (
         <div
           style={{
             padding: 12,
-            color: colorMode === "light" ? "black" : "white",
-            background: colorMode === "light" ? "white" : "#222222",
+            color: colorMode === 'light' ? 'black' : 'white',
+            background: colorMode === 'light' ? 'white' : '#222222',
           }}
         >
           <strong>
@@ -64,36 +69,36 @@ export const DetailStackOverFlowChart: FC = () => {
         tickSize: 5,
         tickPadding: 0,
         tickRotation: 0,
-        legend: "Questions Asked",
+        legend: 'Questions Asked',
         legendOffset: -55,
-        legendPosition: "middle",
+        legendPosition: 'middle',
       }}
       pointSize={10}
-      pointColor={{ theme: "background" }}
+      pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
+      pointBorderColor={{ from: 'serieColor' }}
       pointLabelYOffset={-12}
       useMesh={true}
       legends={[
         {
-          anchor: "bottom-right",
-          direction: "column",
+          anchor: 'bottom-right',
+          direction: 'column',
           justify: false,
           translateX: 100,
           translateY: 0,
           itemsSpacing: 0,
-          itemDirection: "left-to-right",
+          itemDirection: 'left-to-right',
           itemWidth: 80,
           itemHeight: 20,
           itemOpacity: 0.75,
           symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
+          symbolShape: 'circle',
+          symbolBorderColor: 'rgba(0, 0, 0, .5)',
           effects: [
             {
-              on: "hover",
+              on: 'hover',
               style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
+                itemBackground: 'rgba(0, 0, 0, .03)',
                 itemOpacity: 1,
               },
             },

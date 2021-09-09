@@ -56,41 +56,48 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
+      console.log(`techByNameResult`, techByNameResult);
       if (techByNameResult.success) {
+        console.log('techByNameResult fue exitoso');
         dispatch(addTech(techByNameResult.data));
       } else {
-        dispatch(fetchDataEnd());
+        throw new Error('Server error');
+        //dispatch(fetchDataEnd());
       }
     } catch (error) {
+      console.log('MEGA ERROR');
       dispatch(fetchDataFailure(error));
     }
   };
 };
+
 export const fetchData = () => {
   return async (dispatch: any) => {
     dispatch(fetchDataRequest());
     try {
-      const jobsOpenByDate = await fetchTechnologiesData();
-      const jobsOpenByCountry = await fetchCountriesData();
-      const questionsOpen = await fetchQuestionsData();
+      const jobsOpenByDateValues = await fetchTechnologiesData();
+      const jobsOpenByCountryValues = await fetchCountriesData();
+      const questionsOpenValues = await fetchQuestionsData();
       if (
-        jobsOpenByDate.success &&
-        jobsOpenByCountry.success &&
-        questionsOpen.success
+        jobsOpenByDateValues.success &&
+        jobsOpenByCountryValues.success &&
+        questionsOpenValues.success
       ) {
-        const jobsOpenByDateData = jobsOpenByDate.data;
-        const jobsOpenByCountryData = jobsOpenByCountry.data;
-        const questionsOpenData = questionsOpen.data;
+        const jobsOpenByDate = jobsOpenByDateValues.data;
+        const jobsOpenByCountry = jobsOpenByCountryValues.data;
+        const questionsOpen = questionsOpenValues.data;
         const fetchedData = {
-          jobsOpenByDateData,
-          jobsOpenByCountryData,
-          questionsOpenData,
+          jobsOpenByDate,
+          jobsOpenByCountry,
+          questionsOpen,
         };
+        console.log(`fetchedData`, fetchedData);
         dispatch(fetchDataSuccess(fetchedData));
       } else {
         throw new Error('Server error');
       }
     } catch (error) {
+      console.log(`error`, error);
       dispatch(fetchDataFailure(error.toString()));
     }
   };

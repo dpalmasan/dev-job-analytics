@@ -3,16 +3,12 @@ export const fetchTechnologiesData = async () => {
     const techsPromise = await fetch(
       'http://localhost:5000/api/v1/technologies',
     );
-    console.log(`PASO 1 ADENTRO`, techsPromise);
     if (!techsPromise.ok) {
       throw new Error('Server error');
     }
     const techs = await techsPromise.json();
-    console.log(`PASO 2 techs`, techs);
-
     return techs;
   } catch (error) {
-    console.log(`PASO 3 ERROR ADENTRO`, { ok: false, error });
     return { ok: false, error };
   }
 };
@@ -28,7 +24,6 @@ export const fetchCountriesData = async () => {
     const techsByCountries = await techPormiseByCountry.json();
     return techsByCountries;
   } catch (error) {
-    console.log(`PASO 3 ERROR ADENTRO`, { ok: false, error });
     return { ok: false, error };
   }
 };
@@ -44,7 +39,6 @@ export const fetchQuestionsData = async () => {
     const techsByQuestions = await techsPromiseByQuestions.json();
     return techsByQuestions;
   } catch (error) {
-    console.log(`PASO 3 ERROR ADENTRO`, { ok: false, error });
     return { ok: false, error };
   }
 };
@@ -61,7 +55,6 @@ export const fetchTechnologyByNameData = async (searchValue: string) => {
     return response;
   } catch (error) {
     //TODO: Raise warning that element doesn't exist
-    console.log(`PASO 3 ERROR ADENTRO`, { ok: false, error });
     return { ok: false, error };
   }
 };
