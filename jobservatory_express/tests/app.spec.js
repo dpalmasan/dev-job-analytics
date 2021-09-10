@@ -4,17 +4,6 @@ const chaiExclude = require('chai-exclude');
 const redis = require('redis');
 const sinon = require('sinon');
 const mongoose = require('mongoose');
-
-// Adding stubs to redis Nodejs because we don't want to have the tests
-// hang
-const redisClient = {
-  getAsync: () => undefined,
-  setex: () => {},
-};
-
-sinon.stub(redis, 'createClient').callsFake(() => redisClient);
-
-const createApp = require('../app');
 const connectDB = require('../config/db');
 const StackOverflowQuestions = require('../models/StackOverflowQuestion');
 const JobserverRecord = require('../models/Technology');
@@ -27,6 +16,14 @@ process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory';
 describe('Jobservatory server', () => {
   let app;
   let server;
+  // Adding stubs to redis Nodejs because we don't want to have the tests
+  // hang
+  const redisClient = {
+    getAsync: () => undefined,
+    setex: () => {},
+  };
+
+  let createApp;
   const questions = [
     {
       tag: 'php',
@@ -62,6 +59,11 @@ describe('Jobservatory server', () => {
   ];
 
   before((done) => {
+    // To avoid re-wrapping a wrapped function on async load file.
+    sinon.stub(redis, 'createClient').callsFake(() => redisClient);
+
+    // eslint-disable-next-line global-require
+    createApp = require('../app');
     this.clock = (date) => sinon.useFakeTimers(new Date(date));
     this.clock('2021-08-12');
     connectDB()
@@ -102,6 +104,10 @@ describe('Jobservatory server', () => {
       if (err) {
         done(err);
       }
+
+      // Restore stub for other tests!
+      redis.createClient.restore();
+
       // Mocha will hang if we do not close the server!
       server.close(() => {
         done();
