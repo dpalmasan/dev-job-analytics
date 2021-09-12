@@ -1,6 +1,8 @@
 const StackOverflowQuestion = require('../models/StackOverflowQuestion');
 const helpers = require('./helpers/index.ts');
-const redisClient = require('../config/redis-cache');
+const { getRedisClient } = require('../config/redis-cache');
+
+const redisClient = getRedisClient();
 
 // @desc Get all questions
 // @route GET /api/v1/questions

@@ -13,16 +13,16 @@ chai.use(chaiExclude);
 
 process.env.MONGO_URI = 'mongodb://localhost:27017/jobservatory';
 
-describe('Jobservatory server', () => {
+// Adding stubs to redis Nodejs because we don't want to have the tests
+// hang
+const redisClient = {
+  getAsync: () => undefined,
+  setex: () => {},
+};
+
+describe('Jobservatory server GET endpoints', () => {
   let app;
   let server;
-  // Adding stubs to redis Nodejs because we don't want to have the tests
-  // hang
-  const redisClient = {
-    getAsync: () => undefined,
-    setex: () => {},
-  };
-
   let createApp;
   const questions = [
     {
@@ -280,6 +280,110 @@ describe('Jobservatory server', () => {
           },
           success: true,
         }, ['_id']);
+        return done();
+      });
+  });
+});
+
+describe('Jobservatory app errors on GET requests', () => {
+  let app;
+  let server;
+  before((done) => {
+    const error = new Error('Some error for test purposes');
+
+    sinon.stub(redis, 'createClient').callsFake(() => redisClient);
+    sinon.stub(StackOverflowQuestions, 'find').throws(error);
+    sinon.stub(JobserverRecord, 'find').throws(error);
+
+    // eslint-disable-next-line global-require
+    const createApp = require('../app');
+    this.clock = (date) => sinon.useFakeTimers(new Date(date));
+    this.clock('2021-08-12');
+    app = createApp();
+    server = app.listen((serverErr) => {
+      if (serverErr) {
+        done(serverErr);
+      }
+      done();
+    });
+  });
+
+  after((done) => {
+    redis.createClient.restore();
+    StackOverflowQuestions.find.restore();
+    JobserverRecord.find.restore();
+    server.close(() => {
+      done();
+    });
+  });
+
+  it('Should throw proper message on error in /api/v1/questions', (done) => {
+    request(app)
+      .get('/api/v1/questions')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(500, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          error: 'Server error Error: Some error for test purposes',
+          success: false,
+        });
+        return done();
+      });
+  });
+  it('Should throw proper message on error in /api/v1/technologies', (done) => {
+    request(app)
+      .get('/api/v1/technologies')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(500, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          error: 'Server error Error: Some error for test purposes',
+          success: false,
+        });
+        return done();
+      });
+  });
+
+  it('Should throw proper message on error in /api/v1/technologies/:name', (done) => {
+    request(app)
+      .get('/api/v1/technologies/Angular.js')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(500, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          error: 'Server error Error: Some error for test purposes',
+          success: false,
+        });
+        return done();
+      });
+  });
+
+  it('Should throw proper message on error in /api/v1/technologies/countries', (done) => {
+    request(app)
+      .get('/api/v1/technologies/countries')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(500, (err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const results = res.body;
+        expect(results).to.be.deep.equal({
+          error: 'Server error Error: Some error for test purposes',
+          success: false,
+        });
         return done();
       });
   });

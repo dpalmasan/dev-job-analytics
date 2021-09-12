@@ -2,7 +2,9 @@ const moment = require('moment');
 const helpers = require('./helpers/index.ts');
 const Technology = require('../models/Technology');
 const StackOverflowQuestion = require('../models/StackOverflowQuestion');
-const redisClient = require('../config/redis-cache');
+const { getRedisClient } = require('../config/redis-cache');
+
+const redisClient = getRedisClient();
 
 /* eslint-disable no-unused-vars */
 // @desc Get all techs
