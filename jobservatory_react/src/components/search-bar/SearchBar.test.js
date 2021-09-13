@@ -45,7 +45,7 @@ afterAll(() => server.close());
 describe('<SearchBar />', () => {
   test('check the input is changing correctly and trigger the correct search on ENTER key press', async () => {
     customRender(<Detail />, { detailInitialState });
-    expect(screen.getByText('LOADING')).toBeInTheDocument();
+    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
     await waitFor(() => {
       expect(screen.getByText('Jobservatory')).toBeInTheDocument();
     });
@@ -55,13 +55,42 @@ describe('<SearchBar />', () => {
     fireEvent.change(inputComponent, { target: { value: 'React.js' } });
     const inputGroup = screen.getByTestId('input-searchbar-group');
     fireEvent.keyPress(inputGroup, { key: 'Enter', keyCode: 13 });
-    expect(screen.getByText('LOADING')).toBeInTheDocument();
+    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
     await waitFor(() => {
       expect(screen.getByText('Jobservatory')).toBeInTheDocument();
     });
   });
 
-  test('check that the input is changing correctly and not trigger search if the button pressed is not ENTER', () => {
+  test('return error if fetch on fetchTechnologyByNameData fails', async () => {
+    const searchValue = 'Java';
+    server.use(
+      rest.get(
+        `http://localhost:5000/api/v1/technologies/${searchValue}`,
+        (req, res, ctx) => {
+          return res(ctx.status(500));
+        },
+      ),
+    );
+    customRender(<Detail />, { detailInitialState });
+    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
+    await waitFor(() => {
+      expect(screen.getByText('Jobservatory')).toBeInTheDocument();
+    });
+    const inputComponent = screen.getByPlaceholderText(
+      'Add technologies: React, Ruby ...',
+    );
+    fireEvent.change(inputComponent, { target: { value: 'Java' } });
+    const inputGroup = screen.getByTestId('input-searchbar-group');
+    fireEvent.keyPress(inputGroup, { key: 'Enter', keyCode: 13 });
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Error: Server error')).toBeInTheDocument();
+    });
+  });
+
+  test('check that the input is changing correctly and not trigger search if the button pressed is NOT ENTER', () => {
     const mockHandler = jest.fn();
     const searchComponent = render(<SearchBar fetchTechByName={mockHandler} />);
     const inputComponent = searchComponent.getByPlaceholderText(

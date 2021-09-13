@@ -56,17 +56,13 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      // console.log(`techByNameResult`, techByNameResult);
       if (techByNameResult.success) {
-        // console.log('techByNameResult fue exitoso');
         dispatch(addTech(techByNameResult.data));
       } else {
         throw new Error('Server error');
-        //dispatch(fetchDataEnd());
       }
     } catch (error) {
-      // console.log('MEGA ERROR');
-      dispatch(fetchDataFailure(error));
+      dispatch(fetchDataFailure(error.toString()));
     }
   };
 };

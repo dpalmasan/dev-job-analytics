@@ -1,5 +1,3 @@
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 import {
   addTech,
   fetchDataEnd,
@@ -10,9 +8,9 @@ import {
 } from './../../../features/detail/action-creators';
 import {
   detailReducer,
-  initialState as detailInitialState,
-  getIndexOfElementToRemove,
   getCountryIndexElementToRemove,
+  getIndexOfElementToRemove,
+  initialState as detailInitialState,
 } from './../../../features/detail/reducer';
 
 let jobsOpenByCountry;
@@ -50,16 +48,6 @@ beforeEach(() => {
       id: 'Java',
     },
   ];
-  setupServer(
-    rest.get(
-      'http://localhost:5000/api/v1/technologies/:name',
-      (req, res, ctx) => {
-        return res(
-          ctx.json({ jobsOpenByCountry, jobsOpenByDate, questionsOpen }),
-        );
-      },
-    ),
-  );
 });
 
 describe('detailReducer', () => {
@@ -75,6 +63,7 @@ describe('detailReducer', () => {
     };
     expect(updatedState).toEqual(newExpectedState);
   });
+
   test('return state correctly when FETCH_DATA_FAILURE action is trigger', () => {
     const fetchDataFailureAction = fetchDataFailure('This is an error');
     const updatedState = detailReducer(

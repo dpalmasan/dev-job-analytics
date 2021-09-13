@@ -63,7 +63,7 @@ describe('<DetailChartTag />', () => {
 
   test('Should the X icon inside the tag remove one element', async () => {
     customRender(<Detail />, { detailInitialState });
-    expect(screen.getByText('LOADING')).toBeInTheDocument();
+    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
     await waitFor(() => {
       expect(screen.getByTestId('tag-close-button-Java')).toBeInTheDocument();
     });

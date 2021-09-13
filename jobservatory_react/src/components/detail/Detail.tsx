@@ -44,9 +44,7 @@ export const Detail = () => {
     dispatch(removeTech(chartID));
   };
 
-  return loading ? (
-    <div>LOADING</div>
-  ) : error ? (
+  return error ? (
     <div>{error}</div>
   ) : (
     <div>
@@ -74,6 +72,7 @@ export const Detail = () => {
             textColor={'white'}
           >
             <Image
+              data-testid='logo-id'
               borderRadius='full'
               boxSize='70px'
               src={logo}
@@ -89,6 +88,7 @@ export const Detail = () => {
         <div className='technologies-input-container'>
           <SearchBar fetchTechByName={fetchTechByName} />
           <Select
+            data-testid='date-select-id'
             size='lg'
             borderColor='grey'
             color={theme.colors.teal}
@@ -97,7 +97,7 @@ export const Detail = () => {
             placeholder={'August 2021 '}
           />
         </div>
-        <div>
+        <div data-testid='detail-chart-tag-container-id'>
           <DetailChartTag
             removeElementOnChart={removeElementOnChart}
             jobsOpenByDate={jobsOpenByDate}
@@ -105,7 +105,10 @@ export const Detail = () => {
           />
         </div>
 
-        <div className='detail-chart-container'>
+        <div
+          className='common-chart-container'
+          data-testid='detail-chart-container-id'
+        >
           <Heading
             size='md'
             fontSize='35px'
@@ -118,7 +121,10 @@ export const Detail = () => {
           <DetailChart jobsOpenByDate={jobsOpenByDate} loading={loading} />
         </div>
 
-        <div className='detail-chart-country'>
+        <div
+          className='detail-chart-country'
+          data-testid='detail-chart-country-container-id'
+        >
           <Heading
             size='md'
             fontSize='35px'
@@ -133,7 +139,10 @@ export const Detail = () => {
             loading={loading}
           />
         </div>
-        <div className='detail-chart-container'>
+        <div
+          className='common-chart-container'
+          data-testid='questions-chart-container-id'
+        >
           <Heading
             size='md'
             fontSize='35px'
