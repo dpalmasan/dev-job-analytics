@@ -27,9 +27,8 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { jobsOpenByDate, loading, jobsOpenByCountry, error } = useSelector(
-    (state: RootState) => state.detail,
-  );
+  const { jobsOpenByDate, loading, jobsOpenByCountry, error, questionsOpen } =
+    useSelector((state: RootState) => state.detail);
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
 
@@ -144,7 +143,10 @@ export const Detail = () => {
           >
             StackOverFlow activity
           </Heading>
-          <DetailStackOverFlowChart />
+          <DetailStackOverFlowChart
+            questionsOpen={questionsOpen}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

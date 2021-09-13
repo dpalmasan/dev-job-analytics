@@ -130,7 +130,7 @@ export function detailReducer(state = initialState, action: any): ChartState {
       };
     }
     case FETCH_DATA_FAILURE: {
-      console.log(`action.payload del error`, action.payload);
+      // console.log(`action.payload del error`, action.payload);
       return {
         ...state,
         loading: false,

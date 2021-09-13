@@ -31,7 +31,7 @@ export const fetchDataRequest = () => {
 };
 
 export const fetchDataFailure = (error: string) => {
-  console.log(`errorcito`, error);
+  // console.log(`errorcito`, error);
   return {
     type: FETCH_DATA_FAILURE,
     payload: error,
@@ -56,16 +56,16 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      console.log(`techByNameResult`, techByNameResult);
+      // console.log(`techByNameResult`, techByNameResult);
       if (techByNameResult.success) {
-        console.log('techByNameResult fue exitoso');
+        // console.log('techByNameResult fue exitoso');
         dispatch(addTech(techByNameResult.data));
       } else {
         throw new Error('Server error');
         //dispatch(fetchDataEnd());
       }
     } catch (error) {
-      console.log('MEGA ERROR');
+      // console.log('MEGA ERROR');
       dispatch(fetchDataFailure(error));
     }
   };
@@ -91,13 +91,13 @@ export const fetchData = () => {
           jobsOpenByCountry,
           questionsOpen,
         };
-        console.log(`fetchedData`, fetchedData);
+        // console.log(`fetchedData`, fetchedData);
         dispatch(fetchDataSuccess(fetchedData));
       } else {
         throw new Error('Server error');
       }
     } catch (error) {
-      console.log(`error`, error);
+      // console.log(`error`, error);
       dispatch(fetchDataFailure(error.toString()));
     }
   };

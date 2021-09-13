@@ -12,8 +12,10 @@ export const DetailChartTag = ({
   loading,
   removeElementOnChart,
 }: DetailChartTagProps) => {
+  // console.log(`iniciando component`, jobsOpenByDate);
+
   return !loading && jobsOpenByDate.length > 0 ? (
-    <div className='tag-container'>
+    <div className='tag-container' data-testid={'tags-pills'}>
       {jobsOpenByDate.map((charData: ChartLine, index) => {
         return (
           <div style={{ margin: 3 }} key={index}>
@@ -25,6 +27,7 @@ export const DetailChartTag = ({
             >
               <TagLabel>{charData.id}</TagLabel>
               <TagCloseButton
+                data-testid={`tag-close-button-${charData.id}`}
                 onClick={() => removeElementOnChart(charData.id)}
               />
             </Tag>
