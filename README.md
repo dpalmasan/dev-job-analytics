@@ -1,6 +1,6 @@
 # Jobservatory (WIP)
 
-A platform to analyze technology trend over time, based on information on múltiple platform.
+A platform to analyze technologies trend over time, by country, and by importance on StackOverFlow.
 
 ## Scrappers
 
