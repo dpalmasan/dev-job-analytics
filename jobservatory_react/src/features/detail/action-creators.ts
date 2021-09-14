@@ -31,7 +31,6 @@ export const fetchDataRequest = () => {
 };
 
 export const fetchDataFailure = (error: string) => {
-  // console.log(`errorcito`, error);
   return {
     type: FETCH_DATA_FAILURE,
     payload: error,
@@ -87,13 +86,11 @@ export const fetchData = () => {
           jobsOpenByCountry,
           questionsOpen,
         };
-        // console.log(`fetchedData`, fetchedData);
         dispatch(fetchDataSuccess(fetchedData));
       } else {
         throw new Error('Server error');
       }
     } catch (error) {
-      // console.log(`error`, error);
       dispatch(fetchDataFailure(error.toString()));
     }
   };

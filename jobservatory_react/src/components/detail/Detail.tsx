@@ -1,5 +1,5 @@
 import { Heading, Image, Select, theme, useColorMode } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import {
@@ -29,8 +29,17 @@ export interface ChartLine {
 export const Detail = () => {
   const { jobsOpenByDate, loading, jobsOpenByCountry, error, questionsOpen } =
     useSelector((state: RootState) => state.detail);
-  const { colorMode } = useColorMode();
   const dispatch = useDispatch();
+  const [currentColor, setCurrentColor] = useState('white');
+  const { colorMode } = useColorMode();
+
+  useEffect(() => {
+    if (colorMode === 'light') {
+      setCurrentColor(theme.colors.linkedin[800]);
+    } else {
+      setCurrentColor('white');
+    }
+  }, [colorMode]);
 
   useEffect(() => {
     dispatch(fetchData());
@@ -104,7 +113,6 @@ export const Detail = () => {
             loading={loading}
           />
         </div>
-
         <div
           className='common-chart-container'
           data-testid='detail-chart-container-id'
@@ -113,7 +121,7 @@ export const Detail = () => {
             size='md'
             fontSize='35px'
             textAlign='center'
-            color={colorMode === 'light' ? theme.colors.linkedin[800] : 'white'}
+            color={currentColor}
           >
             Jobs open by day
           </Heading>
@@ -130,7 +138,7 @@ export const Detail = () => {
             fontSize='35px'
             marginTop='40px'
             textAlign='center'
-            color={colorMode === 'light' ? theme.colors.linkedin[800] : 'white'}
+            color={currentColor}
           >
             Jobs open by country
           </Heading>
@@ -148,7 +156,7 @@ export const Detail = () => {
             fontSize='35px'
             marginTop='120px'
             textAlign='center'
-            color={colorMode === 'light' ? theme.colors.linkedin[800] : 'white'}
+            color={currentColor}
           >
             StackOverFlow activity
           </Heading>

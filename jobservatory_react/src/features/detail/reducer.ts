@@ -39,8 +39,6 @@ export const initialState: ChartState = {
 };
 
 export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
-  // console.log(`values`, values);
-  // console.log(`action`, action);
   return values.findIndex((value: any) => value.id === action.payload);
 };
 
@@ -48,15 +46,12 @@ export const getCountryIndexElementToRemove = (
   values: DataByCountry[],
   action: any,
 ) => {
-  // console.log(`values`, values);
-  // console.log(`action`, action);
   return values.findIndex((value: any) => value.name === action.payload);
 };
 
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
-      //console.log(`action.payload`, action.payload);
       const newJobsOpenByDate = [
         ...state.jobsOpenByDate,
         ...action.payload.jobsOpenByDate,
@@ -80,7 +75,7 @@ export function detailReducer(state = initialState, action: any): ChartState {
     case REMOVE_TECH: {
       const currentJobsOpenByDate = [...state.jobsOpenByDate];
       const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
-      const currentQuestionsOpen = [...state.jobsOpenByDate];
+      const currentQuestionsOpen = [...state.questionsOpen];
 
       const indexOfElementToRemove = getIndexOfElementToRemove(
         currentJobsOpenByDate,
@@ -108,7 +103,6 @@ export function detailReducer(state = initialState, action: any): ChartState {
     }
 
     case FETCH_DATA_SUCCESS: {
-      // console.log(`data success`, action.payload);
       return {
         jobsOpenByDate: action.payload.jobsOpenByDate,
         jobsOpenByCountry: action.payload.jobsOpenByCountry,
@@ -130,7 +124,6 @@ export function detailReducer(state = initialState, action: any): ChartState {
       };
     }
     case FETCH_DATA_FAILURE: {
-      // console.log(`action.payload del error`, action.payload);
       return {
         ...state,
         loading: false,

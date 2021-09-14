@@ -20,7 +20,6 @@ export const DetailChart: FC<DetailChartProps> = ({
       value.x = new Date(value.x).toLocaleDateString();
     }
   }
-  console.log('Iniciando con', jobsOpenByDate);
   return loading ? (
     <div className='loading-container'>
       <CircularProgress

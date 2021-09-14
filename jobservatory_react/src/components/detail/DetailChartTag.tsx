@@ -12,8 +12,6 @@ export const DetailChartTag = ({
   loading,
   removeElementOnChart,
 }: DetailChartTagProps) => {
-  // console.log(`iniciando component`, jobsOpenByDate);
-
   return !loading && jobsOpenByDate.length > 0 ? (
     <div className='tag-container' data-testid={'tags-pills'}>
       {jobsOpenByDate.map((charData: ChartLine, index) => {
