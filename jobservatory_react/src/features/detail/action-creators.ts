@@ -30,7 +30,7 @@ export const fetchDataRequest = () => {
   };
 };
 
-export const fetchDataFailure = (error: any) => {
+export const fetchDataFailure = (error: string) => {
   return {
     type: FETCH_DATA_FAILURE,
     payload: error,
@@ -55,37 +55,43 @@ export const addTechData = (searchValue: string) => {
     dispatch(fetchDataRequest());
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
-      // console.log(`techByNameResult`, techByNameResult);
-      if (techByNameResult) {
-        // console.log(`techByNameResult`, techByNameResult);
-        dispatch(addTech(techByNameResult));
+      if (techByNameResult.success) {
+        dispatch(addTech(techByNameResult.data));
       } else {
-        dispatch(fetchDataEnd());
+        throw new Error('Server error');
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error));
+      dispatch(fetchDataFailure(error.toString()));
     }
   };
 };
 
 export const fetchData = () => {
   return async (dispatch: any) => {
-    // console.log('En proceso');
     dispatch(fetchDataRequest());
     try {
-      const jobsOpenByDate = await fetchTechnologiesData();
-      const jobsOpenByCountry = await fetchCountriesData();
-      const questionsOpen = await fetchQuestionsData();
-      const fetchedData = {
-        jobsOpenByDate,
-        jobsOpenByCountry,
-        questionsOpen,
-      };
-      // console.log(`fetchedData`, fetchedData);
-      dispatch(fetchDataSuccess(fetchedData));
+      const jobsOpenByDateValues = await fetchTechnologiesData();
+      const jobsOpenByCountryValues = await fetchCountriesData();
+      const questionsOpenValues = await fetchQuestionsData();
+      if (
+        jobsOpenByDateValues.success &&
+        jobsOpenByCountryValues.success &&
+        questionsOpenValues.success
+      ) {
+        const jobsOpenByDate = jobsOpenByDateValues.data;
+        const jobsOpenByCountry = jobsOpenByCountryValues.data;
+        const questionsOpen = questionsOpenValues.data;
+        const fetchedData = {
+          jobsOpenByDate,
+          jobsOpenByCountry,
+          questionsOpen,
+        };
+        dispatch(fetchDataSuccess(fetchedData));
+      } else {
+        throw new Error('Server error');
+      }
     } catch (error) {
-      console.log(`error show show`, error);
-      dispatch(fetchDataFailure(error));
+      dispatch(fetchDataFailure(error.toString()));
     }
   };
 };

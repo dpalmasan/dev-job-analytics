@@ -38,10 +38,20 @@ export const initialState: ChartState = {
   error: undefined,
 };
 
+export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
+  return values.findIndex((value: any) => value.id === action.payload);
+};
+
+export const getCountryIndexElementToRemove = (
+  values: DataByCountry[],
+  action: any,
+) => {
+  return values.findIndex((value: any) => value.name === action.payload);
+};
+
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
-      // console.log(`action.payload`, action.payload);
       const newJobsOpenByDate = [
         ...state.jobsOpenByDate,
         ...action.payload.jobsOpenByDate,
@@ -65,26 +75,25 @@ export function detailReducer(state = initialState, action: any): ChartState {
     case REMOVE_TECH: {
       const currentJobsOpenByDate = [...state.jobsOpenByDate];
       const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
-      const currentQuestionsOpen = [...state.jobsOpenByDate];
-      const indexOfElementToRemove = currentJobsOpenByDate.findIndex(
-        (value: any) => value.id === action.payload,
+      const currentQuestionsOpen = [...state.questionsOpen];
+
+      const indexOfElementToRemove = getIndexOfElementToRemove(
+        currentJobsOpenByDate,
+        action,
       );
-      const indexOfElementToRemoveOnCountry =
-        currentJobsOpenByCountry.findIndex(
-          (value: any) => value.id === action.payload,
-        );
-      const indexOfElementToRemoveOnQuestion = currentQuestionsOpen.findIndex(
-        (value: any) => value.id === action.payload,
+      const indexOfElementToRemoveOnCountry = getCountryIndexElementToRemove(
+        currentJobsOpenByCountry,
+        action,
       );
-      if (indexOfElementToRemove != null) {
-        currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
-      }
-      if (indexOfElementToRemoveOnCountry != null) {
-        currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
-      }
-      if (indexOfElementToRemoveOnQuestion != null) {
-        currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
-      }
+      const indexOfElementToRemoveOnQuestion = getIndexOfElementToRemove(
+        currentQuestionsOpen,
+        action,
+      );
+
+      currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
+      currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
+      currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
+
       return {
         ...state,
         jobsOpenByDate: currentJobsOpenByDate,
@@ -94,7 +103,6 @@ export function detailReducer(state = initialState, action: any): ChartState {
     }
 
     case FETCH_DATA_SUCCESS: {
-      // console.log(`data success`, action.payload);
       return {
         jobsOpenByDate: action.payload.jobsOpenByDate,
         jobsOpenByCountry: action.payload.jobsOpenByCountry,
