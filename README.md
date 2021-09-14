@@ -33,4 +33,3 @@ Our backend is an express server (`Nodejs`), from which we implement endpoints f
 As the name suggests, our frontend is built on `React` framework. Code is under `jobservatory_react`.
 
 ![jobservatoryShortSize](https://user-images.githubusercontent.com/4138483/133173765-4cb3c7d0-d598-4530-83d1-10e3e0708e5b.gif)
-
