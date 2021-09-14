@@ -1,5 +1,7 @@
 # Jobservatory: A platform for the intersection between Technologies and Jobs
 
+A platform to analyze technologies trend over time, by country, and by importance on StackOverFlow.
+
 <p align="center">
 <a href="https://github.com/dpalmasan/dev-job-analytics/actions"><img alt="Backend Build" src="https://github.com/dpalmasan/dev-job-analytics/actions/workflows/backend-build.yaml/badge.svg"></a>
 <a href="https://github.com/dpalmasan/dev-job-analytics/actions"><img alt="Backend Lint" src="https://github.com/dpalmasan/dev-job-analytics/actions/workflows/backend-lint.yaml/badge.svg"></a>
@@ -9,8 +11,6 @@
 <a href="https://github.com/dpalmasan/dev-job-analytics/actions"><img alt="Scraper Lint" src="https://github.com/dpalmasan/dev-job-analytics/actions/workflows/scraper-lint.yaml/badge.svg"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
-
-A platform to analyze technology trend over time, based on information on multiple platform. The architecture is shown in figure 1:
 
 <p align="center">
 <img alt="Jobservatory Architecture" src="https://gist.githubusercontent.com/dpalmasan/103d61ae06cfd3e7dee7888b391c1792/raw/6dc4d4d1dd3af3fdb29714b11cceea63c4b63f80/jobservatory-architecture.png">
