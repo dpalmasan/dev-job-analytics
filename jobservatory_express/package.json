@@ -11,6 +11,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "linter": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
