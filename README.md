@@ -30,6 +30,6 @@ Our backend is an express server (`Nodejs`), from which we implement endpoints f
 
 ## Jobservatory React
 
-As the name suggests, our frontend is built on `React` framework. Code is under `jobservatory_react`.
+As the name suggests, our frontend is built on `React` framework. Code is under `jobservatory_react`. For manage the states inside the react app we use `Redux`, for UI layouts in general `Chakra-ui`, and for charts we use `Nivo`. Tests are under `react-testing-library` reaching 70%.
 
 ![jobservatoryShortSize](https://user-images.githubusercontent.com/4138483/133173765-4cb3c7d0-d598-4530-83d1-10e3e0708e5b.gif)
