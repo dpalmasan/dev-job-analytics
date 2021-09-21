@@ -29,7 +29,12 @@ export const DetailCountry: FC<DetailCountryProps> = ({
 
   return loading ? (
     <div className='loading-container'>
-      <CircularProgress value={30} size='120px' isIndeterminate />
+      <CircularProgress
+        data-testid={'LOADING'}
+        value={30}
+        size='120px'
+        isIndeterminate
+      />
     </div>
   ) : (
     <ResponsiveBar
@@ -62,7 +67,7 @@ export const DetailCountry: FC<DetailCountryProps> = ({
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: -45,
         legend: 'Country',
         legendPosition: 'middle',
         legendOffset: 32,

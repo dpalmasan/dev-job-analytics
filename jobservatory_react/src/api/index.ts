@@ -1,54 +1,60 @@
 export const fetchTechnologiesData = async () => {
   try {
     const techsPromise = await fetch(
-      "http://localhost:5000/api/v1/technologies"
+      'http://localhost:5000/api/v1/technologies',
     );
+    if (!techsPromise.ok) {
+      throw new Error('Server error');
+    }
     const techs = await techsPromise.json();
-    return techs.data;
+    return techs;
   } catch (error) {
-    return [];
+    return { ok: false, error };
   }
 };
 
 export const fetchCountriesData = async () => {
   try {
     const techPormiseByCountry = await fetch(
-      "http://localhost:5000/api/v1/technologies/countries"
+      'http://localhost:5000/api/v1/technologies/countries',
     );
+    if (!techPormiseByCountry.ok) {
+      throw new Error('Server error');
+    }
     const techsByCountries = await techPormiseByCountry.json();
-    return techsByCountries.data;
+    return techsByCountries;
   } catch (error) {
-    return [];
+    return { ok: false, error };
   }
 };
 
 export const fetchQuestionsData = async () => {
   try {
     const techsPromiseByQuestions = await fetch(
-      "http://localhost:5000/api/v1/questions"
+      'http://localhost:5000/api/v1/questions',
     );
+    if (!techsPromiseByQuestions.ok) {
+      throw new Error('Server error');
+    }
     const techsByQuestions = await techsPromiseByQuestions.json();
-    return techsByQuestions.data;
+    return techsByQuestions;
   } catch (error) {
-    return [];
+    return { ok: false, error };
   }
 };
 
 export const fetchTechnologyByNameData = async (searchValue: string) => {
   try {
     const fetchedTech = await fetch(
-      `http://localhost:5000/api/v1/technologies/${searchValue}`
+      `http://localhost:5000/api/v1/technologies/${searchValue}`,
     );
-    const response = await fetchedTech.json();
-    const responseData = response.data;
-    if (responseData) {
-      return responseData;
-    } else {
-      //TODO: Raise warning that element doesn't exist
-      return null;
+    if (!fetchedTech.ok) {
+      throw new Error('Server error');
     }
+    const response = await fetchedTech.json();
+    return response;
   } catch (error) {
     //TODO: Raise warning that element doesn't exist
-    console.log(`error`, error);
+    return { ok: false, error };
   }
 };
