@@ -37,7 +37,9 @@ export const DetailChart: FC<DetailChartProps> = ({
         data={jobsOpenByDate}
         margin={{ top: 50, right: 110, bottom: 90, left: 60 }}
         xScale={{ type: 'point' }}
-        theme={{ textColor: colorMode === 'light' ? 'black' : 'white' }}
+        theme={{
+          textColor: colorMode === 'light' ? 'black' : 'white',
+        }}
         yScale={{
           type: 'linear',
           min: 'auto',

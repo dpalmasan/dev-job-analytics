@@ -49,7 +49,7 @@ describe('<SearchBar />', () => {
     await waitFor(() => {
       expect(screen.getByText('Jobservatory')).toBeInTheDocument();
     });
-    const inputComponent = screen.getByPlaceholderText(
+    const inputComponent = screen.getByLabelText(
       'Add technologies: React, Ruby ...',
     );
     fireEvent.change(inputComponent, { target: { value: 'React.js' } });
@@ -76,7 +76,7 @@ describe('<SearchBar />', () => {
     await waitFor(() => {
       expect(screen.getByText('Jobservatory')).toBeInTheDocument();
     });
-    const inputComponent = screen.getByPlaceholderText(
+    const inputComponent = screen.getByLabelText(
       'Add technologies: React, Ruby ...',
     );
     fireEvent.change(inputComponent, { target: { value: 'Java' } });
@@ -93,7 +93,7 @@ describe('<SearchBar />', () => {
   test('check that the input is changing correctly and not trigger search if the button pressed is NOT ENTER', () => {
     const mockHandler = jest.fn();
     const searchComponent = render(<SearchBar fetchTechByName={mockHandler} />);
-    const inputComponent = searchComponent.getByPlaceholderText(
+    const inputComponent = searchComponent.getByLabelText(
       'Add technologies: React, Ruby ...',
     );
     fireEvent.change(inputComponent, { target: { value: 'Java' } });
