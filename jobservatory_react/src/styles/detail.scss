@@ -1,5 +1,12 @@
 $applyBackground: false;
 
+
+#root {
+  // Scss variables which we gonna assign using
+  // useState and JavaScript in reactJS
+  $color-mode: white;
+}
+
 .detail-container {
   height: 100vh;
   display: flex;
@@ -50,4 +57,18 @@ $applyBackground: false;
   justify-content: center;
   height: 100%;
   align-items: center;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-mode !important);
+  color: var(--color-mode) !important;
+  
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-mode) !important;;
+  color: var(--color-mode)  !important;;
+}
+.MuiOutlinedInput-root {
+  color: var(--color-mode) !important;
 }

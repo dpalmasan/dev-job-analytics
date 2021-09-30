@@ -27,8 +27,14 @@ export interface ChartLine {
 }
 
 export const Detail = () => {
-  const { jobsOpenByDate, loading, jobsOpenByCountry, error, questionsOpen } =
-    useSelector((state: RootState) => state.detail);
+  const {
+    jobsOpenByDate,
+    loading,
+    jobsOpenByCountry,
+    error,
+    questionsOpen,
+    listOfTechs,
+  } = useSelector((state: RootState) => state.detail);
   const dispatch = useDispatch();
   const [currentColor, setCurrentColor] = useState('white');
   const { colorMode } = useColorMode();
@@ -46,6 +52,11 @@ export const Detail = () => {
   }, [dispatch]);
 
   const fetchTechByName = async (searchValue: string) => {
+    const alreadyExists = jobsOpenByDate.some(
+      (jobOpen) => jobOpen.id === searchValue,
+    );
+
+    if (alreadyExists) return;
     dispatch(addTechData(searchValue));
   };
 
@@ -95,7 +106,11 @@ export const Detail = () => {
       </div>
       <div className='detail-container'>
         <div className='technologies-input-container'>
-          <SearchBar fetchTechByName={fetchTechByName} />
+          <SearchBar
+            listOfTechs={listOfTechs}
+            jobsOpenByDate={jobsOpenByDate}
+            fetchTechByName={fetchTechByName}
+          />
           <Select
             data-testid='date-select-id'
             size='lg'

@@ -16,7 +16,7 @@ import {
 let jobsOpenByCountry;
 let jobsOpenByDate;
 let questionsOpen;
-
+let listOfTechs;
 beforeEach(() => {
   jobsOpenByCountry = [
     {
@@ -32,7 +32,7 @@ beforeEach(() => {
       ],
     },
   ];
-
+  listOfTechs = ['Java'];
   jobsOpenByDate = [
     {
       color: 'hsl(207, 70%, 50%)',
@@ -94,6 +94,7 @@ describe('detailReducer', () => {
       jobsOpenByDate: jobsOpenByDate,
       jobsOpenByCountry: jobsOpenByCountry,
       questionsOpen: questionsOpen,
+      listOfTechs: listOfTechs,
       loading: false,
       error: undefined,
     };
@@ -111,6 +112,7 @@ describe('detailReducer', () => {
       jobsOpenByDate: jobsOpenByDate,
       jobsOpenByCountry: jobsOpenByCountry,
       questionsOpen: questionsOpen,
+      listOfTechs: [],
       loading: false,
       error: undefined,
     };
@@ -132,6 +134,7 @@ describe('detailReducer', () => {
     let newExpectedState = {
       jobsOpenByDate: jobsOpenByDate,
       jobsOpenByCountry: jobsOpenByCountry,
+      listOfTechs: listOfTechs,
       questionsOpen: questionsOpen,
       loading: false,
       error: undefined,
@@ -146,6 +149,7 @@ describe('detailReducer', () => {
       jobsOpenByDate: [],
       jobsOpenByCountry: [],
       questionsOpen: [],
+      listOfTechs: [],
       loading: false,
       error: undefined,
     };
@@ -170,9 +174,6 @@ describe('detailReducer', () => {
   test('return correct array when the removeElements function are trigger', () => {
     const action = { payload: 'Java' };
     let index = getIndexOfElementToRemove(jobsOpenByDate, action);
-    expect(index).not.toEqual(-1);
-    //Second function that find index on countries
-    index = getCountryIndexElementToRemove(jobsOpenByCountry, action);
     expect(index).not.toEqual(-1);
   });
 });

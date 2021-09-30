@@ -26,6 +26,7 @@ interface ChartState {
   jobsOpenByDate: ChartLine[];
   jobsOpenByCountry: DataByCountry[];
   questionsOpen: ChartLine[];
+  listOfTechs: string[];
   loading: boolean;
   error?: string;
 }
@@ -34,19 +35,13 @@ export const initialState: ChartState = {
   jobsOpenByDate: [],
   jobsOpenByCountry: [],
   questionsOpen: [],
+  listOfTechs: [],
   loading: false,
   error: undefined,
 };
 
 export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
   return values.findIndex((value: any) => value.id === action.payload);
-};
-
-export const getCountryIndexElementToRemove = (
-  values: DataByCountry[],
-  action: any,
-) => {
-  return values.findIndex((value: any) => value.name === action.payload);
 };
 
 export function detailReducer(state = initialState, action: any): ChartState {
@@ -81,32 +76,37 @@ export function detailReducer(state = initialState, action: any): ChartState {
         currentJobsOpenByDate,
         action,
       );
-      const indexOfElementToRemoveOnCountry = getCountryIndexElementToRemove(
-        currentJobsOpenByCountry,
-        action,
-      );
       const indexOfElementToRemoveOnQuestion = getIndexOfElementToRemove(
         currentQuestionsOpen,
         action,
       );
 
       currentJobsOpenByDate.splice(indexOfElementToRemove, 1);
-      currentJobsOpenByCountry.splice(indexOfElementToRemoveOnCountry, 1);
+      const filteredJobOpenByCountry = currentJobsOpenByCountry.filter(
+        (value) => value.name !== action.payload,
+      );
       currentQuestionsOpen.splice(indexOfElementToRemoveOnQuestion, 1);
-
       return {
         ...state,
         jobsOpenByDate: currentJobsOpenByDate,
-        jobsOpenByCountry: currentJobsOpenByCountry,
+        jobsOpenByCountry: filteredJobOpenByCountry,
         questionsOpen: currentQuestionsOpen,
       };
     }
 
     case FETCH_DATA_SUCCESS: {
+      const listOfTechs = [];
+      if (action.payload.jobsOpenByDate.length > 0) {
+        for (let i = 0; i < action.payload.jobsOpenByDate.length; i++) {
+          const job = action.payload.jobsOpenByDate[i];
+          listOfTechs.push(job.id);
+        }
+      }
       return {
         jobsOpenByDate: action.payload.jobsOpenByDate,
         jobsOpenByCountry: action.payload.jobsOpenByCountry,
         questionsOpen: action.payload.questionsOpen,
+        listOfTechs: listOfTechs,
         loading: false,
         error: undefined,
       };
