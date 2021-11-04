@@ -14,9 +14,9 @@ export const DetailChartTag = ({
 }: DetailChartTagProps) => {
   return !loading && jobsOpenByDate.length > 0 ? (
     <div className='tag-container' data-testid={'tags-pills'}>
-      {jobsOpenByDate.map((charData: ChartLine, index) => {
+      {jobsOpenByDate.map((charData: ChartLine) => {
         return (
-          <div style={{ margin: 3 }} key={index}>
+          <div style={{ margin: 3 }} key={charData.id}>
             <Tag
               size='lg'
               borderRadius='full'

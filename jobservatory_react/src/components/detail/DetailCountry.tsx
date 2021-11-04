@@ -26,7 +26,6 @@ export const DetailCountry: FC<DetailCountryProps> = ({
     }
     arrayFormattedToShow.push(objectFormatted);
   }
-
   return loading ? (
     <div className='loading-container'>
       <CircularProgress

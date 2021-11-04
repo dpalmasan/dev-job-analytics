@@ -5,6 +5,7 @@ import {
   fetchTechnologyByNameData,
 } from '../../api';
 import { ChartLine } from '../../components/detail/Detail';
+import { techMapping } from '../../core/tech-mapping';
 import {
   ADD_TECH,
   FETCH_DATA_END,
@@ -14,9 +15,9 @@ import {
   REMOVE_TECH,
 } from './actions';
 
-export const addTech = (data: ChartLine) => ({
+export const addTech = (charlineObject: ChartLine) => ({
   type: ADD_TECH,
-  payload: data,
+  payload: charlineObject,
 });
 
 export const removeTech = (chartId: string) => ({
@@ -56,7 +57,8 @@ export const addTechData = (searchValue: string) => {
     try {
       const techByNameResult = await fetchTechnologyByNameData(searchValue);
       if (techByNameResult.success) {
-        dispatch(addTech(techByNameResult.data));
+        console.log(`techByNameResult`, techByNameResult);
+        dispatch(addTech(techByNameResult));
       } else {
         throw new Error('Server error');
       }
@@ -81,6 +83,13 @@ export const fetchData = () => {
         const jobsOpenByDate = jobsOpenByDateValues.data;
         const jobsOpenByCountry = jobsOpenByCountryValues.data;
         const questionsOpen = questionsOpenValues.data;
+        for (let i = 0; i < questionsOpen.length; i++) {
+          if (!techMapping.get(questionsOpen[i].id)) {
+          }
+          const id = techMapping.get(questionsOpen[i].id);
+
+          questionsOpen[i].id = id;
+        }
         const fetchedData = {
           jobsOpenByDate,
           jobsOpenByCountry,

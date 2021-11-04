@@ -1,5 +1,5 @@
 import { Heading, Image, Select, theme, useColorMode } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import {
@@ -8,7 +8,7 @@ import {
   removeTech,
 } from '../../features/detail/action-creators';
 import { RootState } from '../../features/store';
-import { SearchBar } from '../search-bar/SearchBar';
+import { Item, SearchBar } from '../search-bar/SearchBar';
 import logo from './../../images/vector-person-looking-in-binoculars-illustration.jpg';
 import './../../styles/detail.scss';
 import { DetailChart } from './DetailChart';
@@ -38,6 +38,10 @@ export const Detail = () => {
   const dispatch = useDispatch();
   const [currentColor, setCurrentColor] = useState('white');
   const { colorMode } = useColorMode();
+  const [searchValue, setSearchValue] = useState<Item>({
+    value: '',
+    title: '',
+  });
 
   useEffect(() => {
     if (colorMode === 'light') {
@@ -52,16 +56,24 @@ export const Detail = () => {
   }, [dispatch]);
 
   const fetchTechByName = async (searchValue: string) => {
+    console.log('searchValue initial', searchValue);
     const alreadyExists = jobsOpenByDate.some(
       (jobOpen) => jobOpen.id === searchValue,
     );
-
+    console.log('searchValue', searchValue);
     if (alreadyExists) return;
+    console.log('NO EXISTE');
     dispatch(addTechData(searchValue));
   };
 
   const removeElementOnChart = (chartID: string) => {
     dispatch(removeTech(chartID));
+  };
+
+  const onSelectTag = (event: ChangeEvent<{}>, value: Item | null) => {
+    if (value) {
+      setSearchValue(value);
+    }
   };
 
   return error ? (
@@ -109,7 +121,9 @@ export const Detail = () => {
           <SearchBar
             listOfTechs={listOfTechs}
             jobsOpenByDate={jobsOpenByDate}
+            searchValue={searchValue}
             fetchTechByName={fetchTechByName}
+            onSelectTag={onSelectTag}
           />
           <Select
             data-testid='date-select-id'

@@ -103,9 +103,13 @@ describe('detailReducer', () => {
 
   test('return state correctly when ADD_TECH action is trigger', async () => {
     const addTechAction = addTech({
-      jobsOpenByDate,
-      jobsOpenByCountry,
-      questionsOpen,
+      count: 1,
+      data: {
+        jobsOpenByDate,
+        jobsOpenByCountry,
+        questionsOpen,
+      },
+      success: true,
     });
     const updatedState = detailReducer(detailInitialState, addTechAction);
     const newExpectedState = {

@@ -1,4 +1,5 @@
 import { ChartLine } from '../../components/detail/Detail';
+import { techMapping } from '../../core/tech-mapping';
 
 import {
   ADD_TECH,
@@ -47,17 +48,25 @@ export const getIndexOfElementToRemove = (values: ChartLine[], action: any) => {
 export function detailReducer(state = initialState, action: any): ChartState {
   switch (action.type) {
     case ADD_TECH: {
+      console.log(`action.payload`, action.payload.data);
       const newJobsOpenByDate = [
         ...state.jobsOpenByDate,
-        ...action.payload.jobsOpenByDate,
+        ...action.payload.data.jobsOpenByDate,
       ];
       const newJobsOpenByCountry = [
         ...state.jobsOpenByCountry,
-        ...action.payload.jobsOpenByCountry,
+        ...action.payload.data.jobsOpenByCountry,
       ];
+
+      const matchCorrectId = techMapping.get(
+        action.payload.data.questionsOpen[0].id,
+      );
+      action.payload.data.questionsOpen[0].id =
+        matchCorrectId ?? action.payload.data.questionsOpen[0].id;
+
       const newQuestionsOpen = [
         ...state.questionsOpen,
-        ...action.payload.questionsOpen,
+        ...action.payload.data.questionsOpen,
       ];
       return {
         ...state,
@@ -71,7 +80,6 @@ export function detailReducer(state = initialState, action: any): ChartState {
       const currentJobsOpenByDate = [...state.jobsOpenByDate];
       const currentJobsOpenByCountry = [...state.jobsOpenByCountry];
       const currentQuestionsOpen = [...state.questionsOpen];
-
       const indexOfElementToRemove = getIndexOfElementToRemove(
         currentJobsOpenByDate,
         action,

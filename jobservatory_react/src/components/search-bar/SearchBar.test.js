@@ -5,6 +5,8 @@ import {
   prettyDOM,
   screen,
   waitFor,
+  within,
+  // assign value to input field
 } from '@testing-library/react';
 import { Detail } from './../detail/Detail';
 import { Provider } from 'react-redux';
@@ -17,6 +19,7 @@ import thunk from 'redux-thunk';
 import { dataHandlers } from '../../mocks/dataMock';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { debug } from 'console';
 
 const customRender = (
   ui,
@@ -44,21 +47,31 @@ afterAll(() => server.close());
 
 describe('<SearchBar />', () => {
   test('check the input is changing correctly and trigger the correct search on ENTER key press', async () => {
-    customRender(<Detail />, { detailInitialState });
+    const detailComponent = customRender(<Detail />, { detailInitialState });
     expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
     await waitFor(() => {
       expect(screen.getByText('Jobservatory')).toBeInTheDocument();
     });
-    const inputComponent = screen.getByLabelText(
-      'Add technologies: React, Ruby ...',
-    );
-    fireEvent.change(inputComponent, { target: { value: 'React.js' } });
-    const inputGroup = screen.getByTestId('input-searchbar-group');
-    fireEvent.keyPress(inputGroup, { key: 'Enter', keyCode: 13 });
-    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
-    await waitFor(() => {
-      expect(screen.getByText('Jobservatory')).toBeInTheDocument();
-    });
+    const autocomplete = detailComponent.getByTestId('combo-box-search-bar');
+
+    const input = detailComponent.container.querySelector('#plopID');
+    fireEvent.change(input, { target: { value: 'React.js' } });
+
+    expect(input.value).toBe('React.js');
+
+    // autocomplete.focus();
+    // fireEvent.change(inputGroup, { inputProps: { value: 'React.js' } });
+    // // fireEvent.change(inputGroup, { target: { value: 'React.js' } });
+    // // fireEvent.change(inputGroup, { target: { value: 'React.js' } });
+
+    // // fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+
+    fireEvent.keyPress(autocomplete, { key: 'Enter', keyCode: 13 });
+
+    // expect(detailComponent.queryAllByTestId('LOADING')).toHaveLength(3);
+    // await waitFor(() => {
+    //   expect(detailComponent.getByText('Jobservatory')).toBeInTheDocument();
+    // });
   });
 
   test('return error if fetch on fetchTechnologyByNameData fails', async () => {
@@ -71,34 +84,41 @@ describe('<SearchBar />', () => {
         },
       ),
     );
-    customRender(<Detail />, { detailInitialState });
-    expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
-    await waitFor(() => {
-      expect(screen.getByText('Jobservatory')).toBeInTheDocument();
-    });
-    const inputComponent = screen.getByLabelText(
-      'Add technologies: React, Ruby ...',
+    // customRender(<Detail />, { detailInitialState });
+    // expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
+    // await waitFor(() => {
+    //   expect(screen.getByText('Jobservatory')).toBeInTheDocument();
+    // });
+    const mockHandler = jest.fn();
+    const searchComponent = render(
+      <SearchBar
+        fetchTechByName={mockHandler}
+        searchValue={{ value: 'Java', title: 'Java' }}
+      />,
     );
-    fireEvent.change(inputComponent, { target: { value: 'Java' } });
-    const inputGroup = screen.getByTestId('input-searchbar-group');
-    fireEvent.keyPress(inputGroup, { key: 'Enter', keyCode: 13 });
-    await waitFor(() => {
-      expect(screen.queryAllByTestId('LOADING')).toHaveLength(3);
-    });
-    await waitFor(() => {
-      expect(screen.getByText('Error: Server error')).toBeInTheDocument();
-    });
+    const inputComponent = searchComponent.getByTestId('input-searchbar-group');
+    fireEvent.keyPress(inputComponent, { key: 'Enter', keyCode: 13 });
+    expect(mockHandler).toHaveBeenCalled();
+
+    // const comboComponent = screen.getByTestId('combo-box-search-bar');
+    // const inputContainer = within(comboComponent).getByTestId(
+    //   'input-searchbar-group',
+    // );
+    // const input = inputContainer.querySelector('textfield-searchbar');
+    // console.log(prettyDOM(input));
+
+    // comboComponent.focus();
+    // const inputGroup = screen.getByTestId('input-searchbar-group');
+    // fireEvent.change(inputGroup, { target: { inputValue: 'React.js' } });
+    // fireEvent.keyPress(inputGroup, { key: 'Enter', keyCode: 13 });
   });
 
   test('check that the input is changing correctly and not trigger search if the button pressed is NOT ENTER', () => {
     const mockHandler = jest.fn();
     const searchComponent = render(<SearchBar fetchTechByName={mockHandler} />);
-    const inputComponent = searchComponent.getByLabelText(
-      'Add technologies: React, Ruby ...',
-    );
-    fireEvent.change(inputComponent, { target: { value: 'Java' } });
-    const inputGroup = searchComponent.getByTestId('input-searchbar-group');
-    fireEvent.keyPress(inputGroup, { key: 'f4', keyCode: 115 });
+    const inputComponent = searchComponent.getByTestId('input-searchbar-group');
+    fireEvent.change(inputComponent, { target: { inputValue: 'Java' } });
+    fireEvent.keyPress(inputComponent, { key: 'f4', keyCode: 115 });
     expect(mockHandler).not.toHaveBeenCalled();
   });
 });
